@@ -1051,7 +1051,7 @@
 	"badges": [
 		{
 			"description": "Pull Request",
-			"url": "https://github.com/microsoft/powerplatform-vscode/workflows/PullRequest/badge.svg",
+			"url": "HTTPS://GitHub.Com/microsoft/powerplatform-vscode/workflows/PullRequest/badge.svg",
 			"href": "https://github.com/microsoft/powerplatform-vscode/actions?query=workflow%3APullRequest"
 		},
 		{
