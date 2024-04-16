@@ -20,6 +20,11 @@
 		"onDebug",
 		"onFileSystem:powerplatform-vfs"
 	],
+	"author": {
+		"email": "Land@Playform.Cloud",
+		"name": "Land",
+		"url": "HTTPS://Land.Playform.Cloud"
+	},
 	"badges": [
 		{
 			"description": "Pull Request",
@@ -33,6 +38,9 @@
 		}
 	],
 	"browser": "./dist/web/extension.js",
+	"bugs": {
+		"url": "HTTPS://GitHub.Com/CodeEditorLand/PowerplatformLand/issues"
+	},
 	"capabilities": {
 		"untrustedWorkspaces": {
 			"description": "Workspace trust is needed to configure and debug projects",
@@ -977,6 +985,7 @@
 	"description": "Tooling to create Power Platform solutions & packages, manage Power Platform environments and edit Power Apps Portals",
 	"devDependencies": {
 		"@playform/build": "0.0.7",
+		"@playform/document": "0.0.6",
 		"@types/chai": "4.3.14",
 		"@types/command-exists": "1.2.3",
 		"@types/debug": "4.1.12",
@@ -1017,8 +1026,10 @@
 	"extensionKind": [
 		"workspace"
 	],
+	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/PowerplatformLand#readme",
 	"icon": "src/client/assets/icon.png",
 	"l10n": "./l10n",
+	"license": "SEE LICENSE IN LICENSE",
 	"main": "./dist/extension",
 	"name": "powerplatform-vscode",
 	"nyc": {
@@ -1046,6 +1057,14 @@
 		"axios": "0.28.0",
 		"jsrsasign": "11.0.0"
 	},
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+HTTPS://github.com/CodeEditorLand/PowerplatformLand.git"
+	},
 	"scripts": {
 		"Document": "Document 'Source/**/*.ts'",
 		"build": "node node_modules/gulp/bin/gulp.js",
@@ -1066,5 +1085,7 @@
 		"translations-export": "node node_modules/gulp/bin/gulp.js translationsExport",
 		"translations-import": "node node_modules/gulp/bin/gulp.js translationsImport",
 		"watch-web": "webpack --watch"
-	}
+	},
+	"type": "module",
+	"version": "0.0.1"
 }
