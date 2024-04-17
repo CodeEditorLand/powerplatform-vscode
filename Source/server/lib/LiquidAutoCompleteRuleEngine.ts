@@ -81,7 +81,7 @@ export const getSuggestions = (rowIndex: number, colIndex: number, pathOfFileBei
         const suggestions = getSuggestionsFromRules(liquidTokens[0] as TagToken | OutputToken, { workspaceRootFolders, pathOfFileBeingEdited, connection })
         sendTelemetryEvent(connection, { ...telemetryData, measurements:{liquidAutoCompleteTimeMs : performance.now() - startTime} } as IAutoCompleteTelemetryData)
         return suggestions
-    } catch (e) {
+    } catch (_Error) {
         // Add telemetry log. Failed to parse liquid expression. (This may bloat up the logs so double check about this)
     }
     return []
@@ -90,7 +90,7 @@ export const getSuggestions = (rowIndex: number, colIndex: number, pathOfFileBei
 const getEditedLiquidExpression = (colIndex: number, editedLine: string) => {
     try {
         return getLiquidExpression(editedLine, colIndex, liquidTagStartExpression, liquidTagEndExpression) || getLiquidExpression(editedLine, colIndex, liquidOutputStartExpression, liquidOutputEndExpression)
-    } catch (e) {
+    } catch (_Error) {
         // Add Telemetry for index out of bounds...not a proper liquid expression. This may again bloat up the logs (since the autocomplete events can be fired even for non-portal html files)
     }
 }
