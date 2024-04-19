@@ -4,6 +4,9 @@
 	"version": "0.0.1",
 	"private": false,
 	"description": "Tooling to create Power Platform solutions & packages, manage Power Platform environments and edit Power Apps Portals",
+	"keywords": [
+		"land"
+	],
 	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/PowerplatformLand#readme",
 	"bugs": {
 		"url": "HTTPS://GitHub.Com/CodeEditorLand/PowerplatformLand/issues"
