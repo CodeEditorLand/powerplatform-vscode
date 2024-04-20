@@ -19,7 +19,7 @@ export class ConcurrencyHandler {
                 requestInfo,
                 requestInit
             ));
-        } catch (_Error) {
+        } catch (e) {
             if (e instanceof BulkheadRejectedError) {
                 WebExtensionContext.telemetry.sendErrorTelemetry(
                     telemetryEventNames.WEB_EXTENSION_BULKHEAD_QUEUE_FULL,

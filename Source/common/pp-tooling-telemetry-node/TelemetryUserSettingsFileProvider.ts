@@ -39,7 +39,7 @@ export class TelemetryUserSettingsFileProvider implements ITelemetryUserSettings
                 uniqueId: settings.uniqueId,
                 telemetryEnabled: settings.telemetryEnabled,
             };
-        } catch (_Error) {
+        } catch (e) {
             if (e instanceof Error) {
                 if (e.message.startsWith("UserSettingsErrorReason.")) {
                     throw e;
@@ -85,7 +85,7 @@ export class TelemetryUserSettingsFileProvider implements ITelemetryUserSettings
 
         try {
             this.WriteSettings(proposedUserSettings, /*allowOverwrite*/ false);
-        } catch (_Error) {
+        } catch (e) {
             // This indicates that between our call to File.Exists and WriteSettings that another process was able to successfully write the settings file.
             // In this case, we ignore the exception as now the exist condition for this function is satisfied.
         }
@@ -105,7 +105,7 @@ export class TelemetryUserSettingsFileProvider implements ITelemetryUserSettings
             if (typeof parsed.telemetryEnabled !== "boolean") throw new Error(`telemetryEnabled should be a boolean.`);
 
             return parsed as IUserSettingsDataContract;
-        } catch (_Error) {
+        } catch (e) {
             // Then the settings file is invalid or corrupted
             // This shouldn't happen unless there was a catastrophic disk error, invalid serialization logic, or user error.
             // In any of these cases, this indicates a bug in our code that we should fix or the user should be instructed to fix their installation.
