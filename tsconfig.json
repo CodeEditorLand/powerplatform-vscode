@@ -1,22 +1,28 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "sourceMap": true,
-    "outDir": "out",
-    "rootDir": "src",
-    "lib": [ "es2019", "WebWorker", "DOM.Iterable" ],
-    "noImplicitAny": true,
-    "strictPropertyInitialization": true,
+	"compilerOptions": {
+		"baseUrl": "./",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"lib": [
+			"es2019",
+			"WebWorker",
+			"DOM.Iterable"
+		],
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"outDir": "Target",
+		"rootDir": "Source",
+		"sourceMap": true,
 		"strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    ".vscode-test-web"
-  ]
+		"strictPropertyInitialization": true,
+		"target": "es6"
+	},
+	"exclude": [
+		"node_modules",
+		".vscode-test-web"
+	],
+	"extends": "@playform/build/tsconfig",
+	"include": [
+		"Source"
+	]
 }
