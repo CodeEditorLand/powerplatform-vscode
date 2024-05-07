@@ -122,7 +122,7 @@ const webConfig = {
     },
 };
 
-/** @type fluent container scripts web worker config */
+
 const webWorkerConfig = {
     mode: "none",
     target: "webworker", // web extensions run in a webworker context
