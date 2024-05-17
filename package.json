@@ -1,27 +1,7 @@
 {
 	"name": "powerplatform-vscode",
 	"displayName": "Power Platform Tools",
-	"version": "0.0.1",
-	"private": false,
 	"description": "Tooling to create Power Platform solutions & packages, manage Power Platform environments and edit Power Apps Portals",
-	"keywords": [
-		"land"
-	],
-	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/PowerPlatformLand#readme",
-	"bugs": {
-		"url": "HTTPS://GitHub.Com/CodeEditorLand/PowerPlatformLand/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+HTTPS://github.com/CodeEditorLand/PowerPlatformLand.git"
-	},
-	"license": "SEE LICENSE IN LICENSE",
-	"author": {
-		"name": "🛬 Land —",
-		"email": "Land@PlayForm.Cloud",
-		"url": "HTTPS://Land.PlayForm.Cloud"
-	},
-	"type": "module",
 	"main": "./dist/extension",
 	"browser": "./dist/web/extension.js",
 	"scripts": {
@@ -1010,7 +990,6 @@
 	},
 	"devDependencies": {
 		"@playform/build": "0.0.7",
-		"@playform/document": "0.0.6",
 		"@types/chai": "4.3.16",
 		"@types/command-exists": "1.2.3",
 		"@types/debug": "4.1.12",
@@ -1046,9 +1025,6 @@
 	"optionalDependencies": {
 		"bufferutil": "4.0.8",
 		"utf-8-validate": "6.0.3"
-	},
-	"publishConfig": {
-		"access": "public"
 	},
 	"icon": "src/client/assets/icon.png",
 	"badges": [
