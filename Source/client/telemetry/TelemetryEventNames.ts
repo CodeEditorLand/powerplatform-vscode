@@ -4,6 +4,5 @@
  */
 
 export enum telemetryEventNames {
-    DESKTOP_EXTENSION_INIT_CONTEXT = "DesktopExtensionInitContext",
-  
+	DESKTOP_EXTENSION_INIT_CONTEXT = "DesktopExtensionInitContext",
 }

@@ -3,16 +3,19 @@
 [![PullRequest](https://github.com/microsoft/powerplatform-vscode/workflows/PullRequest/badge.svg)](https://github.com/microsoft/powerplatform-vscode/actions?query=workflow%3APullRequest)
 [![Official Build](https://dev.azure.com/dynamicscrm/OneCRM/_apis/build/status/DPX-Tools/powerplatform-vscode%20Official%20Build?branchName=release/stable)](https://dev.azure.com/dynamicscrm/OneCRM/_build/latest?definitionId=12152)
 
-The Power Platform extension makes it easy to manage Power Platform environments and allows the
-developer to create, build and deploy Power Platform solutions, packages and portals.
+The Power Platform extension makes it easy to manage Power Platform environments
+and allows the developer to create, build and deploy Power Platform solutions,
+packages and portals.
 
-Installing this extension will also make the latest Power Platform CLI (aka pac) available in your VSCode terminal.
+Installing this extension will also make the latest Power Platform CLI (aka pac)
+available in your VSCode terminal.
 
 ![VSCode Terminal with pac CLI](https://github.com/microsoft/powerplatform-vscode/blob/main/src/client/assets/pac-CLI-in-terminal.png?raw=true)
 
 ## "Power Platform CLI Exposed" Series
 
-[Daniel Laskewitz](https://github.com/Laskewitz) talks with members of our team about PAC CLI, Solutions, Power Pages, Data & Tool, Pipelines, and PCF
+[Daniel Laskewitz](https://github.com/Laskewitz) talks with members of our team
+about PAC CLI, Solutions, Power Pages, Data & Tool, Pipelines, and PCF
 
 [![Power Platform CLI Exposed](https://img.youtube.com/vi/NkoWGF8a4aQ/0.jpg)](https://www.youtube.com/playlist?list=PLlrxD0HtieHhEdLHxQOU96ySSZpMCyAxf)
 
@@ -20,9 +23,10 @@ Installing this extension will also make the latest Power Platform CLI (aka pac)
 
 ## Requirements
 
-- VSCode >= 1.73.0
-- Windows: .NET 4.8
-- macOS/Linux/WSL: [.NET 6.0+ SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+-   VSCode >= 1.73.0
+-   Windows: .NET 4.8
+-   macOS/Linux/WSL:
+    [.NET 6.0+ SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 
 ## Getting Started
 
@@ -34,21 +38,23 @@ Microsoft PowerPlatform CLI
 
 Usage: pac [admin] [application] [auth] [canvas] [help] [org] [package] [paportal] [pcf] [plugin] [solution] [telemetry]
 
-  admin                       Work with your PowerPlatform Admin Account
-  application                 Commands for listing and installing available DataVerse applications from AppSource
-  auth                        Manage how you authenticate to various services
-  canvas                      Operating with Power Apps .msapp files
-  help                        Show help for the Microsoft PowerPlatform CLI
-  org                         Work with your Dataverse Organization
-  package                     Commands for working with Dataverse package projects
-  paportal                    Commands for working with PowerApps portal website
-  pcf                         Commands for working with PowerApps component framework projects
-  plugin                      Commands for working with Dataverse plugin class library
-  solution                    Commands for working with Dataverse solution projects
-  telemetry                   Manage telemetry settings
+admin Work with your PowerPlatform Admin Account
+application Commands for listing and installing available DataVerse applications from AppSource
+auth Manage how you authenticate to various services
+canvas Operating with Power Apps .msapp files
+help Show help for the Microsoft PowerPlatform CLI
+org Work with your Dataverse Organization
+package Commands for working with Dataverse package projects
+paportal Commands for working with PowerApps portal website
+pcf Commands for working with PowerApps component framework projects
+plugin Commands for working with Dataverse plugin class library
+solution Commands for working with Dataverse solution projects
+telemetry Manage telemetry settings
 ```
 
-The pac CLI will show you the available command nouns with a short description. To get detailed help for each noun, use the built-int help screens for each command, e.g.:
+The pac CLI will show you the available command nouns with a short description.
+To get detailed help for each noun, use the built-int help screens for each
+command, e.g.:
 
 ```bash
 > pac solution help
@@ -77,24 +83,25 @@ Usage: pac solution [init] [add-reference] [list] [delete] [online-version] [ver
 To then view all solutions installed in the selected environment:
 
 ```bash
-> pac solution list
+solution > pac list
 Connected to...vscode-test
 Listing all Solutions from the current Dataverse Organization...
 
- Index      Unique Name                                        Friendly Name                                                Version
+Index Unique Name Friendly Name Version
 
-
- [1]        Cr4323c                                            Common Data Services Default Solution                        1.0.0.0
+[1] Cr4323c Common Data Services Default Solution 1.0.0.0
 ```
 
 ## Feedback & Questions
 
-Please use the issues tracker in the home repo: <https://github.com/microsoft/powerplatform-vscode/issues>
+Please use the issues tracker in the home repo:
+<https://github.com/microsoft/powerplatform-vscode/issues>
 
 ## Contributing
 
-This project will welcome contributions in the near future. At this stage, we're not ready for contributions,
-but do welcome your suggestions via this repository's issue tracker.
+This project will welcome contributions in the near future. At this stage, we're
+not ready for contributions, but do welcome your suggestions via this
+repository's issue tracker.
 
 See details in [CONTRIBUTING](CONTRIBUTING.md)
 
@@ -104,12 +111,15 @@ See details in [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
 
 ### Security issues
 
-Please report any security concerns or issues as described in this [SECURITY](SECURITY.md) document.
+Please report any security concerns or issues as described in this
+[SECURITY](SECURITY.md) document.
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
-trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project
-must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+This project may contain trademarks or logos for projects, products, or
+services. Authorized use of Microsoft trademarks or logos is subject to and must
+follow
+[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+Use of Microsoft trademarks or logos in modified versions of this project must
+not cause confusion or imply Microsoft sponsorship. Any use of third-party
+trademarks or logos are subject to those third-party's policies.
