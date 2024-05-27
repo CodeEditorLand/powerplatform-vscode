@@ -4,5 +4,5 @@
  */
 
 // Telemetry Event Names
-export const ECSConfigSuccessfulInit = "ECSConfigSuccessfulInit";
-export const ECSConfigFailedInit = "ECSConfigFailedInit";
+export const ECSConfigSuccessfulInit = 'ECSConfigSuccessfulInit';
+export const ECSConfigFailedInit = 'ECSConfigFailedInit';

@@ -12,11 +12,11 @@ type Primitive = string | number | boolean | undefined;
  * Creates key-value tuples out of a given object.
  */
 type CreateKeyValueTuple<T> = {
-	[TKey in keyof T]: T[TKey] extends Primitive // Map over all the keys in the type
-		? [TKey, T[TKey]] // if the current key is a primitive, return a tuple with the key and the value. E.g. CreateKeyValuePair<{a: number}> = {a: [a, number]}
-		: CreateKeyValueTuple<T[TKey]>; // if the current key is an object, recurse into the object and return a tuple with the key and the value primitive values.
+    [TKey in keyof T]: T[TKey] extends Primitive // Map over all the keys in the type
+        ? [TKey, T[TKey]] // if the current key is a primitive, return a tuple with the key and the value. E.g. CreateKeyValuePair<{a: number}> = {a: [a, number]}
+        : CreateKeyValueTuple<T[TKey]>; // if the current key is an object, recurse into the object and return a tuple with the key and the value primitive values.
 }[keyof T] & // Create a union
-	[PropertyKey, Primitive]; // Hack for the "Type instantiation is excessively deep and possibly infinite.";
+    [PropertyKey, Primitive]; // Hack for the "Type instantiation is excessively deep and possibly infinite.";
 
 /**
  * Flattens a given object type into a `Record<string, Primitive>`.

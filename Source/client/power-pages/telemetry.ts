@@ -4,93 +4,68 @@
  */
 
 import { oneDSLoggerWrapper } from "../../common/OneDSLoggerTelemetry/oneDSLoggerWrapper";
-import type { ITelemetry } from "../telemetry/ITelemetry";
+import { ITelemetry } from "../telemetry/ITelemetry";
 
 // Telemetry Event Names
-export const FileDeleteEvent = "FileDeleteEvent";
-export const FileRenameEvent = "FileRenameEvent";
-export const UserFileDeleteEvent = "UserFileDeleteEvent";
-export const UserFileRenameEvent = "UserFileRenameEvent";
-export const ValidateTextDocumentEvent = "ValidateTextDocumentEvent";
-export const FileRenameValidationEvent = "FileRenameValidationEvent";
-export const UpdateEntityPathNamesEvent = "UpdateEntityPathNamesEvent";
-export const CleanupRelatedFilesEvent = "CleanupRelatedFilesEvent";
-export const UpdateEntityNameInYmlEvent = "UpdateEntityNameInYmlEvent";
-export const UserFileCreateEvent = "UserFileCreateEvent";
-export const FileCreateEvent = "FileCreateEvent";
+export const FileDeleteEvent = 'FileDeleteEvent';
+export const FileRenameEvent = 'FileRenameEvent';
+export const UserFileDeleteEvent = 'UserFileDeleteEvent';
+export const UserFileRenameEvent = 'UserFileRenameEvent';
+export const ValidateTextDocumentEvent = 'ValidateTextDocumentEvent';
+export const FileRenameValidationEvent = 'FileRenameValidationEvent';
+export const UpdateEntityPathNamesEvent = 'UpdateEntityPathNamesEvent';
+export const CleanupRelatedFilesEvent = 'CleanupRelatedFilesEvent';
+export const UpdateEntityNameInYmlEvent = 'UpdateEntityNameInYmlEvent';
+export const UserFileCreateEvent = 'UserFileCreateEvent';
+export const FileCreateEvent = 'FileCreateEvent';
 
 interface IPowerPagesTelemetryData {
-	eventName: string;
-	numberOfFiles?: string;
-	fileEntityType?: string;
-	durationInMills?: number;
-	exception?: Error;
-	triggerPoint?: string;
-	methodName: string;
+    eventName: string,
+    numberOfFiles?: string,
+    fileEntityType?: string,
+    durationInMills?: number,
+    exception?: Error,
+    triggerPoint?: string
+    methodName: string
 }
 
 export enum TriggerPoint {
-	CONTEXT_MENU = "context-menu",
-	COMMAND_PALETTE = "command-palette",
+    CONTEXT_MENU = "context-menu",
+    COMMAND_PALETTE = "command-palette",
 }
 
-export function sendTelemetryEvent(
-	telemetry: ITelemetry,
-	telemetryData: IPowerPagesTelemetryData,
-): void {
-	const telemetryDataProperties: Record<string, string> = {};
-	const telemetryDataMeasurements: Record<string, number> = {};
+export function sendTelemetryEvent(telemetry: ITelemetry, telemetryData: IPowerPagesTelemetryData): void {
+    const telemetryDataProperties: Record<string, string> = {}
+    const telemetryDataMeasurements: Record<string, number> = {}
 
-	if (telemetryData.numberOfFiles) {
-		telemetryDataProperties.numberOfFiles = telemetryData.numberOfFiles;
-	}
+    if (telemetryData.numberOfFiles) {
+        telemetryDataProperties.numberOfFiles = telemetryData.numberOfFiles;
+    }
 
-	if (telemetryData.fileEntityType) {
-		telemetryDataProperties.fileEntityType = telemetryData.fileEntityType;
-	}
+    if (telemetryData.fileEntityType) {
+        telemetryDataProperties.fileEntityType = telemetryData.fileEntityType;
+    }
 
-	if (telemetryData.durationInMills) {
-		telemetryDataMeasurements.durationInMills =
-			telemetryData.durationInMills;
-	}
+    if (telemetryData.durationInMills) {
+        telemetryDataMeasurements.durationInMills = telemetryData.durationInMills;
+    }
 
-	if (telemetryData.triggerPoint) {
-		telemetryDataProperties.triggerPoint = telemetryData.triggerPoint;
-	}
+    if (telemetryData.triggerPoint) {
+        telemetryDataProperties.triggerPoint = telemetryData.triggerPoint;
+    }
 
-	if (telemetryData.methodName) {
-		telemetryDataProperties.methodName = telemetryData.methodName;
-	}
+    if (telemetryData.methodName) {
+        telemetryDataProperties.methodName = telemetryData.methodName;
+    }
 
-	if (telemetryData.exception) {
-		telemetryDataProperties.eventName = telemetryData.eventName;
-		telemetryDataProperties.errorMessage = telemetryData.exception?.message;
-		telemetry.sendTelemetryException(
-			telemetryData.exception,
-			telemetryDataProperties,
-			telemetryDataMeasurements,
-		);
-		oneDSLoggerWrapper
-			.getLogger()
-			.traceError(
-				telemetryDataProperties.eventName,
-				telemetryDataProperties.errorMessage,
-				telemetryData.exception,
-				telemetryDataProperties,
-				telemetryDataMeasurements,
-			);
-	} else {
-		telemetry.sendTelemetryEvent(
-			telemetryData.eventName,
-			telemetryDataProperties,
-			telemetryDataMeasurements,
-		);
-		oneDSLoggerWrapper
-			.getLogger()
-			.traceInfo(
-				telemetryData.eventName,
-				telemetryDataProperties,
-				telemetryDataMeasurements,
-			);
-	}
+    if (telemetryData.exception) {
+        telemetryDataProperties.eventName = telemetryData.eventName;
+        telemetryDataProperties.errorMessage = telemetryData.exception?.message;
+        telemetry.sendTelemetryException(telemetryData.exception, telemetryDataProperties, telemetryDataMeasurements);
+        oneDSLoggerWrapper.getLogger().traceError(telemetryDataProperties.eventName, telemetryDataProperties.errorMessage, telemetryData.exception, telemetryDataProperties, telemetryDataMeasurements);
+    } else {
+        telemetry.sendTelemetryEvent(telemetryData.eventName, telemetryDataProperties, telemetryDataMeasurements);
+        oneDSLoggerWrapper.getLogger().traceInfo(telemetryData.eventName, telemetryDataProperties, telemetryDataMeasurements);
+    }
 }
+

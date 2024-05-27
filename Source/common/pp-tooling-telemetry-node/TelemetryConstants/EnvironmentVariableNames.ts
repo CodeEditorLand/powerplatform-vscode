@@ -9,5 +9,4 @@
 export const PpToolsTelemetryOptOut = "PP_TOOLS_TELEMETRY_OPTOUT";
 export const PpToolsTelemetryDataBoundary = "PP_TOOLS_TELEMETRY_DATA_BOUNDARY";
 export const PpToolsAutomationAgent = "PP_TOOLS_AUTOMATION_AGENT";
-export const PpToolsTelemetryDeveloperMode =
-	"PP_TOOLS_TELEMETRY_DEVELOPER_MODE";
+export const PpToolsTelemetryDeveloperMode = "PP_TOOLS_TELEMETRY_DEVELOPER_MODE";

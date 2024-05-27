@@ -5,201 +5,140 @@
 
 // https://code.visualstudio.com/api/extension-capabilities/common-capabilities#output-channel
 
-import { spawnSync } from "child_process";
-import * as os from "os";
-import * as path from "path";
-import commandExists from "command-exists";
-import * as fs from "fs-extra";
-import { glob } from "glob";
-import * as vscode from "vscode";
-import { oneDSLoggerWrapper } from "../../common/OneDSLoggerTelemetry/oneDSLoggerWrapper";
-import {
-	PORTAL_YEOMAN_GENERATOR_PACKAGE_NAME,
-	PORTAL_YEOMAN_GENERATOR_PACKAGE_TARBALL_NAME,
-} from "../constants";
-import type { ICliAcquisitionContext } from "./CliAcquisition";
+import * as vscode from 'vscode';
+import { spawnSync } from 'child_process';
+import * as fs from 'fs-extra';
+import * as os from 'os';
+import * as path from 'path';
+import { PORTAL_YEOMAN_GENERATOR_PACKAGE_NAME, PORTAL_YEOMAN_GENERATOR_PACKAGE_TARBALL_NAME } from '../constants';
+import { ICliAcquisitionContext } from './CliAcquisition';
+import { glob } from 'glob';
+import commandExists from 'command-exists';
+import { oneDSLoggerWrapper } from '../../common/OneDSLoggerTelemetry/oneDSLoggerWrapper';
 
 declare const __GENERATOR_PACKAGE_VERSION__: string | undefined;
 
 export interface IDisposable {
-	dispose(): void;
+    dispose(): void;
 }
 
 // This class is responsible for ensuring that the yeoman-generator and the yo command is available for the extension to perform CRUD operations on PowerPages records.
 export class GeneratorAcquisition implements IDisposable {
-	private readonly _context: ICliAcquisitionContext;
-	private readonly _ppagesGlobalPath: string;
-	private readonly _installedPackageJson: string;
-	private readonly _generatorVersion: string;
-	private readonly _yoVersion: string = "4.3.1";
-	private readonly _tgzFolder: string;
 
-	public get generatorVersion(): string {
-		const tgzPackage = glob.sync(
-			`${PORTAL_YEOMAN_GENERATOR_PACKAGE_TARBALL_NAME}*.tgz`,
-			{ cwd: this._tgzFolder },
-		);
-		if (tgzPackage.length > 0) {
-			return `file:${path.join(this._tgzFolder, tgzPackage[0])}`;
-		} else {
-			return this._generatorVersion;
-		}
-	}
+    private readonly _context: ICliAcquisitionContext;
+    private readonly _ppagesGlobalPath: string;
+    private readonly _installedPackageJson: string;
+    private readonly _generatorVersion: string;
+    private readonly _yoVersion: string = '4.3.1';
+    private readonly _tgzFolder: string;
 
-	public get yoVersion(): string {
-		return this._yoVersion;
-	}
+    public get generatorVersion(): string {
+        const tgzPackage = glob.sync(`${PORTAL_YEOMAN_GENERATOR_PACKAGE_TARBALL_NAME}*.tgz`, { cwd: this._tgzFolder })
+        if (tgzPackage.length > 0) {
+            return `file:${path.join(this._tgzFolder, tgzPackage[0])}`;
+        } else {
+            return this._generatorVersion;
+        }
+    }
 
-	public get npmCommand(): string {
-		const execName = os.platform() === "win32" ? "npm.cmd" : "npm";
-		return execName;
-	}
+    public get yoVersion(): string {
+        return this._yoVersion;
+    }
 
-	public get yoCommandPath(): string | null {
-		const execName = os.platform() === "win32" ? "yo.cmd" : "yo";
-		const yoBinaryPath = path.join(
-			this._ppagesGlobalPath,
-			"node_modules",
-			".bin",
-			execName,
-		);
-		return fs.pathExistsSync(yoBinaryPath) ? yoBinaryPath : null;
-	}
+    public get npmCommand(): string {
+        const execName = (os.platform() === 'win32') ? 'npm.cmd' : 'npm';
+        return execName;
+    }
 
-	public constructor(context: ICliAcquisitionContext) {
-		this._context = context;
-		this._ppagesGlobalPath = path.resolve(
-			context.globalStorageLocalPath,
-			"powerpages",
-		);
-		this._installedPackageJson = path.resolve(
-			this._ppagesGlobalPath,
-			"package.json",
-		);
-		this._tgzFolder = path.join(
-			this._context.extensionPath,
-			"dist",
-			"powerpages",
-		);
-		this._generatorVersion = __GENERATOR_PACKAGE_VERSION__ || "1.0.0";
-	}
+    public get yoCommandPath(): string | null {
+        const execName = (os.platform() === 'win32') ? 'yo.cmd' : 'yo';
+        const yoBinaryPath = path.join(this._ppagesGlobalPath, 'node_modules', ".bin", execName);
+        return fs.pathExistsSync(yoBinaryPath) ? yoBinaryPath : null;
+    }
 
-	public dispose(): void {
-		this._context.showInformationMessage("Bye");
-	}
+    public constructor(context: ICliAcquisitionContext) {
+        this._context = context;
+        this._ppagesGlobalPath = path.resolve(context.globalStorageLocalPath, 'powerpages');
+        this._installedPackageJson = path.resolve(this._ppagesGlobalPath, 'package.json');
+        this._tgzFolder = path.join(this._context.extensionPath, 'dist', 'powerpages');
+        this._generatorVersion = __GENERATOR_PACKAGE_VERSION__ || "1.0.0";
+    }
 
-	private npm(args: string[]) {
-		return spawnSync(
-			/^win/.test(process.platform) ? "npm.cmd" : "npm",
-			args,
-			{ cwd: this._ppagesGlobalPath },
-		);
-	}
+    public dispose(): void {
+        this._context.showInformationMessage('Bye');
+    }
 
-	public ensureInstalled(): string | null {
-		if (!fs.existsSync(this._ppagesGlobalPath)) {
-			fs.mkdirSync(this._ppagesGlobalPath);
-		}
+    private npm(args: string[]) {
+        return spawnSync(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', args, { cwd: this._ppagesGlobalPath });
+    }
 
-		if (
-			this.yoCommandPath === null ||
-			this.getInstalledVersion() !== this.generatorVersion
-		) {
-			if (!commandExists.sync("npm")) {
-				this._context.showErrorMessage(
-					vscode.l10n.t({
-						message:
-							"Cannot install Power Pages generator. Please install npm and try again.",
-						comment: ["Do not translate 'npm'"],
-					}),
-				);
-				return null;
-			}
-			this._context.showInformationMessage(
-				vscode.l10n.t({
-					message: "Installing Power Pages generator(v{0})...",
-					args: [this.generatorVersion],
-					comment: ["{0} represents the version number"],
-				}),
-			);
+    public ensureInstalled(): string | null {
+        if (!fs.existsSync(this._ppagesGlobalPath)) {
+            fs.mkdirSync(this._ppagesGlobalPath);
+        }
 
-			const packageJson = {
-				name: "PowerPages VSCODE",
-				version: "1.0.0",
-				dependencies: {
-					yo: this.yoVersion,
-					[PORTAL_YEOMAN_GENERATOR_PACKAGE_NAME]:
-						this.generatorVersion,
-				},
-			};
+        if (this.yoCommandPath === null || this.getInstalledVersion() !== this.generatorVersion) {
+            if (!commandExists.sync('npm')) {
+                this._context.showErrorMessage(vscode.l10n.t({
+                    message: 'Cannot install Power Pages generator. Please install npm and try again.',
+                    comment: ["Do not translate 'npm'"]
+                }));
+                return null;
+            }
+            this._context.showInformationMessage(
+                vscode.l10n.t({
+                    message: "Installing Power Pages generator(v{0})...",
+                    args: [this.generatorVersion],
+                    comment: ["{0} represents the version number"]
+                }));
 
-			fs.writeFileSync(
-				path.join(this._ppagesGlobalPath, "package.json"),
-				JSON.stringify(packageJson),
-				"utf-8",
-			);
+            const packageJson = {
+                name: "PowerPages VSCODE",
+                version: "1.0.0",
+                dependencies: {
+                    yo: this.yoVersion,
+                    [PORTAL_YEOMAN_GENERATOR_PACKAGE_NAME]: this.generatorVersion
+                }
+            }
 
-			const child = this.npm(["install"]);
-			if (child.error) {
-				this._context.telemetry.sendTelemetryErrorEvent(
-					"PowerPagesGeneratorInstallComplete",
-					{ cliVersion: this._generatorVersion },
-					{},
-					[String(child.error)],
-				);
-				oneDSLoggerWrapper.getLogger().traceError(
-					"PowerPagesGeneratorInstallComplete",
-					String(child.error),
-					{
-						name: "PowerPagesGeneratorInstallComplete",
-						message: String(child.error),
-					} as Error,
-					{ cliVersion: this._generatorVersion },
-					{},
-				);
+            fs.writeFileSync(path.join(this._ppagesGlobalPath, "package.json"), JSON.stringify(packageJson), 'utf-8');
 
-				this._context.showErrorMessage(
-					vscode.l10n.t({
-						message: "Cannot install Power Pages generator: {0}",
-						args: [String(child.error)],
-						comment: [
-							"{0} represents the error message returned from the exception",
-						],
-					}),
-				);
-			} else {
-				this._context.telemetry.sendTelemetryEvent(
-					"PowerPagesGeneratorInstallComplete",
-					{ cliVersion: this._generatorVersion },
-				);
-				oneDSLoggerWrapper
-					.getLogger()
-					.traceInfo("PowerPagesGeneratorInstallComplete", {
-						cliVersion: this._generatorVersion,
-					});
-				this._context.showInformationMessage(
-					vscode.l10n.t(
-						"The Power Pages generator is ready for use in your VS Code extension!",
-					),
-				);
-			}
-		}
-		return this.yoCommandPath;
-	}
+            const child = this.npm(['install']);
+            if (child.error) {
+                this._context.telemetry.sendTelemetryErrorEvent('PowerPagesGeneratorInstallComplete', { cliVersion: this._generatorVersion }, {}, [String(child.error)]);
+                oneDSLoggerWrapper.getLogger().traceError(
+                    'PowerPagesGeneratorInstallComplete',
+                    String(child.error),
+                    { name: 'PowerPagesGeneratorInstallComplete', message: String(child.error) } as Error,
+                    { cliVersion: this._generatorVersion }, {}
+                );
 
-	getInstalledVersion(): string | undefined {
-		if (!fs.existsSync(this._installedPackageJson)) {
-			return undefined;
-		}
-		try {
-			const packageJson = JSON.parse(
-				fs.readFileSync(this._installedPackageJson, "utf-8"),
-			);
-			return packageJson?.dependencies?.[
-				PORTAL_YEOMAN_GENERATOR_PACKAGE_NAME
-			];
-		} catch {
-			return undefined;
-		}
-	}
+                this._context.showErrorMessage(vscode.l10n.t({
+                    message: "Cannot install Power Pages generator: {0}",
+                    args: [String(child.error)],
+                    comment: ["{0} represents the error message returned from the exception"]
+                }));
+            } else {
+                this._context.telemetry.sendTelemetryEvent('PowerPagesGeneratorInstallComplete', { cliVersion: this._generatorVersion });
+                oneDSLoggerWrapper.getLogger().traceInfo('PowerPagesGeneratorInstallComplete', { cliVersion: this._generatorVersion });
+                this._context.showInformationMessage(vscode.l10n.t('The Power Pages generator is ready for use in your VS Code extension!'));
+            }
+        }
+        return this.yoCommandPath
+
+    }
+
+    getInstalledVersion(): string | undefined {
+        if (!fs.existsSync(this._installedPackageJson)) {
+            return undefined;
+        }
+        try {
+            const packageJson = JSON.parse(fs.readFileSync(this._installedPackageJson, 'utf-8'));
+            return packageJson?.dependencies?.[PORTAL_YEOMAN_GENERATOR_PACKAGE_NAME];
+        }
+        catch {
+            return undefined;
+        }
+    }
 }
+

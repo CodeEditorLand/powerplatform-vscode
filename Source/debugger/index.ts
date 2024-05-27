@@ -4,7 +4,7 @@
  */
 
 export {
-	activateDebugger,
-	deactivateDebugger,
-	shouldEnableDebugger,
+    activateDebugger,
+    deactivateDebugger,
+    shouldEnableDebugger,
 } from "./extension";

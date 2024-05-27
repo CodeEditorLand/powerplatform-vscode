@@ -4,19 +4,18 @@
  */
 
 export class EntityForeignKeyDataMap {
-	private entityForeignKeyMap: Map<string, Set<string>> = new Map<
-		string,
-		Set<string>
-	>();
+    private entityForeignKeyMap: Map<string, Set<string>> = new Map<string, Set<string>>();
 
-	public get getEntityForeignKeyMap(): Map<string, Set<string>> {
-		return this.entityForeignKeyMap;
-	}
+    public get getEntityForeignKeyMap(): Map<string, Set<string>> {
+        return this.entityForeignKeyMap;
+    }
 
-	public setEntityForeignKey(rootWebPageId: string, entityId: string) {
-		const existingEntity =
-			this.entityForeignKeyMap.get(rootWebPageId) ?? new Set<string>();
-		existingEntity.add(entityId);
-		this.entityForeignKeyMap.set(rootWebPageId, existingEntity);
-	}
+    public setEntityForeignKey(
+        rootWebPageId: string,
+        entityId: string
+    ) {
+        const existingEntity = this.entityForeignKeyMap.get(rootWebPageId) ?? new Set<string>();
+        existingEntity.add(entityId);
+        this.entityForeignKeyMap.set(rootWebPageId, existingEntity);
+    }
 }

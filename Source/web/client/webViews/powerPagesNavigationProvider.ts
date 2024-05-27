@@ -3,218 +3,172 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import * as path from "path";
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
+import * as path from 'path';
 import WebExtensionContext from "../WebExtensionContext";
-import { httpMethod, queryParameters } from "../common/constants";
-import { telemetryEventNames } from "../telemetry/constants";
-import {
-	getBackToStudioURL,
-	isStringUndefinedOrEmpty,
-} from "../utilities/commonUtil";
+import { httpMethod, queryParameters } from '../common/constants';
+import { getBackToStudioURL, isStringUndefinedOrEmpty } from '../utilities/commonUtil';
+import { telemetryEventNames } from '../telemetry/constants';
 
-export class PowerPagesNavigationProvider
-	implements vscode.TreeDataProvider<PowerPagesNode>
-{
-	private _onDidChangeTreeData: vscode.EventEmitter<
-		PowerPagesNode | undefined | void
-	> = new vscode.EventEmitter<PowerPagesNode | undefined | void>();
-	readonly onDidChangeTreeData: vscode.Event<
-		PowerPagesNode | undefined | void
-	> = this._onDidChangeTreeData.event;
+export class PowerPagesNavigationProvider implements vscode.TreeDataProvider<PowerPagesNode> {
 
-	refresh(): void {
-		this._onDidChangeTreeData.fire();
-	}
+    private _onDidChangeTreeData: vscode.EventEmitter<PowerPagesNode | undefined | void> = new vscode.EventEmitter<PowerPagesNode | undefined | void>();
+    readonly onDidChangeTreeData: vscode.Event<PowerPagesNode | undefined | void> = this._onDidChangeTreeData.event;
 
-	getTreeItem(element: PowerPagesNode): vscode.TreeItem {
-		return element;
-	}
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
 
-	getChildren(element?: PowerPagesNode): Thenable<PowerPagesNode[]> {
-		if (element) {
-			return Promise.resolve(this.getNodes(path.join(element.label)));
-		} else {
-			return Promise.resolve(this.getNodes());
-		}
-	}
+    getTreeItem(element: PowerPagesNode): vscode.TreeItem {
+        return element;
+    }
 
-	getNodes(label?: string): PowerPagesNode[] {
-		const nodes: PowerPagesNode[] = [];
-		const previewPowerPage = new PowerPagesNode(
-			vscode.l10n.t("Preview site"),
-			{
-				command:
-					"powerpages.powerPagesFileExplorer.powerPagesRuntimePreview",
-				title: vscode.l10n.t("Preview site"),
-				arguments: [],
-			},
-			"previewSite.svg",
-		);
-		const backToStudio = new PowerPagesNode(
-			vscode.l10n.t("Open in Power Pages studio"),
-			{
-				command: "powerpages.powerPagesFileExplorer.backToStudio",
-				title: vscode.l10n.t("Open in Power Pages studio"),
-				arguments: [],
-			},
-			"powerPages.svg",
-		);
+    getChildren(element?: PowerPagesNode): Thenable<PowerPagesNode[]> {
+        if (element) {
+            return Promise.resolve(this.getNodes(path.join(element.label)));
+        } else {
+            return Promise.resolve(this.getNodes());
+        }
+    }
 
-		if (label && label === previewPowerPage.label) {
-			nodes.push(previewPowerPage);
-		} else if (label && label === backToStudio.label) {
-			nodes.push(backToStudio);
-		} else {
-			nodes.push(previewPowerPage);
-			nodes.push(backToStudio);
-		}
+    getNodes(label?: string): PowerPagesNode[] {
+        const nodes: PowerPagesNode[] = [];
+        const previewPowerPage = new PowerPagesNode(vscode.l10n.t("Preview site"),
+            {
+                command: 'powerpages.powerPagesFileExplorer.powerPagesRuntimePreview',
+                title: vscode.l10n.t("Preview site"),
+                arguments: []
+            },
+            'previewSite.svg');
+        const backToStudio = new PowerPagesNode(vscode.l10n.t("Open in Power Pages studio"),
+            {
+                command: 'powerpages.powerPagesFileExplorer.backToStudio',
+                title: vscode.l10n.t("Open in Power Pages studio"),
+                arguments: []
+            },
+            'powerPages.svg');
 
-		return nodes;
-	}
+        if (label && label === previewPowerPage.label) {
+            nodes.push(previewPowerPage);
+        } else if (label && label === backToStudio.label) {
+            nodes.push(backToStudio);
+        } else {
+            nodes.push(previewPowerPage);
+            nodes.push(backToStudio);
+        }
 
-	async previewPowerPageSite(): Promise<void> {
-		let requestSentAtTime = new Date().getTime();
-		const websitePreviewUrl = WebExtensionContext.urlParametersMap.get(
-			queryParameters.WEBSITE_PREVIEW_URL,
-		) as string;
+        return nodes;
+    }
 
-		if (isStringUndefinedOrEmpty(websitePreviewUrl)) {
-			vscode.window.showErrorMessage(
-				vscode.l10n.t("Preview site URL is not available"),
-			);
+    async previewPowerPageSite(): Promise<void> {
+        let requestSentAtTime = new Date().getTime();
+        const websitePreviewUrl = WebExtensionContext.urlParametersMap.get(queryParameters.WEBSITE_PREVIEW_URL) as string;
 
-			WebExtensionContext.telemetry.sendErrorTelemetry(
-				telemetryEventNames.WEB_EXTENSION_PREVIEW_SITE_TRIGGERED,
-				vscode.l10n.t("Preview site URL is not available"),
-			);
-			return;
-		}
+        if (isStringUndefinedOrEmpty(websitePreviewUrl)) {
+            vscode.window.showErrorMessage(vscode.l10n.t("Preview site URL is not available"));
 
-		// Runtime clear cache call
-		const requestUrl = `${
-			websitePreviewUrl.endsWith("/")
-				? websitePreviewUrl
-				: websitePreviewUrl.concat("/")
-		}_services/cache/config`;
+            WebExtensionContext.telemetry.sendErrorTelemetry(
+                telemetryEventNames.WEB_EXTENSION_PREVIEW_SITE_TRIGGERED,
+                vscode.l10n.t("Preview site URL is not available")
+            );
+            return;
+        }
 
-		WebExtensionContext.telemetry.sendAPITelemetry(
-			requestUrl,
-			"Preview power pages site",
-			httpMethod.DELETE,
-			this.previewPowerPageSite.name,
-		);
-		requestSentAtTime = new Date().getTime();
-		WebExtensionContext.dataverseAuthentication();
+        // Runtime clear cache call
+        const requestUrl = `${websitePreviewUrl.endsWith('/') ? websitePreviewUrl : websitePreviewUrl.concat('/')}_services/cache/config`;
 
-		await vscode.window.withProgress(
-			{
-				location: vscode.ProgressLocation.Notification,
-				cancellable: true,
-				title: vscode.l10n.t("Opening preview site..."),
-			},
-			async () => {
-				const response =
-					await WebExtensionContext.concurrencyHandler.handleRequest(
-						requestUrl,
-						{
-							headers: {
-								authorization:
-									"Bearer " +
-									WebExtensionContext.dataverseAccessToken,
-								Accept: "*/*",
-								"Content-Type": "text/plain",
-							},
-							method: "DELETE",
-						},
-					);
+        WebExtensionContext.telemetry.sendAPITelemetry(
+            requestUrl,
+            "Preview power pages site",
+            httpMethod.DELETE,
+            this.previewPowerPageSite.name
+        );
+        requestSentAtTime = new Date().getTime();
+        WebExtensionContext.dataverseAuthentication();
 
-				if (response.ok) {
-					WebExtensionContext.telemetry.sendAPISuccessTelemetry(
-						requestUrl,
-						"Preview power pages site",
-						httpMethod.DELETE,
-						new Date().getTime() - requestSentAtTime,
-						this.previewPowerPageSite.name,
-					);
-				} else {
-					WebExtensionContext.telemetry.sendAPIFailureTelemetry(
-						requestUrl,
-						"Preview power pages site",
-						httpMethod.DELETE,
-						new Date().getTime() - requestSentAtTime,
-						this.previewPowerPageSite.name,
-						JSON.stringify(response),
-						"",
-						response?.status.toString(),
-					);
-				}
-			},
-		);
+        await vscode.window.withProgress(
+            {
+                location: vscode.ProgressLocation.Notification,
+                cancellable: true,
+                title: vscode.l10n.t("Opening preview site..."),
+            },
+            async () => {
+                const response = await WebExtensionContext.concurrencyHandler.handleRequest(requestUrl, {
+                    headers: {
+                        authorization: "Bearer " + WebExtensionContext.dataverseAccessToken,
+                        'Accept': '*/*',
+                        'Content-Type': 'text/plain',
+                    },
+                    method: 'DELETE',
+                });
 
-		vscode.env.openExternal(vscode.Uri.parse(websitePreviewUrl));
-		WebExtensionContext.telemetry.sendInfoTelemetry(
-			telemetryEventNames.WEB_EXTENSION_PREVIEW_SITE_TRIGGERED,
-		);
-	}
+                if (response.ok) {
+                    WebExtensionContext.telemetry.sendAPISuccessTelemetry(
+                        requestUrl,
+                        "Preview power pages site",
+                        httpMethod.DELETE,
+                        new Date().getTime() - requestSentAtTime,
+                        this.previewPowerPageSite.name
+                    );
+                } else {
+                    WebExtensionContext.telemetry.sendAPIFailureTelemetry(
+                        requestUrl,
+                        "Preview power pages site",
+                        httpMethod.DELETE,
+                        new Date().getTime() - requestSentAtTime,
+                        this.previewPowerPageSite.name,
+                        JSON.stringify(response),
+                        '',
+                        response?.status.toString()
+                    );
+                }
 
-	backToStudio(): void {
-		const backToStudioUrl = getBackToStudioURL();
 
-		if (backToStudioUrl === undefined) {
-			vscode.window.showErrorMessage(
-				vscode.l10n.t("Power Pages studio URL is not available"),
-			);
+            }
+        );
 
-			WebExtensionContext.telemetry.sendErrorTelemetry(
-				telemetryEventNames.WEB_EXTENSION_BACK_TO_STUDIO_TRIGGERED,
-				vscode.l10n.t("Power Pages studio URL is not available"),
-			);
-			return;
-		}
+        vscode.env.openExternal(vscode.Uri.parse(websitePreviewUrl));
+        WebExtensionContext.telemetry.sendInfoTelemetry(telemetryEventNames.WEB_EXTENSION_PREVIEW_SITE_TRIGGERED);
+    }
 
-		vscode.env.openExternal(vscode.Uri.parse(backToStudioUrl));
+    backToStudio(): void {
+        const backToStudioUrl = getBackToStudioURL();
 
-		WebExtensionContext.telemetry.sendInfoTelemetry(
-			telemetryEventNames.WEB_EXTENSION_BACK_TO_STUDIO_TRIGGERED,
-			{
-				backToStudioUrl: backToStudioUrl,
-			},
-		);
-	}
+        if (backToStudioUrl === undefined) {
+            vscode.window.showErrorMessage(vscode.l10n.t("Power Pages studio URL is not available"));
+
+            WebExtensionContext.telemetry.sendErrorTelemetry(
+                telemetryEventNames.WEB_EXTENSION_BACK_TO_STUDIO_TRIGGERED,
+                vscode.l10n.t("Power Pages studio URL is not available")
+            );
+            return;
+        }
+
+        vscode.env.openExternal(vscode.Uri.parse(backToStudioUrl));
+
+        WebExtensionContext.telemetry.sendInfoTelemetry(telemetryEventNames.WEB_EXTENSION_BACK_TO_STUDIO_TRIGGERED, {
+            backToStudioUrl: backToStudioUrl
+        });
+    }
 }
 
 export class PowerPagesNode extends vscode.TreeItem {
-	constructor(
-		public readonly label: string,
-		public readonly command: vscode.Command,
-		public readonly svgFileName: string,
-	) {
-		super(label, vscode.TreeItemCollapsibleState.None);
+    constructor(
+        public readonly label: string,
+        public readonly command: vscode.Command,
+        public readonly svgFileName: string
+    ) {
+        super(label, vscode.TreeItemCollapsibleState.None);
 
-		this.tooltip = this.label;
-		this.command = command;
-		this.iconPath = this.getIconPath(svgFileName);
-	}
+        this.tooltip = this.label;
+        this.command = command;
+        this.iconPath = this.getIconPath(svgFileName);
+    }
 
-	getIconPath(svgFileName: string) {
-		return {
-			light: vscode.Uri.joinPath(
-				WebExtensionContext.extensionUri,
-				"src",
-				"web",
-				"client",
-				"assets",
-				svgFileName,
-			),
-			dark: vscode.Uri.joinPath(
-				WebExtensionContext.extensionUri,
-				"src",
-				"web",
-				"client",
-				"assets",
-				svgFileName,
-			),
-		};
-	}
+    getIconPath(svgFileName: string) {
+        return {
+            light: vscode.Uri.joinPath(WebExtensionContext.extensionUri, 'src', 'web', 'client', 'assets', svgFileName),
+            dark: vscode.Uri.joinPath(WebExtensionContext.extensionUri, 'src', 'web', 'client', 'assets', svgFileName)
+        };
+    }
 }

@@ -9,7 +9,7 @@
  * @returns The string without the trailing slash.
  */
 export function removeTrailingSlash(uri: string): string {
-	return uri.endsWith("/") ? uri.slice(0, -1) : uri;
+    return uri.endsWith("/") ? uri.slice(0, -1) : uri;
 }
 
 /**
@@ -19,7 +19,7 @@ export function removeTrailingSlash(uri: string): string {
  * @returns The path with the workspaceFolder placeholder replaced.
  */
 export function replaceWorkSpaceFolderPlaceholder(customPath: string) {
-	return customPath.replace("${workspaceFolder}/", "");
+    return customPath.replace("${workspaceFolder}/", "");
 }
 
 /**
@@ -28,5 +28,6 @@ export function replaceWorkSpaceFolderPlaceholder(customPath: string) {
  * @returns A promise that resolves after the specified number of milliseconds.
  */
 export function sleep(ms: number): Promise<void> {
-	return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
