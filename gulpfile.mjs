@@ -7,8 +7,8 @@
 /* eslint-disable no-undef */
 
 "use strict";
-import { promisify } from 'node:util';
-import childProcess from 'node:child_process';
+import { promisify } from 'util';
+import childProcess from 'child_process';
 const exec = promisify(childProcess.exec);
 import gulp from 'gulp';
 import rename from 'gulp-rename';
@@ -26,11 +26,11 @@ const argv = yargs(process.argv.slice(2)).argv; // skip 'node' and 'gulp.js' arg
 import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import log from 'fancy-log';
-import path from 'node:path';
+import path from 'path';
 import pslist from 'ps-list';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath } from 'url';
 
-import { createRequire } from "node:module";
+import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 import webpackConfig from './webpack.config.js';
