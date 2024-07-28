@@ -1,27 +1,47 @@
 {
-	"name": "powerplatform-vscode",
-	"displayName": "Power Platform Tools",
-	"description": "Tooling to create Power Platform solutions & packages, manage Power Platform environments and edit Power Apps Portals",
-	"main": "./dist/extension",
+	"__metadata": {
+		"id": "b8680bb6-eaa9-481a-ae0b-83574fa58620",
+		"isPreReleaseVersion": false,
+		"publisherDisplayName": "Microsoft",
+		"publisherId": "b0208c9d-08ff-4cfb-93f7-f64e487561a6"
+	},
+	"activationEvents": [
+		"onCommand:pacCLI.openDocumentation",
+		"onCommand:microsoft-powerapps-portals.webExtension.init",
+		"onCommand:powerplatform-walkthrough.overview-learn-more",
+		"onCommand:powerplatform-walkthrough.fileSystem-documentation",
+		"onCommand:powerplatform-walkthrough.fileSystem-open-folder",
+		"onCommand:powerplatform-walkthrough.saveConflict-learn-more",
+		"onCommand:powerplatform-walkthrough.saveConflict-start-folder",
+		"onCommand:powerplatform-walkthrough.advancedCapabilities-learn-more",
+		"onCommand:powerplatform-walkthrough.advancedCapabilities-start-coding",
+		"onStartupFinished",
+		"workspaceContains:**/**.portalconfig",
+		"onDebug",
+		"onFileSystem:powerplatform-vfs"
+	],
+	"badges": [
+		{
+			"description": "Pull Request",
+			"href": "https://github.com/microsoft/powerplatform-vscode/actions?query=workflow%3APullRequest",
+			"url": "https://github.com/microsoft/powerplatform-vscode/workflows/PullRequest/badge.svg"
+		},
+		{
+			"description": "Official Build",
+			"href": "https://dev.azure.com/dynamicscrm/OneCRM/_build/latest?definitionId=12152",
+			"url": "https://dev.azure.com/dynamicscrm/OneCRM/_apis/build/status/DPX-Tools/powerplatform-vscode%20Official%20Build?branchName=release/stable"
+		}
+	],
 	"browser": "./dist/web/extension.js",
-	"scripts": {
-		"build": "node node_modules/gulp/bin/gulp.js",
-		"ci": "node node_modules/gulp/bin/gulp.js ci",
-		"clean": "scorch",
-		"compile-tests": "node node_modules/gulp/bin/gulp.js compileIntegrationTests",
-		"compile-web": "webpack",
-		"coverage": "nyc npm run test",
-		"dist": "node node_modules/gulp/bin/gulp.js dist",
-		"increment-version": "node node_modules/release-it/bin/release-it --increment patch --ci -VV",
-		"increment-version-npm": "npm --no-git-tag-version version %VSIX_VERSION%",
-		"run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-		"set-git-authn": "node node_modules/gulp/bin/gulp.js setGitAuthN",
-		"test-desktop-int": "node node_modules/gulp/bin/gulp.js testDesktopInt",
-		"test-integration": "node node_modules/gulp/bin/gulp.js testInt",
-		"test-web-integration": "node node_modules/gulp/bin/gulp.js testWebInt",
-		"translations-export": "node node_modules/gulp/bin/gulp.js translationsExport",
-		"translations-import": "node node_modules/gulp/bin/gulp.js translationsImport",
-		"watch-web": "webpack --watch"
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"description": "Workspace trust is needed to configure and debug projects",
+			"supported": "limited"
+		},
+		"virtualWorkspaces": {
+			"description": "PAC CLI is not supported in VS Code for the Web",
+			"supported": "limited"
+		}
 	},
 	"contributes": {
 		"chatParticipants": [
@@ -947,38 +967,6 @@
 			}
 		]
 	},
-	"activationEvents": [
-		"onCommand:pacCLI.openDocumentation",
-		"onCommand:microsoft-powerapps-portals.webExtension.init",
-		"onCommand:powerplatform-walkthrough.overview-learn-more",
-		"onCommand:powerplatform-walkthrough.fileSystem-documentation",
-		"onCommand:powerplatform-walkthrough.fileSystem-open-folder",
-		"onCommand:powerplatform-walkthrough.saveConflict-learn-more",
-		"onCommand:powerplatform-walkthrough.saveConflict-start-folder",
-		"onCommand:powerplatform-walkthrough.advancedCapabilities-learn-more",
-		"onCommand:powerplatform-walkthrough.advancedCapabilities-start-coding",
-		"onStartupFinished",
-		"workspaceContains:**/**.portalconfig",
-		"onDebug",
-		"onFileSystem:powerplatform-vfs"
-	],
-	"nyc": {
-		"all": "true",
-		"exclude": [
-			"**/*.test.ts"
-		],
-		"extends": "@istanbuljs/nyc-config-typescript",
-		"include": [
-			"**/*.ts"
-		],
-		"report-dir": "coverage",
-		"reporter": [
-			"html",
-			"lcov",
-			"text",
-			"text-summary"
-		]
-	},
 	"dependencies": {
 		"@types/jwt-decode": "2.2.0",
 		"@types/node-fetch": "2.6.2",
@@ -1001,6 +989,7 @@
 		"worker-loader": "3.0.8",
 		"yaml": "2.2.2"
 	},
+	"description": "Tooling to create Power Platform solutions & packages, manage Power Platform environments and edit Power Apps Portals",
 	"devDependencies": {
 		"@types/chai": "4.2.14",
 		"@types/command-exists": "1.2.0",
@@ -1034,33 +1023,7 @@
 		"ts-loader": "9.2.8",
 		"yargs": "16.2.0"
 	},
-	"optionalDependencies": {
-		"bufferutil": "4.0.6",
-		"utf-8-validate": "5.0.9"
-	},
-	"icon": "src/client/assets/icon.png",
-	"badges": [
-		{
-			"description": "Pull Request",
-			"url": "https://github.com/microsoft/powerplatform-vscode/workflows/PullRequest/badge.svg",
-			"href": "https://github.com/microsoft/powerplatform-vscode/actions?query=workflow%3APullRequest"
-		},
-		{
-			"description": "Official Build",
-			"url": "https://dev.azure.com/dynamicscrm/OneCRM/_apis/build/status/DPX-Tools/powerplatform-vscode%20Official%20Build?branchName=release/stable",
-			"href": "https://dev.azure.com/dynamicscrm/OneCRM/_build/latest?definitionId=12152"
-		}
-	],
-	"capabilities": {
-		"untrustedWorkspaces": {
-			"description": "Workspace trust is needed to configure and debug projects",
-			"supported": "limited"
-		},
-		"virtualWorkspaces": {
-			"description": "PAC CLI is not supported in VS Code for the Web",
-			"supported": "limited"
-		}
-	},
+	"displayName": "Power Platform Tools",
 	"enabledApiProposals": [
 		"fileSearchProvider",
 		"textSearchProvider"
@@ -1068,11 +1031,48 @@
 	"extensionKind": [
 		"workspace"
 	],
+	"icon": "src/client/assets/icon.png",
 	"l10n": "./l10n",
-	"__metadata": {
-		"id": "b8680bb6-eaa9-481a-ae0b-83574fa58620",
-		"isPreReleaseVersion": false,
-		"publisherDisplayName": "Microsoft",
-		"publisherId": "b0208c9d-08ff-4cfb-93f7-f64e487561a6"
+	"main": "./dist/extension",
+	"name": "powerplatform-vscode",
+	"nyc": {
+		"all": "true",
+		"exclude": [
+			"**/*.test.ts"
+		],
+		"extends": "@istanbuljs/nyc-config-typescript",
+		"include": [
+			"**/*.ts"
+		],
+		"report-dir": "coverage",
+		"reporter": [
+			"html",
+			"lcov",
+			"text",
+			"text-summary"
+		]
+	},
+	"optionalDependencies": {
+		"bufferutil": "4.0.6",
+		"utf-8-validate": "5.0.9"
+	},
+	"scripts": {
+		"build": "node node_modules/gulp/bin/gulp.js",
+		"ci": "node node_modules/gulp/bin/gulp.js ci",
+		"clean": "scorch",
+		"compile-tests": "node node_modules/gulp/bin/gulp.js compileIntegrationTests",
+		"compile-web": "webpack",
+		"coverage": "nyc npm run test",
+		"dist": "node node_modules/gulp/bin/gulp.js dist",
+		"increment-version": "node node_modules/release-it/bin/release-it --increment patch --ci -VV",
+		"increment-version-npm": "npm --no-git-tag-version version %VSIX_VERSION%",
+		"run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+		"set-git-authn": "node node_modules/gulp/bin/gulp.js setGitAuthN",
+		"test-desktop-int": "node node_modules/gulp/bin/gulp.js testDesktopInt",
+		"test-integration": "node node_modules/gulp/bin/gulp.js testInt",
+		"test-web-integration": "node node_modules/gulp/bin/gulp.js testWebInt",
+		"translations-export": "node node_modules/gulp/bin/gulp.js translationsExport",
+		"translations-import": "node node_modules/gulp/bin/gulp.js translationsImport",
+		"watch-web": "webpack --watch"
 	}
 }
