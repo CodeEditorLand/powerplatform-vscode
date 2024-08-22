@@ -126,12 +126,10 @@ class Splitter {
 				this.#numSepLinesFound = 0;
 				return true;
 			}
-		} else {
-			if (this.#numSepLinesFound > 0) {
-				if (line.trim().length > 0) {
-					// non-empty line, any previous found separator line wasn't a license separator
-					this.#numSepLinesFound = 0;
-				}
+		} else if (this.#numSepLinesFound > 0) {
+			if (line.trim().length > 0) {
+				// non-empty line, any previous found separator line wasn't a license separator
+				this.#numSepLinesFound = 0;
 			}
 		}
 		return false;

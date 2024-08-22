@@ -1,257 +1,229 @@
 {
-  "Fetching your file ...": "Fetching your file ...",
-  "There was a problem opening the workspace": "There was a problem opening the workspace",
-  "Unable to find that app": "Unable to find that app",
-  "Edit the site": "Edit the site",
-  "Be careful making changes. Anyone can see the changes you make immediately. Choose Edit the site to make edits, or close the editor tab to cancel without editing.": "Be careful making changes. Anyone can see the changes you make immediately. Choose Edit the site to make edits, or close the editor tab to cancel without editing.",
-  "You are editing a live, public site ": "You are editing a live, public site ",
-  "Preview site": "Preview site",
-  "Open in Power Pages studio": "Open in Power Pages studio",
-  "Preview site URL is not available": "Preview site URL is not available",
-  "Preview site URL is not valid": "Preview site URL is not valid",
-  "Opening preview site...": "Opening preview site...",
-  "Power Pages studio URL is not available": "Power Pages studio URL is not available",
-  "Microsoft wants your feeback": "Microsoft wants your feeback",
-  "Check the URL and verify the parameters are correct": "Check the URL and verify the parameters are correct",
-  "Unable to complete the request": "Unable to complete the request",
-  "One or more attribute names have been changed or removed. Contact your admin.": "One or more attribute names have been changed or removed. Contact your admin.",
-  "Authorization Failed. Please run again to authorize it": "Authorization Failed. Please run again to authorize it",
-  "There was a permissions problem with the server": "There was a permissions problem with the server",
-  "There’s a problem on the back end": "There’s a problem on the back end",
-  "Try again": "Try again",
-  "We encountered an error preparing the files for edit.": "We encountered an error preparing the files for edit.",
-  "Response data is empty": "Response data is empty",
-  "Failed to fetch some files.": "Failed to fetch some files.",
-  "Failed to get file ready for edit: {0}": "Failed to get file ready for edit: {0}",
-  "Saving your file ...": "Saving your file ...",
-  "Enter Organization ID": "Enter Organization ID",
-  "Power Pages Copilot is now connected to the environment: {0} : {1}/{0} represents the environment name": {
-    "message": "Power Pages Copilot is now connected to the environment: {0} : {1}",
-    "comment": [
-      "{0} represents the environment name"
-    ]
-  },
-  "Enter the environment URL": "Enter the environment URL",
-  "Active auth profile is not found or has expired. To create a new auth profile, enter the environment URL.": "Active auth profile is not found or has expired. To create a new auth profile, enter the environment URL.",
-  "Selection is empty.": "Selection is empty.",
-  "Copilot In Power Pages": "Copilot In Power Pages",
-  "PREVIEW": "PREVIEW",
-  "Explain the following code snippet:": "Explain the following code snippet:",
-  "Selection is too large. Try making a shorter selection.": "Selection is too large. Try making a shorter selection.",
-  "Feature is not enabled for this geo.": "Feature is not enabled for this geo.",
-  "Hi! Your Microsoft account doesn’t currently support Copilot. Contact your admin for details.": "Hi! Your Microsoft account doesn’t currently support Copilot. Contact your admin for details.",
-  "Copy to clipboard": "Copy to clipboard",
-  "Insert code into editor": "Insert code into editor",
-  "AI-generated content can contain mistakes": "AI-generated content can contain mistakes",
-  "Thumbs Up": "Thumbs Up",
-  "Thumbs Down": "Thumbs Down",
-  "Write JavaScript code for form field validation to check phone field value is in the valid format.": "Write JavaScript code for form field validation to check phone field value is in the valid format.",
-  "Write web API code to query active contact records.": "Write web API code to query active contact records.",
-  "Write JavaScript code to highlight the row where email field is empty in table list.": "Write JavaScript code to highlight the row where email field is empty in table list.",
-  "Here are a few suggestions to get you started": "Here are a few suggestions to get you started",
-  "GETTING STARTED": "GETTING STARTED",
-  "Learn more about Copilot": "Learn more about Copilot",
-  "Hi! Instantly generate code for Power Pages sites by typing in what you need. To start using Copilot, log in to your Microsoft account.": "Hi! Instantly generate code for Power Pages sites by typing in what you need. To start using Copilot, log in to your Microsoft account.",
-  "Login": "Login",
-  "Hi": "Hi",
-  "In your own words, describe what you need. You can get help with writing code for Power Pages sites in HTML, CSS, and JS languages.": "In your own words, describe what you need. You can get help with writing code for Power Pages sites in HTML, CSS, and JS languages.",
-  "To know more, see <a href=\"https://go.microsoft.com/fwlink/?linkid=2206366\">Copilot in Power Pages documentation.": "To know more, see <a href=\"https://go.microsoft.com/fwlink/?linkid=2206366\">Copilot in Power Pages documentation.",
-  "Working on it...": "Working on it...",
-  "You can use this in <a href=\"#\" id=\"github-copilot-link\">GitHub Copilot with @powerpages</a> and leverage best of both world.": "You can use this in <a href=\"#\" id=\"github-copilot-link\">GitHub Copilot with @powerpages</a> and leverage best of both world.",
-  "NEW": "NEW",
-  "Copied to clipboard!": "Copied to clipboard!",
-  "What do you need help with?": "What do you need help with?",
-  "Make sure AI-generated content is accurate and appropriate before using. <a href=\"https://go.microsoft.com/fwlink/?linkid=2240145\">Learn more</a> | <a href=\"https://go.microsoft.com/fwlink/?linkid=2189520\">View\n              terms</a>": "Make sure AI-generated content is accurate and appropriate before using. <a href=\"https://go.microsoft.com/fwlink/?linkid=2240145\">Learn more</a> | <a href=\"https://go.microsoft.com/fwlink/?linkid=2189520\">View\n              terms</a>",
-  "Try @powerpages with GitHub Copilot": "Try @powerpages with GitHub Copilot",
-  "Get GitHub Copilot to try @powerpages": "Get GitHub Copilot to try @powerpages",
-  "Let Copilot help you code": "Let Copilot help you code",
-  "Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you. ": "Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you. ",
-  "Continue with Copilot for Power Pages": "Continue with Copilot for Power Pages",
-  "Do not show again": "Do not show again",
-  "Like something? Tell us more.": "Like something? Tell us more.",
-  "Dislike something? Tell us more.": "Dislike something? Tell us more.",
-  "Feedback": "Feedback",
-  "Tell us more.": "Tell us more.",
-  "Try and be as specific as possible. Your feedback will be used to improve Copilot. <a href=\"https://privacy.microsoft.com/en-US/data-privacy-notice\"> View privacy details </a>": "Try and be as specific as possible. Your feedback will be used to improve Copilot. <a href=\"https://privacy.microsoft.com/en-US/data-privacy-notice\"> View privacy details </a>",
-  "Submit": "Submit",
-  "Hi! Power Pages lets you build secure, professional websites that you can quickly configure and publish across web browsers and devices.\n\nTo create your website, visit the [Power Pages](https://powerpages.microsoft.com/).\nReturn to this chat and @powerpages can help you write and edit your website code.": "Hi! Power Pages lets you build secure, professional websites that you can quickly configure and publish across web browsers and devices.\n\nTo create your website, visit the [Power Pages](https://powerpages.microsoft.com/).\nReturn to this chat and @powerpages can help you write and edit your website code.",
-  "Authentication failed. Please try again.": "Authentication failed. Please try again.",
-  "Copilot is not available. Please contact your administrator.": "Copilot is not available. Please contact your administrator.",
-  "Active auth profile is not found or has expired. Please try again.": "Active auth profile is not found or has expired. Please try again.",
-  "Make sure AI-generated content is accurate and appropriate before using. [Learn more](https://go.microsoft.com/fwlink/?linkid=2240145) | [View terms](https://go.microsoft.com/fwlink/?linkid=2189520)": "Make sure AI-generated content is accurate and appropriate before using. [Learn more](https://go.microsoft.com/fwlink/?linkid=2240145) | [View terms](https://go.microsoft.com/fwlink/?linkid=2189520)",
-  "Explain the following code {% include 'Page Copy'%}": "Explain the following code {% include 'Page Copy'%}",
-  "Hi! @powerpages can help you write, edit, and even summarize your website code.": "Hi! @powerpages can help you write, edit, and even summarize your website code.",
-  "Select Folder for new PCF Control/Do not translate 'PCF' as it is a product name.": {
-    "message": "Select Folder for new PCF Control",
-    "comment": [
-      "Do not translate 'PCF' as it is a product name."
-    ]
-  },
-  "Preparing pac CLI (v{0}).../{0} represents the version number": {
-    "message": "Preparing pac CLI (v{0})...",
-    "comment": [
-      "{0} represents the version number"
-    ]
-  },
-  "The pac CLI is ready for use in your VS Code terminal!": "The pac CLI is ready for use in your VS Code terminal!",
-  "Cannot install pac CLI: {0}/{0} represents the error message returned from the exception": {
-    "message": "Cannot install pac CLI: {0}",
-    "comment": [
-      "{0} represents the error message returned from the exception"
-    ]
-  },
-  "Installing Power Pages generator(v{0}).../{0} represents the version number": {
-    "message": "Installing Power Pages generator(v{0})...",
-    "comment": [
-      "{0} represents the version number"
-    ]
-  },
-  "dotnet sdk 6.0 or greater must be installed/Do not translate 'dotnet' or 'sdk'": {
-    "message": "dotnet sdk 6.0 or greater must be installed",
-    "comment": [
-      "Do not translate 'dotnet' or 'sdk'"
-    ]
-  },
-  "File might be referenced by name {0} here./{0} represents the name of the file": {
-    "message": "File might be referenced by name {0} here.",
-    "comment": [
-      "{0} represents the name of the file"
-    ]
-  },
-  "Some references might be broken. Please check diagnostics for details.": "Some references might be broken. Please check diagnostics for details.",
-  "Enter the name of the web template": "Enter the name of the web template",
-  "Please enter a name for the web template.": "Please enter a name for the web template.",
-  "A webtemplate with the same name already exists. Please enter a different name.": "A webtemplate with the same name already exists. Please enter a different name.",
-  "No page templates found": "No page templates found",
-  "No webpages found": "No webpages found",
-  "New Webpage": "New Webpage",
-  "Enter name": "Enter name",
-  "Choose page template": "Choose page template",
-  "Choose parent page": "Choose parent page",
-  "Please enter a name for the webpage.": "Please enter a name for the webpage.",
-  "Webpage names should contain only letters, numbers, hyphens, or underscores.": "Webpage names should contain only letters, numbers, hyphens, or underscores.",
-  "A webpage with the same name already exists. Please enter a different name.": "A webpage with the same name already exists. Please enter a different name.",
-  "No parent pages found for adding webfile": "No parent pages found for adding webfile",
-  "File(s) already exist. No new files to add": "File(s) already exist. No new files to add",
-  "Web files": "Web files",
-  "Adding {0} web file(s). Existing files will be skipped/{0} represents the number of web files": {
-    "message": "Adding {0} web file(s). Existing files will be skipped",
-    "comment": [
-      "{0} represents the number of web files"
-    ]
-  },
-  "Webfile(s) added successfully": "Webfile(s) added successfully",
-  "Page Template name cannot be empty.": "Page Template name cannot be empty.",
-  "New Page Template": "New Page Template",
-  "Choose web template": "Choose web template",
-  "Please enter a name for the page template.": "Please enter a name for the page template.",
-  "A page template with the same name already exists. Please enter a different name.": "A page template with the same name already exists. Please enter a different name.",
-  "No Website Data Found in Current Directory. Please switch to a directory that contains the PAC downloaded website data to continue.": "No Website Data Found in Current Directory. Please switch to a directory that contains the PAC downloaded website data to continue.",
-  "No workspace folder found": "No workspace folder found",
-  "Operation failed. See output panel for details.": "Operation failed. See output panel for details.",
-  "Show Output Panel": "Show Output Panel",
-  "New Content Snippet": "New Content Snippet",
-  "Add content snippet name (name should be unique)": "Add content snippet name (name should be unique)",
-  "Select Type": "Select Type",
-  "Please enter a name for the content snippet.": "Please enter a name for the content snippet.",
-  "A content snippet with the same name already exists. Please enter a different name.": "A content snippet with the same name already exists. Please enter a different name.",
-  "Creating {0}.../{0} will be replaced by the entity type.": {
-    "message": "Creating {0}...",
-    "comment": [
-      "{0} will be replaced by the entity type."
-    ]
-  },
-  "{0} created!/{0} will be replaced by the entity type.": {
-    "message": "{0} created!",
-    "comment": [
-      "{0} will be replaced by the entity type."
-    ]
-  },
-  "Failed to create: {0}./{0} will be replaced by the error message.": {
-    "message": "Failed to create: {0}.",
-    "comment": [
-      "{0} will be replaced by the error message."
-    ]
-  },
-  "PAC Telemetry enabled": "PAC Telemetry enabled",
-  "Failed to enable PAC telemetry.": "Failed to enable PAC telemetry.",
-  "PAC Telemetry disabled": "PAC Telemetry disabled",
-  "Failed to disable PAC telemetry.": "Failed to disable PAC telemetry.",
-  "Cannot install Power Pages generator. Please install npm and try again./Do not translate 'npm'": {
-    "message": "Cannot install Power Pages generator. Please install npm and try again.",
-    "comment": [
-      "Do not translate 'npm'"
-    ]
-  },
-  "Cannot install Power Pages generator: {0}/{0} represents the error message returned from the exception": {
-    "message": "Cannot install Power Pages generator: {0}",
-    "comment": [
-      "{0} represents the error message returned from the exception"
-    ]
-  },
-  "The Power Pages generator is ready for use in your VS Code extension!": "The Power Pages generator is ready for use in your VS Code extension!",
-  "Managed": "Managed",
-  "Unmanaged": "Unmanaged",
-  "Display Name: {0}\nUnique Name: {1}\nVersion: {2}\nType: {3}/This is a multi-line tooltipThe {0} represents Solution's Friendly / Display nameThe {1} represents Solution's unique nameThe {2} represents Solution's Version numberThe {3} represents Solution's Type (Managed or Unmanaged), but that test is localized separately.": {
-    "message": "Display Name: {0}\nUnique Name: {1}\nVersion: {2}\nType: {3}",
-    "comment": [
-      "This is a multi-line tooltip",
-      "The {0} represents Solution's Friendly / Display name",
-      "The {1} represents Solution's unique name",
-      "The {2} represents Solution's Version number",
-      "The {3} represents Solution's Type (Managed or Unmanaged), but that test is localized separately."
-    ]
-  },
-  "Name: {0}\nURL: {1}\nEnvironment ID: {2}\nOrganization ID: {3}/This is a multi-line tooltipThe {0} represents Dataverse Environment's Friendly / Display nameThe {1} represents Dataverse Environment's URLThe {2} represents Dataverse Environment's Environment ID (GUID)The {3} represents Dataverse Environment's Organization ID (GUID)": {
-    "message": "Name: {0}\nURL: {1}\nEnvironment ID: {2}\nOrganization ID: {3}",
-    "comment": [
-      "This is a multi-line tooltip",
-      "The {0} represents Dataverse Environment's Friendly / Display name",
-      "The {1} represents Dataverse Environment's URL",
-      "The {2} represents Dataverse Environment's Environment ID (GUID)",
-      "The {3} represents Dataverse Environment's Organization ID (GUID)"
-    ]
-  },
-  "Confirm": "Confirm",
-  "Are you sure you want to clear all the Auth Profiles?": "Are you sure you want to clear all the Auth Profiles?",
-  "Cancel": "Cancel",
-  "Are you sure you want to delete the Auth Profile {0}-{1}?/{0} is the user name, {1} is the URL of environment of the auth profile": {
-    "message": "Are you sure you want to delete the Auth Profile {0}-{1}?",
-    "comment": [
-      "{0} is the user name, {1} is the URL of environment of the auth profile"
-    ]
-  },
-  "Name/Rename Auth Profile": "Name/Rename Auth Profile",
-  "The name you want to give to this authentication profile": "The name you want to give to this authentication profile",
-  "Maximum 30 characters allowed": "Maximum 30 characters allowed",
-  "Profile Kind: {0}/The {0} represents the profile type (Admin vs Dataverse)": {
-    "message": "Profile Kind: {0}",
-    "comment": [
-      "The {0} represents the profile type (Admin vs Dataverse)"
-    ]
-  },
-  "Name: {0}/The {0} represents the optional name the user provided for the profile)": {
-    "message": "Name: {0}",
-    "comment": [
-      "The {0} represents the optional name the user provided for the profile)"
-    ]
-  },
-  "Default Environment: {0}/The {0} represents profile's resource/environment URL": {
-    "message": "Default Environment: {0}",
-    "comment": [
-      "The {0} represents profile's resource/environment URL"
-    ]
-  },
-  "User: {0}/The {0} represents auth profile's user name (email address))": {
-    "message": "User: {0}",
-    "comment": [
-      "The {0} represents auth profile's user name (email address))"
-    ]
-  },
-  "Cloud Instance: {0}/The {0} represents profile's Azure Cloud Instances": {
-    "message": "Cloud Instance: {0}",
-    "comment": [
-      "The {0} represents profile's Azure Cloud Instances"
-    ]
-  }
+	"Fetching your file ...": "Fetching your file ...",
+	"There was a problem opening the workspace": "There was a problem opening the workspace",
+	"Unable to find that app": "Unable to find that app",
+	"Edit the site": "Edit the site",
+	"Be careful making changes. Anyone can see the changes you make immediately. Choose Edit the site to make edits, or close the editor tab to cancel without editing.": "Be careful making changes. Anyone can see the changes you make immediately. Choose Edit the site to make edits, or close the editor tab to cancel without editing.",
+	"You are editing a live, public site ": "You are editing a live, public site ",
+	"Preview site": "Preview site",
+	"Open in Power Pages studio": "Open in Power Pages studio",
+	"Preview site URL is not available": "Preview site URL is not available",
+	"Preview site URL is not valid": "Preview site URL is not valid",
+	"Opening preview site...": "Opening preview site...",
+	"Power Pages studio URL is not available": "Power Pages studio URL is not available",
+	"Microsoft wants your feeback": "Microsoft wants your feeback",
+	"Check the URL and verify the parameters are correct": "Check the URL and verify the parameters are correct",
+	"Unable to complete the request": "Unable to complete the request",
+	"One or more attribute names have been changed or removed. Contact your admin.": "One or more attribute names have been changed or removed. Contact your admin.",
+	"Authorization Failed. Please run again to authorize it": "Authorization Failed. Please run again to authorize it",
+	"There was a permissions problem with the server": "There was a permissions problem with the server",
+	"There’s a problem on the back end": "There’s a problem on the back end",
+	"Try again": "Try again",
+	"We encountered an error preparing the files for edit.": "We encountered an error preparing the files for edit.",
+	"Response data is empty": "Response data is empty",
+	"Failed to fetch some files.": "Failed to fetch some files.",
+	"Failed to get file ready for edit: {0}": "Failed to get file ready for edit: {0}",
+	"Saving your file ...": "Saving your file ...",
+	"Enter Organization ID": "Enter Organization ID",
+	"Power Pages Copilot is now connected to the environment: {0} : {1}/{0} represents the environment name": {
+		"message": "Power Pages Copilot is now connected to the environment: {0} : {1}",
+		"comment": ["{0} represents the environment name"]
+	},
+	"Enter the environment URL": "Enter the environment URL",
+	"Active auth profile is not found or has expired. To create a new auth profile, enter the environment URL.": "Active auth profile is not found or has expired. To create a new auth profile, enter the environment URL.",
+	"Selection is empty.": "Selection is empty.",
+	"Copilot In Power Pages": "Copilot In Power Pages",
+	"PREVIEW": "PREVIEW",
+	"Explain the following code snippet:": "Explain the following code snippet:",
+	"Selection is too large. Try making a shorter selection.": "Selection is too large. Try making a shorter selection.",
+	"Feature is not enabled for this geo.": "Feature is not enabled for this geo.",
+	"Hi! Your Microsoft account doesn’t currently support Copilot. Contact your admin for details.": "Hi! Your Microsoft account doesn’t currently support Copilot. Contact your admin for details.",
+	"Copy to clipboard": "Copy to clipboard",
+	"Insert code into editor": "Insert code into editor",
+	"AI-generated content can contain mistakes": "AI-generated content can contain mistakes",
+	"Thumbs Up": "Thumbs Up",
+	"Thumbs Down": "Thumbs Down",
+	"Write JavaScript code for form field validation to check phone field value is in the valid format.": "Write JavaScript code for form field validation to check phone field value is in the valid format.",
+	"Write web API code to query active contact records.": "Write web API code to query active contact records.",
+	"Write JavaScript code to highlight the row where email field is empty in table list.": "Write JavaScript code to highlight the row where email field is empty in table list.",
+	"Here are a few suggestions to get you started": "Here are a few suggestions to get you started",
+	"GETTING STARTED": "GETTING STARTED",
+	"Learn more about Copilot": "Learn more about Copilot",
+	"Hi! Instantly generate code for Power Pages sites by typing in what you need. To start using Copilot, log in to your Microsoft account.": "Hi! Instantly generate code for Power Pages sites by typing in what you need. To start using Copilot, log in to your Microsoft account.",
+	"Login": "Login",
+	"Hi": "Hi",
+	"In your own words, describe what you need. You can get help with writing code for Power Pages sites in HTML, CSS, and JS languages.": "In your own words, describe what you need. You can get help with writing code for Power Pages sites in HTML, CSS, and JS languages.",
+	"To know more, see <a href=\"https://go.microsoft.com/fwlink/?linkid=2206366\">Copilot in Power Pages documentation.": "To know more, see <a href=\"https://go.microsoft.com/fwlink/?linkid=2206366\">Copilot in Power Pages documentation.",
+	"Working on it...": "Working on it...",
+	"You can use this in <a href=\"#\" id=\"github-copilot-link\">GitHub Copilot with @powerpages</a> and leverage best of both world.": "You can use this in <a href=\"#\" id=\"github-copilot-link\">GitHub Copilot with @powerpages</a> and leverage best of both world.",
+	"NEW": "NEW",
+	"Copied to clipboard!": "Copied to clipboard!",
+	"What do you need help with?": "What do you need help with?",
+	"Make sure AI-generated content is accurate and appropriate before using. <a href=\"https://go.microsoft.com/fwlink/?linkid=2240145\">Learn more</a> | <a href=\"https://go.microsoft.com/fwlink/?linkid=2189520\">View\n              terms</a>": "Make sure AI-generated content is accurate and appropriate before using. <a href=\"https://go.microsoft.com/fwlink/?linkid=2240145\">Learn more</a> | <a href=\"https://go.microsoft.com/fwlink/?linkid=2189520\">View\n              terms</a>",
+	"Try @powerpages with GitHub Copilot": "Try @powerpages with GitHub Copilot",
+	"Get GitHub Copilot to try @powerpages": "Get GitHub Copilot to try @powerpages",
+	"Let Copilot help you code": "Let Copilot help you code",
+	"Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you. ": "Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you. ",
+	"Continue with Copilot for Power Pages": "Continue with Copilot for Power Pages",
+	"Do not show again": "Do not show again",
+	"Like something? Tell us more.": "Like something? Tell us more.",
+	"Dislike something? Tell us more.": "Dislike something? Tell us more.",
+	"Feedback": "Feedback",
+	"Tell us more.": "Tell us more.",
+	"Try and be as specific as possible. Your feedback will be used to improve Copilot. <a href=\"https://privacy.microsoft.com/en-US/data-privacy-notice\"> View privacy details </a>": "Try and be as specific as possible. Your feedback will be used to improve Copilot. <a href=\"https://privacy.microsoft.com/en-US/data-privacy-notice\"> View privacy details </a>",
+	"Submit": "Submit",
+	"Hi! Power Pages lets you build secure, professional websites that you can quickly configure and publish across web browsers and devices.\n\nTo create your website, visit the [Power Pages](https://powerpages.microsoft.com/).\nReturn to this chat and @powerpages can help you write and edit your website code.": "Hi! Power Pages lets you build secure, professional websites that you can quickly configure and publish across web browsers and devices.\n\nTo create your website, visit the [Power Pages](https://powerpages.microsoft.com/).\nReturn to this chat and @powerpages can help you write and edit your website code.",
+	"Authentication failed. Please try again.": "Authentication failed. Please try again.",
+	"Copilot is not available. Please contact your administrator.": "Copilot is not available. Please contact your administrator.",
+	"Active auth profile is not found or has expired. Please try again.": "Active auth profile is not found or has expired. Please try again.",
+	"Make sure AI-generated content is accurate and appropriate before using. [Learn more](https://go.microsoft.com/fwlink/?linkid=2240145) | [View terms](https://go.microsoft.com/fwlink/?linkid=2189520)": "Make sure AI-generated content is accurate and appropriate before using. [Learn more](https://go.microsoft.com/fwlink/?linkid=2240145) | [View terms](https://go.microsoft.com/fwlink/?linkid=2189520)",
+	"Explain the following code {% include 'Page Copy'%}": "Explain the following code {% include 'Page Copy'%}",
+	"Hi! @powerpages can help you write, edit, and even summarize your website code.": "Hi! @powerpages can help you write, edit, and even summarize your website code.",
+	"Select Folder for new PCF Control/Do not translate 'PCF' as it is a product name.": {
+		"message": "Select Folder for new PCF Control",
+		"comment": ["Do not translate 'PCF' as it is a product name."]
+	},
+	"Preparing pac CLI (v{0}).../{0} represents the version number": {
+		"message": "Preparing pac CLI (v{0})...",
+		"comment": ["{0} represents the version number"]
+	},
+	"The pac CLI is ready for use in your VS Code terminal!": "The pac CLI is ready for use in your VS Code terminal!",
+	"Cannot install pac CLI: {0}/{0} represents the error message returned from the exception": {
+		"message": "Cannot install pac CLI: {0}",
+		"comment": [
+			"{0} represents the error message returned from the exception"
+		]
+	},
+	"Installing Power Pages generator(v{0}).../{0} represents the version number": {
+		"message": "Installing Power Pages generator(v{0})...",
+		"comment": ["{0} represents the version number"]
+	},
+	"dotnet sdk 6.0 or greater must be installed/Do not translate 'dotnet' or 'sdk'": {
+		"message": "dotnet sdk 6.0 or greater must be installed",
+		"comment": ["Do not translate 'dotnet' or 'sdk'"]
+	},
+	"File might be referenced by name {0} here./{0} represents the name of the file": {
+		"message": "File might be referenced by name {0} here.",
+		"comment": ["{0} represents the name of the file"]
+	},
+	"Some references might be broken. Please check diagnostics for details.": "Some references might be broken. Please check diagnostics for details.",
+	"Enter the name of the web template": "Enter the name of the web template",
+	"Please enter a name for the web template.": "Please enter a name for the web template.",
+	"A webtemplate with the same name already exists. Please enter a different name.": "A webtemplate with the same name already exists. Please enter a different name.",
+	"No page templates found": "No page templates found",
+	"No webpages found": "No webpages found",
+	"New Webpage": "New Webpage",
+	"Enter name": "Enter name",
+	"Choose page template": "Choose page template",
+	"Choose parent page": "Choose parent page",
+	"Please enter a name for the webpage.": "Please enter a name for the webpage.",
+	"Webpage names should contain only letters, numbers, hyphens, or underscores.": "Webpage names should contain only letters, numbers, hyphens, or underscores.",
+	"A webpage with the same name already exists. Please enter a different name.": "A webpage with the same name already exists. Please enter a different name.",
+	"No parent pages found for adding webfile": "No parent pages found for adding webfile",
+	"File(s) already exist. No new files to add": "File(s) already exist. No new files to add",
+	"Web files": "Web files",
+	"Adding {0} web file(s). Existing files will be skipped/{0} represents the number of web files": {
+		"message": "Adding {0} web file(s). Existing files will be skipped",
+		"comment": ["{0} represents the number of web files"]
+	},
+	"Webfile(s) added successfully": "Webfile(s) added successfully",
+	"Page Template name cannot be empty.": "Page Template name cannot be empty.",
+	"New Page Template": "New Page Template",
+	"Choose web template": "Choose web template",
+	"Please enter a name for the page template.": "Please enter a name for the page template.",
+	"A page template with the same name already exists. Please enter a different name.": "A page template with the same name already exists. Please enter a different name.",
+	"No Website Data Found in Current Directory. Please switch to a directory that contains the PAC downloaded website data to continue.": "No Website Data Found in Current Directory. Please switch to a directory that contains the PAC downloaded website data to continue.",
+	"No workspace folder found": "No workspace folder found",
+	"Operation failed. See output panel for details.": "Operation failed. See output panel for details.",
+	"Show Output Panel": "Show Output Panel",
+	"New Content Snippet": "New Content Snippet",
+	"Add content snippet name (name should be unique)": "Add content snippet name (name should be unique)",
+	"Select Type": "Select Type",
+	"Please enter a name for the content snippet.": "Please enter a name for the content snippet.",
+	"A content snippet with the same name already exists. Please enter a different name.": "A content snippet with the same name already exists. Please enter a different name.",
+	"Creating {0}.../{0} will be replaced by the entity type.": {
+		"message": "Creating {0}...",
+		"comment": ["{0} will be replaced by the entity type."]
+	},
+	"{0} created!/{0} will be replaced by the entity type.": {
+		"message": "{0} created!",
+		"comment": ["{0} will be replaced by the entity type."]
+	},
+	"Failed to create: {0}./{0} will be replaced by the error message.": {
+		"message": "Failed to create: {0}.",
+		"comment": ["{0} will be replaced by the error message."]
+	},
+	"PAC Telemetry enabled": "PAC Telemetry enabled",
+	"Failed to enable PAC telemetry.": "Failed to enable PAC telemetry.",
+	"PAC Telemetry disabled": "PAC Telemetry disabled",
+	"Failed to disable PAC telemetry.": "Failed to disable PAC telemetry.",
+	"Cannot install Power Pages generator. Please install npm and try again./Do not translate 'npm'": {
+		"message": "Cannot install Power Pages generator. Please install npm and try again.",
+		"comment": ["Do not translate 'npm'"]
+	},
+	"Cannot install Power Pages generator: {0}/{0} represents the error message returned from the exception": {
+		"message": "Cannot install Power Pages generator: {0}",
+		"comment": [
+			"{0} represents the error message returned from the exception"
+		]
+	},
+	"The Power Pages generator is ready for use in your VS Code extension!": "The Power Pages generator is ready for use in your VS Code extension!",
+	"Managed": "Managed",
+	"Unmanaged": "Unmanaged",
+	"Display Name: {0}\nUnique Name: {1}\nVersion: {2}\nType: {3}/This is a multi-line tooltipThe {0} represents Solution's Friendly / Display nameThe {1} represents Solution's unique nameThe {2} represents Solution's Version numberThe {3} represents Solution's Type (Managed or Unmanaged), but that test is localized separately.": {
+		"message": "Display Name: {0}\nUnique Name: {1}\nVersion: {2}\nType: {3}",
+		"comment": [
+			"This is a multi-line tooltip",
+			"The {0} represents Solution's Friendly / Display name",
+			"The {1} represents Solution's unique name",
+			"The {2} represents Solution's Version number",
+			"The {3} represents Solution's Type (Managed or Unmanaged), but that test is localized separately."
+		]
+	},
+	"Name: {0}\nURL: {1}\nEnvironment ID: {2}\nOrganization ID: {3}/This is a multi-line tooltipThe {0} represents Dataverse Environment's Friendly / Display nameThe {1} represents Dataverse Environment's URLThe {2} represents Dataverse Environment's Environment ID (GUID)The {3} represents Dataverse Environment's Organization ID (GUID)": {
+		"message": "Name: {0}\nURL: {1}\nEnvironment ID: {2}\nOrganization ID: {3}",
+		"comment": [
+			"This is a multi-line tooltip",
+			"The {0} represents Dataverse Environment's Friendly / Display name",
+			"The {1} represents Dataverse Environment's URL",
+			"The {2} represents Dataverse Environment's Environment ID (GUID)",
+			"The {3} represents Dataverse Environment's Organization ID (GUID)"
+		]
+	},
+	"Confirm": "Confirm",
+	"Are you sure you want to clear all the Auth Profiles?": "Are you sure you want to clear all the Auth Profiles?",
+	"Cancel": "Cancel",
+	"Are you sure you want to delete the Auth Profile {0}-{1}?/{0} is the user name, {1} is the URL of environment of the auth profile": {
+		"message": "Are you sure you want to delete the Auth Profile {0}-{1}?",
+		"comment": [
+			"{0} is the user name, {1} is the URL of environment of the auth profile"
+		]
+	},
+	"Name/Rename Auth Profile": "Name/Rename Auth Profile",
+	"The name you want to give to this authentication profile": "The name you want to give to this authentication profile",
+	"Maximum 30 characters allowed": "Maximum 30 characters allowed",
+	"Profile Kind: {0}/The {0} represents the profile type (Admin vs Dataverse)": {
+		"message": "Profile Kind: {0}",
+		"comment": ["The {0} represents the profile type (Admin vs Dataverse)"]
+	},
+	"Name: {0}/The {0} represents the optional name the user provided for the profile)": {
+		"message": "Name: {0}",
+		"comment": [
+			"The {0} represents the optional name the user provided for the profile)"
+		]
+	},
+	"Default Environment: {0}/The {0} represents profile's resource/environment URL": {
+		"message": "Default Environment: {0}",
+		"comment": ["The {0} represents profile's resource/environment URL"]
+	},
+	"User: {0}/The {0} represents auth profile's user name (email address))": {
+		"message": "User: {0}",
+		"comment": [
+			"The {0} represents auth profile's user name (email address))"
+		]
+	},
+	"Cloud Instance: {0}/The {0} represents profile's Azure Cloud Instances": {
+		"message": "Cloud Instance: {0}",
+		"comment": ["The {0} represents profile's Azure Cloud Instances"]
+	}
 }

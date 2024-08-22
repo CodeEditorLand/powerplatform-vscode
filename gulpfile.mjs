@@ -1,35 +1,26 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
-
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-undef */
-
-"use strict";
-import { promisify } from "node:util";
 import childProcess from "node:child_process";
+import { promisify } from "node:util";
 const exec = promisify(childProcess.exec);
-import gulp from "gulp";
-import rename from "gulp-rename";
-import eslint from "gulp-eslint";
-import gulpTs from "gulp-typescript";
-import replace from "gulp-replace";
-import mocha from "gulp-mocha";
-import moment from "moment";
-import gulpWebpack from "webpack-stream";
-import webpack from "webpack";
 import vsce from "@vscode/vsce";
-import yargs from "yargs";
+import gulp from "gulp";
+import eslint from "gulp-eslint";
+import mocha from "gulp-mocha";
 import plumber from "gulp-plumber";
+import rename from "gulp-rename";
+import replace from "gulp-replace";
+import gulpTs from "gulp-typescript";
+import moment from "moment";
+import webpack from "webpack";
+import gulpWebpack from "webpack-stream";
+import yargs from "yargs";
 const argv = yargs(process.argv.slice(2)).argv; // skip 'node' and 'gulp.js' args
 
-import fetch from "node-fetch";
-import fs from "fs-extra";
-import log from "fancy-log";
 import path from "node:path";
-import pslist from "ps-list";
 import { fileURLToPath } from "node:url";
+import log from "fancy-log";
+import fs from "fs-extra";
+import fetch from "node-fetch";
+import pslist from "ps-list";
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -112,13 +103,13 @@ async function nugetInstall(nugetSource, packageName, version, targetDir) {
 			authenticated: false,
 			baseUrl: "https://api.nuget.org/v3-flatcontainer/",
 		},
-		"CAP_ISVExp_Tools_Daily": {
+		CAP_ISVExp_Tools_Daily: {
 			authenticated: true,
 			// https://dev.azure.com/msazure/One/_packaging?_a=feed&feed=CAP_ISVExp_Tools_Daily
 			baseUrl:
 				"https://pkgs.dev.azure.com/msazure/_packaging/d3fb5788-d047-47f9-9aba-76890f5cecf0/nuget/v3/flat2/",
 		},
-		"CAP_ISVExp_Tools_Stable": {
+		CAP_ISVExp_Tools_Stable: {
 			authenticated: true,
 			// https://dev.azure.com/msazure/One/_packaging?_a=feed&feed=CAP_ISVExp_Tools_Stable
 			baseUrl:
@@ -137,7 +128,7 @@ async function nugetInstall(nugetSource, packageName, version, targetDir) {
 	const reqInit = {
 		headers: {
 			"User-Agent": "gulpfile-DPX-team/0.1",
-			"Accept": "*/*",
+			Accept: "*/*",
 		},
 		redirect: "manual",
 	};
