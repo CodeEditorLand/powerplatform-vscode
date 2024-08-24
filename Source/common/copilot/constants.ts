@@ -11,75 +11,126 @@ export const sendIconSvg = ` <svg width="16px" height="16px" viewBox="0 0 16 16"
   class="send-icon" />
 </svg>`;
 
-export const CodiconStylePathSegments = ['src', 'common', 'copilot', 'assets', 'styles', 'codicon.css'];
-export const CopilotStylePathSegments = ['src', 'common', 'copilot', 'assets', 'styles', 'copilot.css'];
-export const EUROPE_GEO = 'eu';
-export const UK_GEO = 'uk';
-export const COPILOT_UNAVAILABLE = 'copilotunavailable';
-export const AUTH_CREATE_MESSAGE = vscode.l10n.t('Creating new Auth Profile');
-export const AUTH_CREATE_FAILED = vscode.l10n.t("Error creating auth profile for org")
-export const RELEVANCY_CHECK_FAILED = 'RelevancyCheckFailed';
-export const INAPPROPRIATE_CONTENT = 'InappropriateContentDetected';
-export const INPUT_CONTENT_FILTERED = 'InputContentFiltered';
-export const PROMPT_LIMIT_EXCEEDED = 'PromptLimitExceeded';
-export const INVALID_INFERENCE_INPUT = 'InvalidInferenceInput';
-export const COPILOT_NOTIFICATION_DISABLED = 'isCopilotNotificationDisabled'
-export const EXPLAIN_CODE = 'explainCode';
+export const CodiconStylePathSegments = [
+	"src",
+	"common",
+	"copilot",
+	"assets",
+	"styles",
+	"codicon.css",
+];
+export const CopilotStylePathSegments = [
+	"src",
+	"common",
+	"copilot",
+	"assets",
+	"styles",
+	"copilot.css",
+];
+export const EUROPE_GEO = "eu";
+export const UK_GEO = "uk";
+export const COPILOT_UNAVAILABLE = "copilotunavailable";
+export const AUTH_CREATE_MESSAGE = vscode.l10n.t("Creating new Auth Profile");
+export const AUTH_CREATE_FAILED = vscode.l10n.t(
+	"Error creating auth profile for org",
+);
+export const RELEVANCY_CHECK_FAILED = "RelevancyCheckFailed";
+export const INAPPROPRIATE_CONTENT = "InappropriateContentDetected";
+export const INPUT_CONTENT_FILTERED = "InputContentFiltered";
+export const PROMPT_LIMIT_EXCEEDED = "PromptLimitExceeded";
+export const INVALID_INFERENCE_INPUT = "InvalidInferenceInput";
+export const COPILOT_NOTIFICATION_DISABLED = "isCopilotNotificationDisabled";
+export const EXPLAIN_CODE = "explainCode";
 export const SELECTED_CODE_INFO = "selectedCodeInfo";
 export const SELECTED_CODE_INFO_ENABLED = true;
-export const THUMBS_UP = 'thumbsUp';
-export const THUMBS_DOWN = 'thumbsDown';
+export const THUMBS_UP = "thumbsUp";
+export const THUMBS_DOWN = "thumbsDown";
 export const ADX_ENTITYFORM = "adx_entityform";
 export const ADX_ENTITYLIST = "adx_entitylist";
-export const ATTRIBUTE_DESCRIPTION = 'description';
-export const ATTRIBUTE_DATAFIELD_NAME = 'datafieldname';
-export const ATTRIBUTE_CLASSID = 'classid';
-export const SYSTEFORMS_API_PATH = 'api/data/v9.2/systemforms';
-export const COPILOT_IN_POWERPAGES = 'Copilot In Power Pages'
+export const ATTRIBUTE_DESCRIPTION = "description";
+export const ATTRIBUTE_DATAFIELD_NAME = "datafieldname";
+export const ATTRIBUTE_CLASSID = "classid";
+export const SYSTEFORMS_API_PATH = "api/data/v9.2/systemforms";
+export const COPILOT_IN_POWERPAGES = "Copilot In Power Pages";
 
 export type WebViewMessage = {
-    type: string;
-    value?: string | number | boolean | object;
-    envName?: string;
+	type: string;
+	value?: string | number | boolean | object;
+	envName?: string;
 };
 
 export interface UserPrompt {
-    displayText: string;
-    code: string;
+	displayText: string;
+	code: string;
 }
 
 export const DataverseEntityNameMap = new Map<string, string>([
-    ['webpage', 'adx_webpage'],
-    ['list', 'adx_entitylist'],
-    ['webtemplate', 'adx_webtemplate'],
-    ['basicform', 'adx_entityform'],
-    ['advancedformstep', 'adx_entityform'],
+	["webpage", "adx_webpage"],
+	["list", "adx_entitylist"],
+	["webtemplate", "adx_webtemplate"],
+	["basicform", "adx_entityform"],
+	["advancedformstep", "adx_entityform"],
 ]);
 
 export const EntityFieldMap = new Map<string, string>([
-    ['custom_javascript', 'adx_customjavascript'],
-    ['source', 'adx_source'],
-    ['copy', 'adx_copy']
+	["custom_javascript", "adx_customjavascript"],
+	["source", "adx_source"],
+	["copy", "adx_copy"],
 ]);
 
 export const FieldTypeMap = new Map<string, string>([
-    ['js', 'js'],
-    ['html', 'html'],
-    ['css', 'css']
+	["js", "JavaScript"],
+	["html", "html"],
 ]);
 
 export const ControlClassIdMap = new Map<string, string>([
-    ['5B773807-9FB2-42DB-97C3-7A91EFF8ADFF', 'DateTimeControl'],
-    ['270BD3DB-D9AF-4782-9025-509E298DEC0A', 'LookupControl'],
-    ['67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED', 'BooleanControl'], // Radio control
-    ['B0C6723A-8503-4FD7-BB28-C8A06AC933C2', 'CheckboxControl'],
-    ['3EF39988-22BB-4F0B-BBBE-64B5A3748AEE', 'ChoiceControl'] // Picklist control
+	["5B773807-9FB2-42DB-97C3-7A91EFF8ADFF", "DateTimeControl"],
+	["270BD3DB-D9AF-4782-9025-509E298DEC0A", "LookupControl"],
+	["67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED", "BooleanControl"], // Radio control
+	["B0C6723A-8503-4FD7-BB28-C8A06AC933C2", "CheckboxControl"],
+	["3EF39988-22BB-4F0B-BBBE-64B5A3748AEE", "ChoiceControl"], // Picklist control
 ]);
 
-export const AuthProfileNotFound = [{ displayText: "Active auth profile is not found or has expired. Create an Auth profile to start chatting with Copilot again.", code: '' }];
-export const NetworkError = [{ displayText: "There was an issue connecting to the server. Please check your internet connection and try again.", code: '' }];
-export const InvalidResponse = [{ displayText: "Something went wrong. Don’t worry, you can try again.", code: '' }];
-export const MalaciousScenerioResponse = [{ displayText: "Try a different prompt that’s related to writing code for Power Pages sites. You can get help with HTML, CSS, and JS languages.", code: '' }];
-export const PromptLimitExceededResponse = [{ displayText: "Please try again with a shorter prompt.", code: '' }];
-export const RateLimitingResponse = [{ displayText: "Too many requests at once. Try again after some time.", code: '' }];
-export const UnauthorizedResponse = [{ displayText: "Unauthorized access. Please log in with valid credentials and try again.", code: '' }];
+export const AuthProfileNotFound = [
+	{
+		displayText:
+			"Active auth profile is not found or has expired. Create an Auth profile to start chatting with Copilot again.",
+		code: "",
+	},
+];
+export const NetworkError = [
+	{
+		displayText:
+			"There was an issue connecting to the server. Please check your internet connection and try again.",
+		code: "",
+	},
+];
+export const InvalidResponse = [
+	{
+		displayText: "Something went wrong. Don’t worry, you can try again.",
+		code: "",
+	},
+];
+export const MalaciousScenerioResponse = [
+	{
+		displayText:
+			"Try a different prompt that’s related to writing code for Power Pages sites. You can get help with HTML, CSS, and JS languages.",
+		code: "",
+	},
+];
+export const PromptLimitExceededResponse = [
+	{ displayText: "Please try again with a shorter prompt.", code: "" },
+];
+export const RateLimitingResponse = [
+	{
+		displayText: "Too many requests at once. Try again after some time.",
+		code: "",
+	},
+];
+export const UnauthorizedResponse = [
+	{
+		displayText:
+			"Unauthorized access. Please log in with valid credentials and try again.",
+		code: "",
+	},
+];

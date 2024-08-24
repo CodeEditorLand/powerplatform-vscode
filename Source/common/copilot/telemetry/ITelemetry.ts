@@ -4,26 +4,26 @@
  */
 
 export interface IProDevCopilotTelemetryData {
-    eventName: string,
-    durationInMills?: number,
-    exception?: Error,
-    copilotSessionId?: string,
-    orgId?: string,
-    FeedbackId?: string
-    error?: Error,
-    dataverseEntity?: string,
-    feedbackType?: string,
-    responseStatus?: string,
-    codeLineCount?: string,
-    geoName?: string,
-    aibEndpoint?: string,
-    orgUrl?: string,
-    tokenSize?: string
-    isSuggestedPrompt?: string;
-    subScenario?: string;
-    userId?: string;
-    errorMsg?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data?: any;
-    crossGeoDataMovementEnabledPPACFlag?: boolean;
+	eventName: string;
+	durationInMills?: number;
+	exception?: Error;
+	copilotSessionId?: string;
+	orgId?: string;
+	FeedbackId?: string;
+	error?: Error;
+	dataverseEntity?: string;
+	feedbackType?: string;
+	responseStatus?: string;
+	codeLineCount?: string;
+	geoName?: string;
+	aibEndpoint?: string;
+	orgUrl?: string;
+	tokenSize?: string;
+	isSuggestedPrompt?: string;
+	subScenario?: string;
+	userId?: string;
+	errorMsg?: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	data?: any;
+	crossGeoDataMovementEnabledPPACFlag?: boolean;
 }

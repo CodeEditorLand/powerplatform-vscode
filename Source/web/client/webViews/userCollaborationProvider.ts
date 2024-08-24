@@ -8,55 +8,64 @@ import WebExtensionContext from "../WebExtensionContext";
 import * as Constants from "../common/constants";
 
 export class UserCollaborationProvider
-    implements vscode.TreeDataProvider<UserNode> {
-    private _onDidChangeTreeData: vscode.EventEmitter<
-        UserNode | undefined | void
-    > = new vscode.EventEmitter<UserNode | undefined | void>();
-    readonly onDidChangeTreeData: vscode.Event<UserNode | undefined | void> =
-        this._onDidChangeTreeData.event;
+	implements vscode.TreeDataProvider<UserNode>
+{
+	private _onDidChangeTreeData: vscode.EventEmitter<
+		UserNode | undefined | void
+	> = new vscode.EventEmitter<UserNode | undefined | void>();
+	readonly onDidChangeTreeData: vscode.Event<UserNode | undefined | void> =
+		this._onDidChangeTreeData.event;
 
-    refresh(): void {
-        this._onDidChangeTreeData.fire();
-    }
+	refresh(): void {
+		this._onDidChangeTreeData.fire();
+	}
 
-    getTreeItem(element: UserNode): vscode.TreeItem {
-        return element;
-    }
+	getTreeItem(element: UserNode): vscode.TreeItem {
+		return element;
+	}
 
-    getChildren(): Thenable<UserNode[]> {
-        return Promise.resolve(this.getConnectedUsers());
-    }
+	getChildren(): Thenable<UserNode[]> {
+		return Promise.resolve(this.getConnectedUsers());
+	}
 
-    getConnectedUsers(): UserNode[] {
-        const connectedUsersMap = WebExtensionContext.connectedUsers.getUserMap;
-        const connectedUsers: UserNode[] = Array.from(connectedUsersMap.values())
-            .filter(value =>
-                !(value._connectionData.length === 0 ||
-                    (value._connectionData.length === 1 && value._connectionData[0].connectionId === WebExtensionContext.currentConnectionId))
-            )
-            .map(value =>
-                new UserNode(
-                    value._userName,
-                    value._userId,
-                    vscode.TreeItemCollapsibleState.None
-                )
-            );
+	getConnectedUsers(): UserNode[] {
+		const connectedUsersMap = WebExtensionContext.connectedUsers.getUserMap;
+		const connectedUsers: UserNode[] = Array.from(
+			connectedUsersMap.values(),
+		)
+			.filter(
+				(value) =>
+					!(
+						value._connectionData.length === 0 ||
+						(value._connectionData.length === 1 &&
+							value._connectionData[0].connectionId ===
+								WebExtensionContext.currentConnectionId)
+					),
+			)
+			.map(
+				(value) =>
+					new UserNode(
+						value._userName,
+						value._userId,
+						vscode.TreeItemCollapsibleState.None,
+					),
+			);
 
-        return connectedUsers;
-    }
+		return connectedUsers;
+	}
 }
 
 export class UserNode extends vscode.TreeItem {
-    constructor(
-        public readonly label: string,
-        public readonly id: string,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState
-    ) {
-        super(label, collapsibleState);
+	constructor(
+		public readonly label: string,
+		public readonly id: string,
+		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+	) {
+		super(label, collapsibleState);
 
-        this.tooltip = this.label;
-        this.iconPath = new vscode.ThemeIcon(Constants.THEME_ICON_ACCOUNT);
-    }
+		this.tooltip = this.label;
+		this.iconPath = new vscode.ThemeIcon(Constants.THEME_ICON_ACCOUNT);
+	}
 
-    contextValue = Constants.USER_COLLABORATION_CONTEXT_VALUE;
+	contextValue = Constants.USER_COLLABORATION_CONTEXT_VALUE;
 }
