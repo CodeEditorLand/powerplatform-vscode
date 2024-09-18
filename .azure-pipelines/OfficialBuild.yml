@@ -1,0 +1,117 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+# https://aka.ms/yaml
+#
+# Official build to produce versioned and signed VSIX
+
+parameters:
+  - name: isPreRelease
+    displayName: 'Build as pre-release extension'
+    type: boolean
+    default: true
+
+variables:
+  # https://aka.ms/gdn-injection
+  GDN_CODESIGN_TARGETDIRECTORY: "$(Build.SourcesDirectory)\\package"
+  # no codesigning for JavaScript:
+  GDN_CODESIGN_EXCLUSIONS: "f|**/*.js"
+  runCodesignValidationInjection: true
+  breakCodesignValidationInjection: true
+  #
+  # set the following in the pipeline's web UI editor:
+  # GITHUB_TOKEN        # GitHub PAT with scopes: repo; must have SSO enabled for GH org 'microsoft' for corp user
+  # AZ_DevOps_Read_PAT  # PAT to read from AzDO feed in msazure
+
+trigger:
+  - release/stable
+
+# PR loops only via GH workflows
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: NodeTool@0
+  displayName: 'Use nodejs 18.x'
+  inputs:
+    versionSpec: '18.x'
+
+- task: Npm@1
+  displayName: 'Restore (npm install)'
+  inputs:
+    command: custom
+    customCommand: ci
+
+- task: Npm@1
+  displayName: 'set git repo authN'
+  inputs:
+    command: custom
+    customCommand: run set-git-authn -- --repoToken $(GITHUB_TOKEN)
+
+- task: Npm@1
+  displayName: 'increment version'
+  inputs:
+    command: custom
+    customCommand: run increment-version
+
+- task: PowerShell@2
+  displayName: 'Record build version'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $version = (npm pkg get version) -replace '"', ''
+
+      # Set the ADO Build number
+      Write-Host "##vso[build.updatebuildnumber]$version"
+
+      mkdir package
+      echo $version,$(Build.SourceVersion) > package/version.csv
+
+- task: Npm@1
+  displayName: 'Build and Package VSIX'
+  inputs:
+    command: custom
+    customCommand: run dist -- --feedPAT $(AZ_DevOps_Read_PAT) --isOfficialBuild true --isPreviewBuild ${{ parameters.isPreRelease }}
+
+# https://microsoft.sharepoint.com/teams/prss/esrp/info/ESRP%20Onboarding%20Wiki/Generating%20Signing%20JSON.aspx
+# https://microsoft.sharepoint.com/teams/prss/esrp/info/ESRP%20Onboarding%20Wiki/Selecting%20CodeSign%20Certificates.aspx
+- task: EsrpCodeSigning@2
+  displayName: 'ESRP sign vsix packages'
+  inputs:
+    ConnectedServiceName: ESRPCodeSigningConnection
+    FolderPath: 'package'
+    Pattern: '*.vsix'
+    signConfigType: inlineSignParams
+    inlineOperation: |
+      [
+        {
+          "KeyCode": "CP-233016",
+          "OperationCode": "OpcSign",
+          "Parameters": {
+              "FileDigest": "/fd SHA256"
+          },
+          "ToolName": "sign",
+          "ToolVersion": "1.0"
+        },
+        {
+          "KeyCode": "CP-233016",
+          "OperationCode": "OpcVerify",
+          "Parameters": {},
+          "ToolName": "sign",
+          "ToolVersion": "1.0"
+        }
+      ]
+    ServiceEndpointUrl: 'https://api.esrp.microsoft.com/api/v1'
+
+- task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+  displayName: 'SBOM Generation Task'
+  inputs:
+    BuildDropPath: package
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish packages'
+  condition: always()
+  inputs:
+    PathtoPublish: package
+    ArtifactName: packages
