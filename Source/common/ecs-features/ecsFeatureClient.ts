@@ -46,14 +46,10 @@ export abstract class ECSFeaturesClient {
 				clientName: clientName,
 				configFlagCount: Object.keys(this._ecsConfig).length.toString(),
 			});
-			oneDSLoggerWrapper
-				.getLogger()
-				.traceInfo(ECSConfigSuccessfulInit, {
-					clientName: clientName,
-					configFlagCount: Object.keys(
-						this._ecsConfig,
-					).length.toString(),
-				});
+			oneDSLoggerWrapper.getLogger().traceInfo(ECSConfigSuccessfulInit, {
+				clientName: clientName,
+				configFlagCount: Object.keys(this._ecsConfig).length.toString(),
+			});
 		} catch (error) {
 			const message = (error as Error)?.message;
 			// Log error

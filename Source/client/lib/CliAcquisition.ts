@@ -130,20 +130,18 @@ export class CliAcquisition implements IDisposable {
 						"PacInstallError",
 						{ "stdout": install.stdout, "stderr": install.stderr },
 					);
-					oneDSLoggerWrapper
-						.getLogger()
-						.traceError(
-							"PacInstallError",
-							"PacInstallError",
-							{
-								name: "PacInstallError",
-								message: "PacInstallError",
-							} as Error,
-							{
-								"stdout": install.stdout,
-								"stderr": install.stderr,
-							},
-						);
+					oneDSLoggerWrapper.getLogger().traceError(
+						"PacInstallError",
+						"PacInstallError",
+						{
+							name: "PacInstallError",
+							message: "PacInstallError",
+						} as Error,
+						{
+							"stdout": install.stdout,
+							"stderr": install.stderr,
+						},
+					);
 
 					// NU1202 - dotnet is installed, but version is incommpatible with the tool
 					const dotnetIncompatible =
