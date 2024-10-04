@@ -558,12 +558,10 @@ function showNotificationForCopilot(
 			listOfOrgs: telemetryData,
 			countOfActivePortals,
 		});
-		oneDSLoggerWrapper
-			.getLogger()
-			.traceInfo(CopilotNotificationShown, {
-				listOfOrgs: telemetryData,
-				countOfActivePortals,
-			});
+		oneDSLoggerWrapper.getLogger().traceInfo(CopilotNotificationShown, {
+			listOfOrgs: telemetryData,
+			countOfActivePortals,
+		});
 		copilotNotificationPanel(
 			_context,
 			telemetry,
@@ -586,12 +584,10 @@ function showNotificationForCopilot(
 			listOfOrgs: telemetryData,
 			countOfActivePortals,
 		});
-		oneDSLoggerWrapper
-			.getLogger()
-			.traceInfo(CopilotNotificationShown, {
-				listOfOrgs: telemetryData,
-				countOfActivePortals,
-			});
+		oneDSLoggerWrapper.getLogger().traceInfo(CopilotNotificationShown, {
+			listOfOrgs: telemetryData,
+			countOfActivePortals,
+		});
 		copilotNotificationPanel(
 			_context,
 			telemetry,
