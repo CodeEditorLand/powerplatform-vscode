@@ -3,31 +3,56 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import * as vscode from 'vscode';
-import { PacWrapper } from '../pac/PacWrapper';
-import { AuthTreeView } from './AuthPanelView';
-import { EnvAndSolutionTreeView } from './EnvAndSolutionTreeView';
-import { PowerPagesCopilot } from '../../common/copilot/PowerPagesCopilot';
-import { ITelemetry } from '../../common/OneDSLoggerTelemetry/telemetry/ITelemetry';
-import { PowerPagesChatParticipant } from '../../common/chat-participants/powerpages/PowerPagesChatParticipant';
+import * as vscode from "vscode";
 
-export function RegisterPanels(pacWrapper: PacWrapper, context: vscode.ExtensionContext, telemetry: ITelemetry): vscode.Disposable[] {
-    const authPanel = new AuthTreeView(() => pacWrapper.authList(), pacWrapper);
-    const envAndSolutionPanel = new EnvAndSolutionTreeView(
-        () => pacWrapper.orgList(),
-        (environmentUrl) => pacWrapper.solutionListFromEnvironment(environmentUrl),
-        authPanel.onDidChangeTreeData,
-        pacWrapper);
+import { PowerPagesChatParticipant } from "../../common/chat-participants/powerpages/PowerPagesChatParticipant";
+import { PowerPagesCopilot } from "../../common/copilot/PowerPagesCopilot";
+import { ITelemetry } from "../../common/OneDSLoggerTelemetry/telemetry/ITelemetry";
+import { PacWrapper } from "../pac/PacWrapper";
+import { AuthTreeView } from "./AuthPanelView";
+import { EnvAndSolutionTreeView } from "./EnvAndSolutionTreeView";
 
-    const copilotPanel = new PowerPagesCopilot(context.extensionUri, context, telemetry, pacWrapper);
+export function RegisterPanels(
+	pacWrapper: PacWrapper,
+	context: vscode.ExtensionContext,
+	telemetry: ITelemetry,
+): vscode.Disposable[] {
+	const authPanel = new AuthTreeView(() => pacWrapper.authList(), pacWrapper);
+	const envAndSolutionPanel = new EnvAndSolutionTreeView(
+		() => pacWrapper.orgList(),
+		(environmentUrl) =>
+			pacWrapper.solutionListFromEnvironment(environmentUrl),
+		authPanel.onDidChangeTreeData,
+		pacWrapper,
+	);
 
-    const powerPagesChatParticipant = PowerPagesChatParticipant.getInstance(context, telemetry, pacWrapper);
+	const copilotPanel = new PowerPagesCopilot(
+		context.extensionUri,
+		context,
+		telemetry,
+		pacWrapper,
+	);
 
-    vscode.window.registerWebviewViewProvider('powerpages.copilot', copilotPanel, {
-        webviewOptions: {
-            retainContextWhenHidden: true,
-        },
-    });
+	const powerPagesChatParticipant = PowerPagesChatParticipant.getInstance(
+		context,
+		telemetry,
+		pacWrapper,
+	);
 
-    return [authPanel, envAndSolutionPanel, copilotPanel, powerPagesChatParticipant];
+	vscode.window.registerWebviewViewProvider(
+		"powerpages.copilot",
+		copilotPanel,
+		{
+			webviewOptions: {
+				retainContextWhenHidden: true,
+			},
+		},
+	);
+
+	return [
+		authPanel,
+		envAndSolutionPanel,
+		copilotPanel,
+		powerPagesChatParticipant,
+	];
 }
