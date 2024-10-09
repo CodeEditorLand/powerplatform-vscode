@@ -970,7 +970,7 @@
 		"find-process": "1.4.7",
 		"fluid-framework": "2.3.1",
 		"glob": "11.0.0",
-		"gpt-tokenizer": "2.4.1",
+		"gpt-tokenizer": "2.5.0",
 		"https-browserify": "1.0.0",
 		"liquidjs": "10.17.0",
 		"n-readlines": "1.0.1",
