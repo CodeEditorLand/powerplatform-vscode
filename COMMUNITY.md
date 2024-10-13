@@ -27,7 +27,7 @@ Excluding holidays_).
 Add Power Platform Developer Tools event to your calendar.
 
 To join our office hours click this meeting link:
-[Meeting link](https://teams.microsoft.com/l/meetup-join/19%3ameeting_OWU2ZjljNTItOGFhYy00ZWM5LTk2YmEtYmNjYmMxODY0N2E4%40thread.v2/0?context=%7b%22Tid%22%3a%2272f988bf-86f1-41af-91ab-2d7cd011db47%22%2c%22Oid%22%3a%22044be130-b504-4a44-a3b6-47e75194f2dc%22%7d).
+[`Meeting link`](https://teams.microsoft.com/l/meetup-join/19%3ameeting_OWU2ZjljNTItOGFhYy00ZWM5LTk2YmEtYmNjYmMxODY0N2E4%40thread.v2/0?context=%7b%22Tid%22%3a%2272f988bf-86f1-41af-91ab-2d7cd011db47%22%2c%22Oid%22%3a%22044be130-b504-4a44-a3b6-47e75194f2dc%22%7d).
 
 **To call in (audio only)**
 
@@ -35,7 +35,7 @@ To join our office hours click this meeting link:
 -   Phone Conference ID: 379 639 014#
 
 To keep topics organized, please submit what you'd like us to cover here:
-[https://aka.ms/ProDevOfficeHours](https://aka.ms/ProDevOfficeHours)
+[`https://aka.ms/ProDevOfficeHours`](https://aka.ms/ProDevOfficeHours)
 
 **Why should you attend?**
 
@@ -47,7 +47,7 @@ To keep topics organized, please submit what you'd like us to cover here:
 
 -   Please feel free to forward this information along with our community
     starter link:
-    [https://aka.ms/ProDevOfficeHours](https://aka.ms/ProDevOfficeHours).
+    [`https://aka.ms/ProDevOfficeHours`](https://aka.ms/ProDevOfficeHours).
 -   We will limit any troubleshooting to 5-minutes max or reach us offline.
 
 <!-- (If you are unable to make it live, all meetings will be recorded and posted online.) -->
@@ -57,11 +57,11 @@ To keep topics organized, please submit what you'd like us to cover here:
 Please use the issues tracker in the home repo:
 <https://github.com/microsoft/powerplatform-build-tools/issues>
 
-Learn more about the Build Tools [here](https://aka.ms/buildtoolsdoc).
+Learn more about the Build Tools [`here`](https://aka.ms/buildtoolsdoc).
 
 Each tasks wraps the existing
-[Power Platform CLI](https://aka.ms/PowerPlatformCLI).
+[`Power Platform CLI`](https://aka.ms/PowerPlatformCLI).
 
 ## Power Platform Developer Blog
 
-[Power Platform Developer Blog](https://devblogs.microsoft.com/powerplatform/)
+[`Power Platform Developer Blog`](https://devblogs.microsoft.com/powerplatform/)
