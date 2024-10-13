@@ -981,7 +981,7 @@
 		"unzip-stream": "0.3.4",
 		"uuid": "10.0.0",
 		"worker-loader": "3.0.8",
-		"yaml": "2.5.1"
+		"yaml": "2.6.0"
 	},
 	"description": "Tooling to create Power Platform solutions & packages, manage Power Platform environments and edit Power Apps Portals",
 	"devDependencies": {
