@@ -964,7 +964,7 @@
 	"dependencies": {
 		"@types/jwt-decode": "3.1.0",
 		"@types/node-fetch": "2.6.11",
-		"@xmldom/xmldom": "0.9.4",
+		"@xmldom/xmldom": "0.9.5",
 		"cockatiel": "3.2.1",
 		"command-exists": "1.2.9",
 		"find-process": "1.4.7",
@@ -979,7 +979,7 @@
 		"stream-http": "3.2.0",
 		"tty-browserify": "0.0.1",
 		"unzip-stream": "0.3.4",
-		"uuid": "10.0.0",
+		"uuid": "11.0.1",
 		"worker-loader": "3.0.8",
 		"yaml": "2.6.0"
 	},
@@ -990,7 +990,7 @@
 		"@types/debug": "4.1.12",
 		"@types/fs-extra": "11.0.4",
 		"@types/glob": "8.1.0",
-		"@types/node": "22.7.9",
+		"@types/node": "22.8.1",
 		"@types/node-fetch": "2.6.11",
 		"@types/puppeteer-core": "7.0.4",
 		"@types/recursive-readdir": "2.2.4",
