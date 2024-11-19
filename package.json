@@ -972,7 +972,7 @@
 		"glob": "11.0.0",
 		"gpt-tokenizer": "2.6.2",
 		"https-browserify": "1.0.0",
-		"liquidjs": "10.18.0",
+		"liquidjs": "10.19.0",
 		"n-readlines": "1.0.1",
 		"puppeteer-core": "23.8.0",
 		"recursive-readdir": "2.2.3",
