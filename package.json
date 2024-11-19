@@ -968,7 +968,7 @@
 		"cockatiel": "3.2.1",
 		"command-exists": "1.2.9",
 		"find-process": "1.4.7",
-		"fluid-framework": "2.5.0",
+		"fluid-framework": "2.10.0",
 		"glob": "11.0.0",
 		"gpt-tokenizer": "2.6.2",
 		"https-browserify": "1.0.0",
@@ -981,7 +981,7 @@
 		"unzip-stream": "0.3.4",
 		"uuid": "11.0.3",
 		"worker-loader": "3.0.8",
-		"yaml": "2.6.0"
+		"yaml": "2.6.1"
 	},
 	"description": "Tooling to create Power Platform solutions & packages, manage Power Platform environments and edit Power Apps Portals",
 	"devDependencies": {
