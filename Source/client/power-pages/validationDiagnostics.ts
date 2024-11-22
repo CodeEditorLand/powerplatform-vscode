@@ -23,6 +23,7 @@ export async function validateTextDocument(
 ): Promise<void> {
 	try {
 		const textDocument = await vscode.workspace.openTextDocument(uri);
+
 		const text = textDocument.getText();
 
 		let m: RegExpExecArray | null;

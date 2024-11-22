@@ -36,6 +36,7 @@ export async function getEndpoint(
 export async function getComponentInfo(telemetry: ITelemetry, orgUrl: string | undefined, activeFileParams: IActiveFileParams, sessionID: string): Promise<IComponentInfo> {
 
     let metadataInfo = { entityName: '', formName: '' };
+
     let componentInfo: string[] = [];
 
     if (isEntityInSupportedList(activeFileParams.dataverseEntity)) {
@@ -61,7 +62,9 @@ export function isEntityInSupportedList(entity: string): boolean {
 
 export function handleChatParticipantFeedback (feedback: vscode.ChatResultFeedback, sessionId: string, telemetry: ITelemetry) {
     const scenario = feedback.result.metadata?.scenario;
+
     const orgId = feedback.result.metadata?.orgId;
+
     if (feedback.kind === 1) {
         telemetry.sendTelemetryEvent(VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_SCENARIO_FEEDBACK_THUMBSUP, { feedback: feedback.kind.toString(), scenario: scenario, orgId:orgId, sessionId: sessionId });
         oneDSLoggerWrapper.getLogger().traceInfo(VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_SCENARIO_FEEDBACK_THUMBSUP, { feedback: feedback.kind.toString(), scenario: scenario, orgId: orgId, sessionId: sessionId });

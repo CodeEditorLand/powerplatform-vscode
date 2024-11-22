@@ -35,6 +35,7 @@ export class ConcurrencyHandler {
 					this.handleRequest.name,
 					this._bulkhead.executionSlots.toString(),
 				);
+
 				throw new Error(ERROR_CONSTANTS.SUBURI_EMPTY);
 			} else {
 				throw e;

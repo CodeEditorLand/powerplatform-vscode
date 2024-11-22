@@ -23,6 +23,7 @@ export class OrgChangeNotifier {
 	private constructor(pacWrapper: PacWrapper) {
 		this._pacWrapper = pacWrapper;
 		this.activeOrgDetails();
+
 		if (this._pacWrapper) {
 			this.setupFileWatcher();
 		}
@@ -39,6 +40,7 @@ export class OrgChangeNotifier {
 
 	private setupFileWatcher() {
 		const watchPath = GetAuthProfileWatchPattern();
+
 		if (watchPath) {
 			const watcher = vscode.workspace.createFileSystemWatcher(watchPath);
 			watcher.onDidChange(() => this.activeOrgDetails());
@@ -49,6 +51,7 @@ export class OrgChangeNotifier {
 
 	private async activeOrgDetails() {
 		const pacActiveOrg = await this._pacWrapper?.activeOrg();
+
 		if (pacActiveOrg && pacActiveOrg.Status === SUCCESS) {
 			this._orgDetails = pacActiveOrg.Results;
 			orgChangeEventEmitter.fire(this._orgDetails);

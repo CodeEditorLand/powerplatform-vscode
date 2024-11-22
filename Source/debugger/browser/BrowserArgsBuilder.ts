@@ -37,6 +37,7 @@ export class BrowserArgsBuilder {
 	public build(): string[] {
 		let userDefinedBrowserArgs: string[] =
 			ConfigurationManager.getBrowserArgs();
+
 		let defaultArgs = this.defaultArgs;
 		userDefinedBrowserArgs = this.removeRemoteDebuggingPort(
 			userDefinedBrowserArgs,

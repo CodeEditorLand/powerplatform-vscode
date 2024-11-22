@@ -36,6 +36,7 @@ export class BlockingQueue<T> {
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const promise = this.promiseQueue.shift()!;
+
 		return promise;
 	}
 }

@@ -47,6 +47,7 @@ export class MultiStepInput {
 
 	static async run(start: InputStep) {
 		const input = new MultiStepInput();
+
 		return input.stepThrough(start);
 	}
 
@@ -68,13 +69,19 @@ export class MultiStepInput {
 					case InputFlowAction.back:
 						this.steps.pop();
 						step = this.steps.pop();
+
 						break;
+
 					case InputFlowAction.resume:
 						step = this.steps.pop();
+
 						break;
+
 					case InputFlowAction.cancel:
 						step = undefined;
+
 						break;
+
 					default:
 						throw err;
 				}
@@ -91,6 +98,7 @@ export class MultiStepInput {
 		P extends QuickPickParameters<T>,
 	>({ title, step, totalSteps, items, activeItem, placeholder, buttons }: P) {
 		const disposables: Disposable[] = [];
+
 		try {
 			return await new Promise<
 				T | (P extends { buttons: (infer I)[] } ? I : never)
@@ -116,6 +124,7 @@ export class MultiStepInput {
 					}),
 					input.onDidChangeSelection((items) => resolve(items[0])),
 				);
+
 				if (this.current) {
 					this.current.dispose();
 				}
@@ -138,6 +147,7 @@ export class MultiStepInput {
 		buttons,
 	}: P) {
 		const disposables: Disposable[] = [];
+
 		let validating = validate("");
 
 		try {
@@ -183,10 +193,13 @@ export class MultiStepInput {
 						validating = current;
 
 						const validationMessage = await current;
+
 						switch (current) {
 							case validating:
 								input.validationMessage = validationMessage;
+
 								break;
+
 							default:
 								break;
 						}

@@ -27,6 +27,7 @@ export class AuthTreeView
 		pacWrapper: PacWrapper,
 	) {
 		const watchPath = GetAuthProfileWatchPattern();
+
 		if (watchPath) {
 			const watcher = vscode.workspace.createFileSystemWatcher(watchPath);
 			this._disposables.push(
@@ -77,6 +78,7 @@ export class AuthTreeView
 			return [];
 		} else {
 			const pacOutput = await this.dataSource();
+
 			if (
 				pacOutput &&
 				pacOutput.Status === "Success" &&
@@ -86,6 +88,7 @@ export class AuthTreeView
 					(item) => item.Kind !== "ADMIN",
 				) // Only Universal and Dataverse profiles
 					.map((item) => new AuthProfileTreeItem(item));
+
 				return items;
 			} else {
 				return [];
@@ -103,6 +106,7 @@ export class AuthTreeView
 				"pacCLI.authPanel.clearAuthProfile",
 				async () => {
 					const confirm = vscode.l10n.t("Confirm");
+
 					const confirmResult =
 						await vscode.window.showWarningMessage(
 							vscode.l10n.t(
@@ -111,6 +115,7 @@ export class AuthTreeView
 							confirm,
 							vscode.l10n.t("Cancel"),
 						);
+
 					if (confirmResult && confirmResult === confirm) {
 						await pacWrapper.authClear();
 						this.delayRefresh();
@@ -135,6 +140,7 @@ export class AuthTreeView
 				"pacCLI.authPanel.deleteAuthProfile",
 				async (item: AuthProfileTreeItem) => {
 					const confirm = vscode.l10n.t("Confirm");
+
 					const confirmResult =
 						await vscode.window.showWarningMessage(
 							vscode.l10n.t({
@@ -151,6 +157,7 @@ export class AuthTreeView
 							confirm,
 							vscode.l10n.t("Cancel"),
 						);
+
 					if (confirmResult && confirmResult === confirm) {
 						await pacWrapper.authDeleteByIndex(item.model.Index);
 						this.delayRefresh();
@@ -172,6 +179,7 @@ export class AuthTreeView
 										"Maximum 30 characters allowed",
 									),
 					});
+
 					if (authProfileName) {
 						await pacWrapper.authNameByIndex(
 							item.model.Index,
@@ -211,6 +219,7 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 		);
 		this.contextValue = model.Kind;
 		this.tooltip = AuthProfileTreeItem.createTooltip(model);
+
 		if (model.IsActive) {
 			this.iconPath = new vscode.ThemeIcon("star-full");
 		}
@@ -234,6 +243,7 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 				],
 			}),
 		];
+
 		if (profile.Name) {
 			tooltip.push(
 				vscode.l10n.t({
@@ -268,6 +278,7 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 				],
 			}),
 		);
+
 		if (profile.CloudInstance) {
 			tooltip.push(
 				vscode.l10n.t({

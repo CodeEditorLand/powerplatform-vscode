@@ -10,7 +10,9 @@ export function getEditedLineContent(
 	textDocument: TextDocument | undefined,
 ): string {
 	const lines = textDocument?.getText()?.split(/\r?\n/g);
+
 	let editedLine = "";
+
 	for (let i = 0; lines && i < lines.length; i++) {
 		if (i === rowIndex) {
 			editedLine = lines[i];

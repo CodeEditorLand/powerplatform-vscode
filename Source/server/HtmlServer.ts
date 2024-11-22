@@ -30,8 +30,11 @@ const connection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability = false;
+
 let hasWorkspaceFolderCapability = false;
+
 let workspaceRootFolders: WorkspaceFolder[] | null = null;
+
 let editedTextDocument: TextDocument;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let hasDiagnosticRelatedInformationCapability = false;
@@ -64,6 +67,7 @@ connection.onInitialize((params: InitializeParams) => {
 			},
 		},
 	};
+
 	if (hasWorkspaceFolderCapability) {
 		result.capabilities.workspace = {
 			workspaceFolders: {
@@ -101,8 +105,11 @@ connection.onCompletion(
 		_textDocumentPosition: TextDocumentPositionParams,
 	): Promise<CompletionItem[]> => {
 		const pathOfFileBeingEdited = _textDocumentPosition.textDocument.uri;
+
 		const rowIndex = _textDocumentPosition.position.line;
+
 		const colIndex = _textDocumentPosition.position.character;
+
 		return getSuggestions(
 			rowIndex,
 			colIndex,

@@ -39,6 +39,7 @@ export async function fileRenameValidation(
 	telemetry: ITelemetry,
 ) {
 	let success = true;
+
 	try {
 		if (isValidUri(oldUri.path) && oldFileProperties.fileName) {
 			const newFileProperties = getFileProperties(newUri.path);
@@ -85,6 +86,7 @@ export async function updateEntityPathNames(
 ) {
 	try {
 		const entityFolderName = getEntityFolderName(oldUri.path);
+
 		if (
 			isValidUri(oldUri.path) &&
 			oldFileProperties.fileName &&
@@ -96,17 +98,20 @@ export async function updateEntityPathNames(
 			)
 		) {
 			const newFileProperties = getFileProperties(newUri.path);
+
 			const entityFolderIndex = getEntityFolderPathIndex(
 				newUri.path,
 				oldFileProperties.fileName,
 				fileEntityType,
 				entityFolderName,
 			);
+
 			const fileEntityFolderPath =
 				oldFileProperties.fileFolderPath.substring(
 					0,
 					entityFolderIndex,
 				);
+
 			const allFilesInFolder = await vscode.workspace.findFiles(
 				fileEntityType === PowerPagesEntityType.WEBFILES
 					? `**/${entityFolderName}/${oldFileProperties.fileName}.*`
@@ -117,6 +122,7 @@ export async function updateEntityPathNames(
 				if (fileEntityType !== PowerPagesEntityType.ADVANCED_FORMS) {
 					for (const file of allFilesInFolder) {
 						const fileProperties = getFileProperties(file.path);
+
 						if (fileProperties.fileCompleteName) {
 							const newFilePath = file.fsPath.replace(
 								fileProperties.fileCompleteName,
@@ -125,6 +131,7 @@ export async function updateEntityPathNames(
 									fileProperties.fileExtension,
 								].join("."),
 							);
+
 							if (newFilePath !== file.fsPath) {
 								await vscode.workspace.fs.rename(
 									file,
@@ -206,11 +213,14 @@ function updateEntityNameInYml(
 ) {
 	try {
 		const uri = vscode.Uri.file(uriPath);
+
 		const fileNameProperties = getFileNameProperties(
 			uriPath,
 			fileEntityType,
 		);
+
 		const fileContents = fs.readFileSync(uri.fsPath, "utf8");
+
 		const parsedFileContents = YAML.parse(fileContents);
 
 		// update data object

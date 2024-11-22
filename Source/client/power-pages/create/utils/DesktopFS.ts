@@ -10,11 +10,13 @@ import recursive from "recursive-readdir";
 export default class DesktopFS implements IAbstractFS {
 	readFileSync(filePath: string): string {
 		const content = fs.readFileSync(filePath, "utf-8");
+
 		return content;
 	}
 
 	async readdirSync(dir: string, options?: string[]): Promise<string[]> {
 		const files = await recursive(dir, options);
+
 		return files;
 	}
 

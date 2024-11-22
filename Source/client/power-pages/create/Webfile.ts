@@ -51,6 +51,7 @@ export const createWebfile = async (
 			vscode.window.showErrorMessage(
 				vscode.l10n.t("No parent pages found for adding webfile"),
 			);
+
 			return;
 		}
 
@@ -78,6 +79,7 @@ export const createWebfile = async (
 			vscode.window.showInformationMessage(
 				vscode.l10n.t("File(s) already exist. No new files to add"),
 			);
+
 			return;
 		}
 
@@ -108,6 +110,7 @@ async function getWebfileInputs(parentPage: string[]) {
 	async function collectInputs() {
 		const state = {} as Partial<IWebfileInputState>;
 		await MultiStepInput.run((input) => pickParentPage(input, state));
+
 		return state as IWebfileInputState;
 	}
 
@@ -126,11 +129,13 @@ async function getWebfileInputs(parentPage: string[]) {
 		state.id = pick.label;
 	}
 	const state = await collectInputs();
+
 	return state;
 }
 
 const getSelectedFiles = async () => {
 	const openDialogOptions = { canSelectMany: true };
+
 	return vscode.window.showOpenDialog(openDialogOptions);
 };
 
@@ -140,7 +145,9 @@ const filterExistingWebfiles = (
 ): vscode.Uri[] | undefined => {
 	for (let i = 0; i < selectedFiles.length; i++) {
 		const webfilePath = selectedFiles[i].fsPath;
+
 		const webfileName = path.basename(webfilePath);
+
 		const filePath = path.join(
 			selectedWorkspaceFolder,
 			"web-files",
@@ -149,6 +156,7 @@ const filterExistingWebfiles = (
 
 		try {
 			const stat = statSync(filePath);
+
 			if (stat) {
 				selectedFiles.splice(i, 1);
 				i--;
@@ -169,6 +177,7 @@ const addWebfiles = async (
 ) => {
 	try {
 		const webfileCount = selectedFiles.length;
+
 		const startTime = performance.now();
 		vscode.window.withProgress(
 			{
@@ -183,7 +192,9 @@ const addWebfiles = async (
 			async () => {
 				const promises = selectedFiles.map((file) => {
 					const webfilePath = file.fsPath;
+
 					const command = `"${yoGenPath}" ${YoSubGenerator.WEBFILE} "${webfilePath}" "${parentPageId}"`;
+
 					return new Promise((resolve, reject) => {
 						exec(
 							command,

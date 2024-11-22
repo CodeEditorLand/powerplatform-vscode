@@ -16,7 +16,9 @@ interface IUserSettings {
 }
 
 const settingVersionId = "1.0";
+
 const userSettingsFileName = "usersettings.json";
+
 let settings: IUserSettings = {
 	uniqueId: v4(),
 	settingVersion: settingVersionId,
@@ -38,10 +40,13 @@ export function readUserSettings(
 		applicationPath,
 		userSettingsFileName,
 	);
+
 	if (fs.existsSync(userSettingFilePath)) {
 		const stream = fs.readFileSync(userSettingFilePath, "utf8");
+
 		try {
 			settings = JSON.parse(stream) as IUserSettings;
+
 			if (settings.uniqueId === "") {
 				writeUserSettings(settings, applicationPath);
 			}
@@ -64,6 +69,7 @@ function writeUserSettings(
 	applicationPath: string,
 ): void {
 	userSettings = userSettings || settings;
+
 	try {
 		fs.ensureDirSync(applicationPath);
 		fs.writeFileSync(

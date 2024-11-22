@@ -65,6 +65,7 @@ export class ControlLocator implements Disposable {
 	 */
 	private getPageUrl(): string {
 		const url = this.debugConfig.url;
+
 		const {
 			appId,
 			controlName: name,
@@ -74,6 +75,7 @@ export class ControlLocator implements Disposable {
 		if (renderFullPage) {
 			// make sure that URL does not contain any path
 			const urlWithoutPath = url.split("/").slice(0, 3).join("/");
+
 			return `${urlWithoutPath}/main.aspx?appid=${appId}&pagetype=control&controlName=${name}`;
 		}
 
@@ -117,8 +119,10 @@ export class ControlLocator implements Disposable {
 					retryCount: `${retryCount}/${this.controlLocatorRetries}`,
 				},
 			);
+
 			if (this.shouldRetry(retryCount)) {
 				await sleep(this.controlLocatorRetryTimeout);
+
 				return await this.navigateToPage(page, retryCount - 1);
 			} else {
 				this.throwErrorIfNotDisposed(error);
@@ -155,6 +159,7 @@ export class ControlLocator implements Disposable {
 		} catch (error) {
 			if (this.shouldRetry(retryCount)) {
 				await sleep(this.controlLocatorRetryTimeout);
+
 				return await this.navigateToTab(page, retryCount - 1);
 			} else {
 				await ErrorReporter.report(
@@ -189,6 +194,7 @@ export class ControlLocator implements Disposable {
 	 */
 	public dispose(): void {
 		this.isDisposed = true;
+
 		if (this.shouldRetryNavigation) {
 			this.shouldRetryNavigation = false;
 		}

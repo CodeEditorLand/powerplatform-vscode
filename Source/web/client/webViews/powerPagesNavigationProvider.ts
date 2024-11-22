@@ -45,6 +45,7 @@ export class PowerPagesNavigationProvider
 
 	getNodes(label?: string): PowerPagesNode[] {
 		const nodes: PowerPagesNode[] = [];
+
 		const previewPowerPage = new PowerPagesNode(
 			vscode.l10n.t("Preview site"),
 			{
@@ -55,6 +56,7 @@ export class PowerPagesNavigationProvider
 			},
 			"previewSite.svg",
 		);
+
 		const backToStudio = new PowerPagesNode(
 			vscode.l10n.t("Open in Power Pages studio"),
 			{
@@ -79,6 +81,7 @@ export class PowerPagesNavigationProvider
 
 	async previewPowerPageSite(): Promise<void> {
 		let requestSentAtTime = new Date().getTime();
+
 		const websitePreviewUrl = WebExtensionContext.urlParametersMap.get(
 			queryParameters.WEBSITE_PREVIEW_URL,
 		) as string;
@@ -93,10 +96,12 @@ export class PowerPagesNavigationProvider
 				this.previewPowerPageSite.name,
 				`websitePreviewUrl:${websitePreviewUrl}`,
 			);
+
 			return;
 		}
 
 		const isValid = await this.isWebsitePreviewURLValid;
+
 		if (!isValid) {
 			vscode.window.showErrorMessage(
 				vscode.l10n.t("Preview site URL is not valid"),
@@ -107,6 +112,7 @@ export class PowerPagesNavigationProvider
 				this.previewPowerPageSite.name,
 				`websitePreviewUrl:${websitePreviewUrl}`,
 			);
+
 			return;
 		}
 
@@ -185,6 +191,7 @@ export class PowerPagesNavigationProvider
 				webExtensionTelemetryEventNames.WEB_EXTENSION_BACK_TO_STUDIO_TRIGGERED,
 				vscode.l10n.t("Power Pages studio URL is not available"),
 			);
+
 			return;
 		}
 

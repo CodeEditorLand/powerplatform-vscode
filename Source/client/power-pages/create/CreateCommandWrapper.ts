@@ -31,7 +31,9 @@ export function initializeGenerator(
 	const generator = new GeneratorAcquisition(cliContext);
 	generator.ensureInstalled();
 	context.subscriptions.push(generator);
+
 	const yoCommandPath = generator.yoCommandPath;
+
 	if (yoCommandPath) {
 		registerCreateCommands(context, yoCommandPath, telemetry);
 		vscode.workspace
@@ -57,6 +59,7 @@ function registerCreateCommands(
 				fileEntityType: CONTENT_SNIPPET,
 				triggerPoint: triggerPoint,
 			});
+
 			const selectedWorkspaceFolder = await getSelectedWorkspaceFolder(
 				uri,
 				activeEditor,
@@ -82,6 +85,7 @@ function registerCreateCommands(
 				fileEntityType: Tables.WEBTEMPLATE,
 				triggerPoint: triggerPoint,
 			});
+
 			const selectedWorkspaceFolder = await getSelectedWorkspaceFolder(
 				uri,
 				activeEditor,
@@ -107,6 +111,7 @@ function registerCreateCommands(
 				fileEntityType: Tables.WEBPAGE,
 				triggerPoint: triggerPoint,
 			});
+
 			const selectedWorkspaceFolder = await getSelectedWorkspaceFolder(
 				uri,
 				activeEditor,
@@ -132,6 +137,7 @@ function registerCreateCommands(
 				fileEntityType: Tables.PAGETEMPLATE,
 				triggerPoint: triggerPoint,
 			});
+
 			const selectedWorkspaceFolder = await getSelectedWorkspaceFolder(
 				uri,
 				activeEditor,
@@ -157,6 +163,7 @@ function registerCreateCommands(
 				fileEntityType: WEBFILE,
 				triggerPoint: triggerPoint,
 			});
+
 			const selectedWorkspaceFolder = await getSelectedWorkspaceFolder(
 				uri,
 				activeEditor,

@@ -56,21 +56,27 @@ export function getUserSettingsFromSharedInstall(
 		"PowerAppsCli",
 		"usersettings.json",
 	);
+
 	const userSettingsProvider = new TelemetryUserSettingsFileProvider(
 		userSettingsPath,
 	);
+
 	return getCurrentUserSettingsOrDefault(userSettingsProvider, logger);
 }
 
 function getAppDataPath(): string {
 	const platform = os.platform();
+
 	switch (platform) {
 		case "darwin":
 			return "~/Library/";
+
 		case "linux":
 			return `${process.env.HOME}/.config/`;
+
 		case "win32":
 			return process.env.LOCALAPPDATA as string;
+
 		default:
 			throw new Error(
 				`Platform "${platform}" is not currently supported`,

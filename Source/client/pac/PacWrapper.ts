@@ -58,12 +58,15 @@ export class PacInterop implements IPacInterop {
 
 	private static getPacExecutableName(): string {
 		const platformName = os.platform();
+
 		switch (platformName) {
 			case "win32":
 				return "pac.exe";
+
 			case "darwin":
 			case "linux":
 				return "pac";
+
 			default:
 				throw new Error(
 					`Unsupported OS platform for pac CLI: ${platformName}`,
@@ -126,6 +129,7 @@ export class PacInterop implements IPacInterop {
 		(await this.proc()).stdin.write(command);
 
 		const result = await this.outputQueue.dequeue();
+
 		return result;
 	}
 
@@ -146,7 +150,9 @@ export class PacWrapper {
 		args: PacArguments,
 	): Promise<T> {
 		const result = await this.pacInterop.executeCommand(args);
+
 		const parsed: T = JSON.parse(result);
+
 		return parsed;
 	}
 

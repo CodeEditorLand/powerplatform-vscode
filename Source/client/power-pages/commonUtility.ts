@@ -19,18 +19,22 @@ export interface IFileProperties {
 
 export interface IFileNameProperties {
 	fileName?: string;
+
 	formattedFileName?: string;
 }
 
 export function getFileProperties(uriPath: string): IFileProperties {
 	const filePathTokens = uriPath.split("/");
+
 	const fileCompleteName = filePathTokens.pop();
+
 	let fileNameIndex,
 		fileName,
 		fileExtension = "";
 
 	if (fileCompleteName) {
 		fileNameIndex = uriPath.indexOf(fileCompleteName);
+
 		const fileNameTokens = fileCompleteName?.split(".");
 		fileName = fileNameTokens.shift();
 		fileExtension = fileNameTokens.join(".");
@@ -69,7 +73,9 @@ export function getDeletePathUris(
 	fileProperties: IFileProperties,
 ): vscode.Uri[] {
 	const pathUris: vscode.Uri[] = [];
+
 	const entityFolderName = getEntityFolderName(uriPath);
+
 	if (isValidUri(uriPath) && fileProperties.fileName) {
 		if (fileEntityType === Constants.PowerPagesEntityType.WEBFILES) {
 			const ymlExtensionIndex = uriPath.indexOf(
@@ -184,6 +190,7 @@ export function getCurrentWorkspaceURI(fsPath: string): vscode.Uri | undefined {
 	const workspaceFolder = vscode.workspace.getWorkspaceFolder(
 		vscode.Uri.file(fsPath),
 	);
+
 	return workspaceFolder ? workspaceFolder.uri : undefined;
 }
 
@@ -204,6 +211,7 @@ export function getFileNameProperties(
 	fileEntityType: Constants.PowerPagesEntityType,
 ): IFileNameProperties {
 	const fileProperties = getFileProperties(uriPath);
+
 	let formattedName = fileProperties.fileName?.replace("-", " ");
 
 	if (fileProperties.fileName) {

@@ -98,6 +98,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 						uri.fsPath,
 						this,
 					);
+
 				const entityEtagValue = getEntityEtag(
 					getFileEntityId(uri.fsPath),
 				);
@@ -125,15 +126,18 @@ export class PortalsFS implements vscode.FileSystemProvider {
 		isActivationFlow = false,
 	): Promise<[string, vscode.FileType][]> {
 		const result: [string, vscode.FileType][] = [];
+
 		if (isActivationFlow && isValidDirectoryPath(uri.fsPath)) {
 			WebExtensionContext.telemetry.sendInfoTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_FETCH_DIRECTORY_TRIGGERED,
 			);
 			await this._loadFromDataverseToVFS();
+
 			return result;
 		}
 
 		const entry = await this._lookup(uri, true);
+
 		if (entry instanceof Directory) {
 			for (const [name, child] of entry.entries) {
 				result.push([name, child.type]);
@@ -148,12 +152,14 @@ export class PortalsFS implements vscode.FileSystemProvider {
 		let data = await this._lookup(uri, true);
 
 		const isLazyLoadedWebFile = isWebFileWithLazyLoad(uri.fsPath);
+
 		if ((!data && isValidFilePath(uri.fsPath)) || isLazyLoadedWebFile) {
 			await this._loadFileFromDataverseToVFS(uri);
 			data = await this._lookup(uri, true);
 		}
 
 		const fileContent = data instanceof File ? data.data : new Uint8Array();
+
 		if (fileHasDirtyChanges(uri.fsPath)) {
 			if (fileHasDiffViewTriggered(uri.fsPath)) {
 				updateDiffViewTriggered(uri.fsPath, false);
@@ -161,6 +167,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 				const fileData = WebExtensionContext.fileDataMap.getFileMap.get(
 					uri.fsPath,
 				);
+
 				if (fileData?.entityId && fileData.attributePath) {
 					updateEntityColumnContent(
 						fileData?.entityId,
@@ -182,8 +189,11 @@ export class PortalsFS implements vscode.FileSystemProvider {
 		isFirstTimeWrite = false,
 	): Promise<void> {
 		const basename = path.posix.basename(uri.path);
+
 		const parent = await this._lookupParentDirectory(uri);
+
 		let entry = parent.entries.get(basename);
+
 		const isImageEdit = isImageFileSupportedForEdit(basename);
 
 		if (entry instanceof Directory) {
@@ -252,7 +262,9 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		if (!entry) {
 			const basename = path.posix.basename(uri.path);
+
 			const dirname = uri.with({ path: path.posix.dirname(uri.path) });
+
 			const parent = await this._lookupAsDirectory(dirname, false);
 
 			const entry = new Directory(basename);
@@ -271,6 +283,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 			webExtensionTelemetryEventNames.WEB_EXTENSION_RENAME_NOT_SUPPORTED,
 			this.rename.name,
 		);
+
 		throw new Error("Method not implemented.");
 	}
 
@@ -279,12 +292,15 @@ export class PortalsFS implements vscode.FileSystemProvider {
 			webExtensionTelemetryEventNames.WEB_EXTENSION_DELETE_NOT_SUPPORTED,
 			this.delete.name,
 		);
+
 		throw new Error("Method not implemented.");
 	}
 
 	async updateMtime(uri: vscode.Uri, latestContent: string): Promise<void> {
 		const basename = path.posix.basename(uri.path);
+
 		const parent = await this._lookupParentDirectory(uri);
+
 		const entry = parent.entries.get(basename);
 
 		if (!entry) {
@@ -307,13 +323,16 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		// create case sensitive regex
 		const regex = new RegExp(pattern, "i");
+
 		const files = await this.iterateDirectory(
 			WebExtensionContext.rootDirectory,
 		);
+
 		const results: vscode.ProviderResult<vscode.Uri[]> = [];
 
 		files.forEach((fileUri) => {
 			const isMatch = regex.test(fileUri.path);
+
 			if (isMatch) {
 				results.push(fileUri);
 			}
@@ -332,6 +351,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 	private async iterateDirectory(uri: vscode.Uri) {
 		const entries = await vscode.workspace.fs.readDirectory(uri);
+
 		const files: vscode.Uri[] = [];
 
 		for (const [entry, type] of entries) {
@@ -383,6 +403,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 		const startTime = Date.now();
 
 		const matches: ISearchQueryMatch[] = [];
+
 		const files = await this.iterateDirectory(
 			WebExtensionContext.rootDirectory,
 		);
@@ -412,6 +433,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 			};
 
 			let regex;
+
 			if (query.isWordMatch) {
 				// \b is a word boundary
 				regex = query.isCaseSensitive
@@ -428,6 +450,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 			if (query.isMultiline) {
 				if (text.includes(pattern)) {
 					const index = text.indexOf(pattern);
+
 					const range = getRangeForMultilineMatch(
 						text,
 						pattern,
@@ -451,6 +474,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 					if (regexMatch) {
 						regexMatch.forEach((m) => {
 							const index = lines[i].indexOf(m);
+
 							const range = new vscode.Range(
 								i,
 								index,
@@ -509,13 +533,16 @@ export class PortalsFS implements vscode.FileSystemProvider {
 		silent: boolean,
 	): Promise<Entry | undefined> {
 		const parts = uri.path.split("/");
+
 		let entry: Entry = this.root;
+
 		for (const part of parts) {
 			if (!part) {
 				continue;
 			}
 
 			let child: Entry | undefined;
+
 			if (entry instanceof Directory) {
 				child = entry.entries.get(part);
 			}
@@ -561,6 +588,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 	private async _lookupParentDirectory(uri: vscode.Uri): Promise<Directory> {
 		const dirname = uri.with({ path: path.posix.dirname(uri.path) });
+
 		return await this._lookupAsDirectory(dirname, false);
 	}
 
@@ -600,6 +628,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 				webExtensionTelemetryEventNames.WEB_EXTENSION_EMPTY_PORTAL_FOLDER_NAME,
 				this.createFileSystem.name,
 			);
+
 			throw new Error(ERROR_CONSTANTS.PORTAL_FOLDER_NAME_EMPTY);
 		}
 
@@ -717,7 +746,9 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 	private async _loadFileFromDataverseToVFS(uri: vscode.Uri) {
 		const entityId = getFileEntityId(uri.fsPath);
+
 		const entityName = getFileEntityName(uri.fsPath);
+
 		const fileName = getFileName(uri.fsPath);
 
 		if (entityId && entityName && fileName) {

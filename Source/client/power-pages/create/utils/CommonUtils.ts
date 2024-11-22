@@ -77,8 +77,11 @@ export function getPageTemplate(context: Context): IPageTemplates {
 export function getParentPagePaths(portalContext: Context): IParentPagePaths {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const pages: Map<string, any> = new Map();
+
 	const paths: Array<string> = [];
+
 	const pathsMap: Map<string, string> = new Map();
+
 	const webpageNames: Array<string> = [];
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -102,9 +105,11 @@ export function getParentPagePaths(portalContext: Context): IParentPagePaths {
 		if (!page.adx_parentpageid && page.adx_partialurl === "/") {
 			paths.push(path);
 			pathsMap.set(path, webpageid);
+
 			continue;
 		}
 		let prevPage = null;
+
 		if (pages.has(page.adx_parentpageid)) {
 			while (page.adx_parentpageid) {
 				if (!pages.has(page.adx_parentpageid)) {
@@ -126,6 +131,7 @@ export function getParentPagePaths(portalContext: Context): IParentPagePaths {
 		}
 	}
 	paths.sort();
+
 	return { paths, pathsMap, webpageNames };
 }
 
@@ -133,19 +139,24 @@ export async function getWebTemplates(
 	portalContext: Context,
 ): Promise<IWebTemplates> {
 	await portalContext.init([Tables.WEBTEMPLATE]);
+
 	const webTemplates: ITemplate[] = portalContext.getWebTemplates();
 
 	const webTemplateNames = webTemplates.map((template) => template.name);
+
 	const webTemplateMap = new Map<string, string>();
 	webTemplates.forEach((template) => {
 		webTemplateMap.set(template.name, template.value);
 	});
+
 	return { webTemplateNames, webTemplateMap };
 }
 
 export function getPortalContext(portalDir: string): Context {
 	const fs: DesktopFS = new DesktopFS();
+
 	const portalContext = Context.getInstance(portalDir, fs);
+
 	return portalContext;
 }
 
@@ -163,6 +174,7 @@ export function createFileWatcher(
 		);
 
 	context.subscriptions.push(watcher);
+
 	return watcher;
 }
 
@@ -189,6 +201,7 @@ export async function createRecord(
 				watcher.onDidCreate(async (uri) => {
 					// Stop watching the directory to avoid duplicate events
 					watcher.dispose();
+
 					try {
 						await vscode.window.showTextDocument(uri);
 						vscode.window.showInformationMessage(
@@ -244,6 +257,7 @@ export async function getSelectedWorkspaceFolder(
 	activeEditor: vscode.TextEditor | undefined,
 ) {
 	let selectedWorkspaceFolder: string | undefined;
+
 	let filePath: string;
 
 	if (!vscode.workspace.workspaceFolders) {
@@ -258,12 +272,16 @@ export async function getSelectedWorkspaceFolder(
 		case Boolean(uri):
 			filePath = uri.fsPath;
 			selectedWorkspaceFolder = isWebsiteYML(filePath);
+
 			break;
+
 		case Boolean(
 			workspaceFolder && vscode.workspace.workspaceFolders.length === 1,
 		):
 			selectedWorkspaceFolder = workspaceFolder?.uri?.fsPath;
+
 			break;
+
 		case vscode.workspace.workspaceFolders.length > 1:
 			return vscode.window
 				.showWorkspaceFolderPick()
@@ -271,19 +289,23 @@ export async function getSelectedWorkspaceFolder(
 					const isPortalDirectory = await isPortalDir(
 						folder?.uri.fsPath,
 					);
+
 					if (isPortalDirectory) {
 						return folder?.uri.fsPath;
 					} else {
 						throw new Error(NOT_A_PORTAL_DIRECTORY);
 					}
 				});
+
 		default:
 			selectedWorkspaceFolder =
 				vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+
 			break;
 	}
 
 	const isPortalDirectory = await isPortalDir(selectedWorkspaceFolder);
+
 	if (isPortalDirectory) {
 		return selectedWorkspaceFolder;
 	} else {
@@ -308,12 +330,14 @@ export function isPortalDir(
 export function isWebsiteYML(directory: string): string {
 	while (directory !== path.parse(directory).root) {
 		const websiteYMLPath = path.join(directory, WEBSITE_YML);
+
 		if (existsSync(websiteYMLPath)) {
 			return directory;
 		}
 		directory = path.dirname(directory);
 	}
 	vscode.window.showErrorMessage(NOT_A_PORTAL_DIRECTORY);
+
 	throw new Error("");
 }
 

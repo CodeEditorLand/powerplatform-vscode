@@ -29,10 +29,12 @@ export abstract class ECSFeaturesClient {
 		if (this._ecsConfig && !force) return;
 
 		const requestURL = createECSRequestURL(filters, clientName);
+
 		try {
 			const response = await fetch(requestURL, {
 				method: "GET",
 			});
+
 			if (!response.ok) {
 				throw new Error("Request failed");
 			}
@@ -69,6 +71,7 @@ export abstract class ECSFeaturesClient {
 		const featuresConfig =
 			this._ecsConfig &&
 			feature.extractECSFeatureFlagConfig?.(this._ecsConfig as TConfig);
+
 		return { ...feature.fallback, ...featuresConfig };
 	}
 }

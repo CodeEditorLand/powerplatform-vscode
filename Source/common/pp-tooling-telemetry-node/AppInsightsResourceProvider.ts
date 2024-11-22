@@ -20,6 +20,7 @@ export class AppInsightsResourceProvider {
 				);
 			this._allResources.set(r.dataBoundary, r);
 		});
+
 		if (
 			defaultResource.dataBoundary &&
 			!this._allResources.has(defaultResource.dataBoundary)
@@ -36,6 +37,7 @@ export class AppInsightsResourceProvider {
 	): AppInsightsResource {
 		if (dataBoundary) {
 			const match = this._allResources.get(dataBoundary);
+
 			if (match) {
 				return match;
 			}

@@ -15,6 +15,7 @@ export function getPortalsOrgURLs(
 ) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let output: any[] = [];
+
 	try {
 		workspaceRootFolders?.forEach((workspaceRootFolder) => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -22,6 +23,7 @@ export function getPortalsOrgURLs(
 				dot: true,
 				cwd: workspaceRootFolder!.uri,
 			});
+
 			if (manifestFiles.length == 0) {
 				output = [
 					{

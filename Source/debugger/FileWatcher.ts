@@ -72,6 +72,7 @@ export class FileWatcher implements Disposable {
 		}
 
 		this.fileChangeTriggered = true;
+
 		const onChangeAction = async () => {
 			if (!this.onFileChange) {
 				return;
@@ -81,6 +82,7 @@ export class FileWatcher implements Disposable {
 			// If we don't wait, then the bundle will still be in its old state *before* the change that triggered
 			// the file watcher to call the onChange event.
 			await sleep(this.FILE_WATCHER_CHANGE_DELAY);
+
 			try {
 				await this.onFileChange();
 			} catch (error) {

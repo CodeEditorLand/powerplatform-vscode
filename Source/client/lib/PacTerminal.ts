@@ -28,7 +28,9 @@ export class PacTerminal implements vscode.Disposable {
 		cliPath: string,
 	) {
 		this._context = context;
+
 		const pacContext = new PacWrapperContext(context, telemetry);
+
 		const interop = new PacInterop(pacContext, cliPath);
 		this._pacWrapper = new PacWrapper(pacContext, interop);
 
@@ -81,6 +83,7 @@ export class PacTerminal implements vscode.Disposable {
 				`pacCLI.enableTelemetry`,
 				async () => {
 					const result = await this._pacWrapper.enableTelemetry();
+
 					if (result?.Status === "Success") {
 						vscode.window.showInformationMessage(
 							vscode.l10n.t("PAC Telemetry enabled"),
@@ -99,6 +102,7 @@ export class PacTerminal implements vscode.Disposable {
 				`pacCLI.disableTelemetry`,
 				async () => {
 					const result = await this._pacWrapper.disableTelemetry();
+
 					if (result?.Status === "Success") {
 						vscode.window.showInformationMessage(
 							vscode.l10n.t("PAC Telemetry disabled"),
@@ -135,6 +139,7 @@ export class PacTerminal implements vscode.Disposable {
 			? (vscode.window.activeTerminal as vscode.Terminal)
 			: vscode.window.createTerminal();
 		terminal.show();
+
 		return terminal;
 	}
 

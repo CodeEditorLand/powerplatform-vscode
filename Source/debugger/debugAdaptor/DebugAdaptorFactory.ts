@@ -58,6 +58,7 @@ export class DebugAdaptorFactory implements DebugAdapterDescriptorFactory {
 			workspaceFolder,
 			this.logger,
 		);
+
 		const bundleInterceptor = new RequestInterceptor(
 			bundleLoader,
 			this.logger,
@@ -87,8 +88,10 @@ export class DebugAdaptorFactory implements DebugAdapterDescriptorFactory {
 		session: DebugSession,
 	): Promise<ProviderResult<DebugAdapterDescriptor>> {
 		const workspaceFolder = this.getWorkspaceFolder();
+
 		if (!workspaceFolder) {
 			await debug.stopDebugging();
+
 			return;
 		}
 
@@ -96,12 +99,14 @@ export class DebugAdaptorFactory implements DebugAdapterDescriptorFactory {
 			session,
 			workspaceFolder,
 		);
+
 		const debugAdaptor = new Debugger(
 			browserManager,
 			session,
 			workspaceFolder,
 			this.logger,
 		);
+
 		return new DebugAdapterInlineImplementation(debugAdaptor);
 	}
 
@@ -111,7 +116,9 @@ export class DebugAdaptorFactory implements DebugAdapterDescriptorFactory {
 	 */
 	private getWorkspaceFolder(): WorkspaceFolder | undefined {
 		const folders = workspace.workspaceFolders || [];
+
 		const workspaceFolder = folders[0];
+
 		if (!workspaceFolder) {
 			void ErrorReporter.report(
 				this.logger,
@@ -119,6 +126,7 @@ export class DebugAdaptorFactory implements DebugAdapterDescriptorFactory {
 				undefined,
 				"Could not find workspace folder for debugger. Please make sure you've opened a workspace and try again.",
 			);
+
 			return;
 		}
 		return workspaceFolder;

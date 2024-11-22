@@ -20,9 +20,11 @@ export function removeEncodingFromParameters(
 		queryParamsMap.get(schemaKey.SCHEMA_VERSION) as string,
 	);
 	queryParamsMap.set(schemaKey.SCHEMA_VERSION, schemaFileName);
+
 	const websiteName = decodeURI(
 		queryParamsMap.get(queryParameters.WEBSITE_NAME) as string,
 	);
+
 	const portalFolderName = websiteName
 		? websiteName
 		: PORTALS_FOLDER_NAME_DEFAULT;
@@ -46,11 +48,13 @@ export function checkMandatoryPathParameters(appName: string): boolean {
 	) {
 		case "portal":
 			return true;
+
 		default:
 			showErrorDialog(
 				vscode.l10n.t("There was a problem opening the workspace"),
 				vscode.l10n.t("Unable to find that app"),
 			);
+
 			return false;
 	}
 }
@@ -64,9 +68,13 @@ export function checkMandatoryQueryParameters(
 	) {
 		case "portal": {
 			const orgURL = queryParamsMap?.get(queryParameters.ORG_URL);
+
 			const dataSource = queryParamsMap?.get(queryParameters.DATA_SOURCE);
+
 			const schemaName = queryParamsMap?.get(schemaKey.SCHEMA_VERSION);
+
 			const websiteId = queryParamsMap?.get(queryParameters.WEBSITE_ID);
+
 			if (
 				orgURL &&
 				dataSource &&
@@ -87,6 +95,7 @@ export function checkMandatoryQueryParameters(
 						"Check the URL and verify the parameters are correct",
 					),
 				);
+
 				return false;
 			}
 		}
@@ -95,6 +104,7 @@ export function checkMandatoryQueryParameters(
 				vscode.l10n.t("There was a problem opening the workspace"),
 				vscode.l10n.t("Unable to find that app"),
 			);
+
 			return false;
 	}
 }
@@ -110,11 +120,14 @@ export function checkMandatoryMultifileParameters(
 			const enableMultifile = queryParametersMap?.get(
 				queryParameters.ENABLE_MULTIFILE,
 			);
+
 			const isEnableMultifile =
 				String(enableMultifile).toLowerCase() === "true";
+
 			const websiteId = queryParametersMap.get(
 				queryParameters.WEBSITE_ID,
 			);
+
 			if (
 				(isMultifileEnabled() && isEnableMultifile && websiteId) ||
 				(isMultifileEnabled() && !isEnableMultifile) ||
@@ -133,6 +146,7 @@ export function checkMandatoryMultifileParameters(
 						"Check the URL and verify the parameters are correct",
 					),
 				);
+
 				return false;
 			}
 		}
@@ -141,6 +155,7 @@ export function checkMandatoryMultifileParameters(
 				vscode.l10n.t("There was a problem opening the workspace"),
 				vscode.l10n.t("Unable to find that app"),
 			);
+
 			return false;
 	}
 }
@@ -150,6 +165,7 @@ export function isDynamicsCRMUrl(url: string) {
 	// Updated pattern to match both conditions: with and without digits after "crm"
 	// We are in public cloud currently - ignoring the gov cloud for now
 	const pattern = /^https?:\/\/[^.]+\.crm(\d{1,2})?\.dynamics\.com/;
+
 	const result = pattern.test(url);
 
 	if (!result) {

@@ -15,6 +15,7 @@ export class PPAPIService {
 
         try {
             const accessToken = await powerPlatformAPIAuthentication(telemetry, serviceEndpointStamp, true);
+
             const response = await fetch(await PPAPIService.getPPAPIServiceEndpoint(serviceEndpointStamp, telemetry, environmentId, websitePreviewId), {
                 method: 'GET',
                 headers: getCommonHeaders(accessToken)
@@ -23,6 +24,7 @@ export class PPAPIService {
             if (response.ok) {
                 const websiteDetails = await response.json() as unknown as IWebsiteDetails;
                 sendTelemetryEvent(telemetry, { eventName: VSCODE_EXTENSION_PPAPI_GET_WEBSITE_BY_ID_COMPLETED, orgUrl: websiteDetails.dataverseInstanceUrl });
+
                 return websiteDetails;
             }
         }
@@ -40,12 +42,17 @@ export class PPAPIService {
         switch (serviceEndpointStamp) {
             case ServiceEndpointCategory.TEST:
                 ppapiEndpoint = "https://api.test.powerplatform.com";
+
                 break;
+
             case ServiceEndpointCategory.PREPROD:
                 ppapiEndpoint = "https://api.preprod.powerplatform.com";
+
                 break;
+
             case ServiceEndpointCategory.PROD:
                 ppapiEndpoint = "https://api.powerplatform.com";
+
                 break;
             // All below endpoints are not supported yet
             case ServiceEndpointCategory.DOD:
@@ -54,6 +61,7 @@ export class PPAPIService {
             case ServiceEndpointCategory.MOONCAKE:
             default:
                 sendTelemetryEvent(telemetry, { eventName: VSCODE_EXTENSION_GET_PPAPI_WEBSITES_ENDPOINT_UNSUPPORTED_REGION, data: serviceEndpointStamp });
+
                 break;
         }
 

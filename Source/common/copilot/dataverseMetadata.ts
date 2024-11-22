@@ -38,6 +38,7 @@ export async function getEntityColumns(
 ): Promise<string[]> {
 	try {
 		const dataverseURL = `${orgUrl.endsWith("/") ? orgUrl : orgUrl.concat("/")}api/data/v9.2/EntityDefinitions(LogicalName='${entityName}')?$expand=Attributes`;
+
 		const requestInit: RequestInit = {
 			method: "GET",
 			headers: {
@@ -48,9 +49,13 @@ export async function getEntityColumns(
 		};
 
 		const startTime = performance.now();
+
 		const jsonResponse = await fetchJsonResponse(dataverseURL, requestInit);
+
 		const endTime = performance.now();
+
 		const responseTime = endTime - startTime || 0;
+
 		const attributes = getAttributesFromResponse(jsonResponse); //Display name and logical name fetching from response
 
 		sendTelemetryEvent(telemetry, {
@@ -59,6 +64,7 @@ export async function getEntityColumns(
 			durationInMills: responseTime,
 			orgUrl: orgUrl,
 		});
+
 		return attributes;
 	} catch (error) {
 		sendTelemetryEvent(telemetry, {
@@ -67,6 +73,7 @@ export async function getEntityColumns(
 			error: error as Error,
 			orgUrl: orgUrl,
 		});
+
 		return [];
 	}
 }
@@ -97,8 +104,11 @@ export async function getFormXml(
 		};
 
 		const startTime = performance.now();
+
 		const jsonResponse = await fetchJsonResponse(dataverseURL, requestInit);
+
 		const endTime = performance.now();
+
 		const responseTime = endTime - startTime || 0;
 
 		const formxml = getFormXMLFromResponse(jsonResponse);
@@ -109,6 +119,7 @@ export async function getFormXml(
 			durationInMills: responseTime,
 			orgUrl: orgUrl,
 		});
+
 		return parseXML(formxml);
 	} catch (error) {
 		sendTelemetryEvent(telemetry, {
@@ -117,6 +128,7 @@ export async function getFormXml(
 			error: error as Error,
 			orgUrl: orgUrl,
 		});
+
 		return [];
 	}
 }
@@ -145,6 +157,7 @@ function getAttributesFromResponse(jsonResponse: any): string[] {
 		jsonResponse.Attributes.length > 0
 	) {
 		const attributes = jsonResponse.Attributes;
+
 		const logicalNameDisplayName: string[] = [];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		attributes.forEach((attr: any) => {
@@ -172,6 +185,7 @@ function getFormXMLFromResponse(jsonResponse: any): string {
 
 function parseXML(formXml: string) {
 	const parser = new DOMParser();
+
 	const xmlDoc = parser.parseFromString(formXml, "text/xml");
 
 	// Get all 'row' elements
@@ -185,17 +199,21 @@ function parseXML(formXml: string) {
 
 		// Get the 'label' and 'control' elements within the current 'row'
 		const label = row.getElementsByTagName("label")[0];
+
 		const control = row.getElementsByTagName("control")[0];
 
 		// If both 'label' and 'control' elements exist, create an object and add it to the result array
 		if (label && control) {
 			const description = label.getAttribute(ATTRIBUTE_DESCRIPTION);
+
 			const datafieldname = control.getAttribute(
 				ATTRIBUTE_DATAFIELD_NAME,
 			);
+
 			let classid = control.getAttribute(ATTRIBUTE_CLASSID);
 
 			let controlType = "";
+
 			if (classid) {
 				// Use a regular expression to replace both '{' and '}' with an empty string
 				// Input: '{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}'
@@ -220,6 +238,7 @@ export async function getEntityName(
 	dataverseEntity: string,
 ): Promise<{ entityName: string; formName: string }> {
 	let entityName = "";
+
 	let formName = "";
 
 	try {
@@ -227,6 +246,7 @@ export async function getEntityName(
 
 		if (activeEditor) {
 			const document = activeEditor.document;
+
 			const absoluteFilePath = document.fileName; //"c:\\pac-portals\\downloads\\site-1---site-wiz1i\\basic-forms\\copilot-student-loan-registration-56a4\\Copilot-Student-Loan-Registration-56a4.basicform.custom_javascript.js"
 			const activeFileFolderPath = path.dirname(absoluteFilePath); // "c:\\pac-portals\\downloads\\site-1---site-wiz1i\\basic-forms\\copilot-student-loan-registration-56a4"
 			const activeFileName = path.basename(absoluteFilePath); //"Copilot-Student-Loan-Registration-56a4.basicform.custom_javascript.js"
@@ -239,11 +259,14 @@ export async function getEntityName(
 
 			if (IS_DESKTOP && matchingFiles[0]) {
 				const diskRead = await import("fs");
+
 				const yamlFilePath = path.join(
 					activeFileFolderPath,
 					matchingFiles[0],
 				);
+
 				const yamlContent = diskRead.readFileSync(yamlFilePath, "utf8");
+
 				const parsedData = parseYamlContent(
 					yamlContent,
 					telemetry,
@@ -253,10 +276,12 @@ export async function getEntityName(
 				entityName =
 					parsedData["adx_entityname"] ||
 					parsedData["adx_targetentitylogicalname"];
+
 				formName = parsedData["adx_formname"];
 			} else if (!IS_DESKTOP) {
 				const entityMetadata = getEntityMetadata(document.uri.fsPath);
 				entityName = entityMetadata.logicalEntityName ?? "";
+
 				formName = entityMetadata.logicalFormName ?? "";
 			}
 		}
@@ -278,10 +303,13 @@ async function getMatchingFiles(
 ): Promise<string[]> {
 	if (IS_DESKTOP) {
 		const diskRead = await import("fs");
+
 		const files = diskRead.readdirSync(folderPath);
+
 		const pattern = new RegExp(
 			`^${fileNameFirstPart}\\.(basicform|list|advancedformstep)\\.yml$`,
 		);
+
 		return files.filter((fileName) => pattern.test(fileName));
 	}
 
@@ -304,6 +332,7 @@ function parseYamlContent(
 			dataverseEntity: dataverseEntity,
 			error: error as Error,
 		});
+
 		return {};
 	}
 }

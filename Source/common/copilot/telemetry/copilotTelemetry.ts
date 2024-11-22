@@ -12,6 +12,7 @@ export function sendTelemetryEvent(
 	telemetryData: IProDevCopilotTelemetryData,
 ): void {
 	const telemetryDataProperties: Record<string, string> = {};
+
 	const telemetryDataMeasurements: Record<string, number> = {};
 
 	if (telemetryData.durationInMills) {

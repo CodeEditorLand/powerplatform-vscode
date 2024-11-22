@@ -49,6 +49,7 @@ export class BundleLoader {
 		const workspacePath = this.workspaceFolder.uri.path;
 
 		const parsedPath = Uri.parse(filePath);
+
 		if (parsedPath.path.startsWith(workspacePath)) {
 			return filePath;
 		}
@@ -65,6 +66,7 @@ export class BundleLoader {
 			const file: TextDocument = await this.openTextDocument(
 				Uri.file(this.filePath),
 			);
+
 			const fileContent = file.getText();
 			await this.warnIfNoSourceMap(fileContent);
 
@@ -76,6 +78,7 @@ export class BundleLoader {
 				error,
 				"Could not load file contents",
 			);
+
 			throw new Error(
 				`Could not load control '${this.fileName}' with path '${
 					this.filePath
@@ -91,6 +94,7 @@ export class BundleLoader {
 	 */
 	private async warnIfNoSourceMap(fileContent: string): Promise<void> {
 		const isValid = SourceMapValidator.isValid(fileContent);
+
 		if (isValid) {
 			return;
 		}

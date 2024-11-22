@@ -26,8 +26,11 @@ export class NPSService {
 		const region = WebExtensionContext.urlParametersMap
 			?.get(queryParameters.REGION)
 			?.toLowerCase();
+
 		const dataBoundary = getCurrentDataBoundary();
+
 		let npsSurveyEndpoint = "";
+
 		switch (region) {
 			case "tie":
 			case "test":
@@ -36,30 +39,38 @@ export class NPSService {
 					case "eu":
 						npsSurveyEndpoint =
 							"https://europe.tip1.ces.microsoftcloud.com";
+
 						break;
+
 					default:
 						npsSurveyEndpoint =
 							"https://world.tip1.ces.microsoftcloud.com";
 				}
 				break;
+
 			case "prod":
 			case "preview":
 				switch (dataBoundary) {
 					case "eu":
 						npsSurveyEndpoint =
 							"https://europe.ces.microsoftcloud.com";
+
 						break;
+
 					default:
 						npsSurveyEndpoint =
 							"https://world.ces.microsoftcloud.com";
 				}
 				break;
+
 			case "gov":
 			case "high":
 			case "dod":
 			case "mooncake":
 				npsSurveyEndpoint = "https://world.ces.microsoftcloud.com";
+
 				break;
+
 			case "ex":
 			case "rx":
 			default:
@@ -72,6 +83,7 @@ export class NPSService {
 	public static async setEligibility() {
 		try {
 			const baseApiUrl = this.getNpsSurveyEndpoint();
+
 			const accessToken: string = await npsAuthentication(
 				WebExtensionContext.telemetry.getTelemetryReporter(),
 				SurveyConstants.AUTHORIZATION_ENDPOINT,
@@ -86,19 +98,25 @@ export class NPSService {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const parsedToken = jwt_decode(accessToken) as any;
 			WebExtensionContext.setUserId(parsedToken?.oid);
+
 			const apiEndpoint = `${baseApiUrl}/api/v1/${SurveyConstants.TEAM_NAME}/Eligibilities/${SurveyConstants.SURVEY_NAME}?userId=${parsedToken?.oid}&eventName=${SurveyConstants.EVENT_NAME}&tenantId=${parsedToken.tid}`;
+
 			const requestInitPost: RequestInit = {
 				method: httpMethod.POST,
 				body: "{}",
 				headers: NPSService.getCesHeader(accessToken),
 			};
+
 			const requestSentAtTime = new Date().getTime();
+
 			const response =
 				await WebExtensionContext.concurrencyHandler.handleRequest(
 					apiEndpoint,
 					requestInitPost,
 				);
+
 			const result = await response?.json();
+
 			if (result?.Eligibility) {
 				WebExtensionContext.telemetry.sendAPISuccessTelemetry(
 					webExtensionTelemetryEventNames.WEB_EXTENSION_NPS_USER_ELIGIBLE,

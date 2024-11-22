@@ -28,13 +28,16 @@ export class QuickPickProvider {
 
 	public refresh() {
 		const tabGroup = vscode.window.tabGroups;
+
 		if (tabGroup.activeTabGroup && tabGroup.activeTabGroup.activeTab) {
 			const tab = tabGroup.activeTabGroup.activeTab;
+
 			if (
 				tab.input instanceof vscode.TabInputCustom ||
 				tab.input instanceof vscode.TabInputText
 			) {
 				const fileFsPath = tab.input.uri.fsPath;
+
 				const entityInfo: IEntityInfo = {
 					entityId: getFileEntityId(fileFsPath),
 					entityName: getFileEntityName(fileFsPath),
@@ -47,6 +50,7 @@ export class QuickPickProvider {
 
 	public async updateQuickPickItems(entityInfo: IEntityInfo) {
 		const connectedUsersMap = WebExtensionContext.connectedUsers.getUserMap;
+
 		const userMap = new Map<string, IQuickPickItem>();
 
 		for (const [, value] of connectedUsersMap.entries()) {
@@ -110,6 +114,7 @@ export class QuickPickProvider {
 				Constants.WEB_EXTENSION_QUICK_PICK_PLACEHOLDER,
 			),
 		});
+
 		if (selectedUser) {
 			this.handleSelectedOption(selectedUser);
 		}

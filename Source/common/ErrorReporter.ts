@@ -29,10 +29,13 @@ export class ErrorReporter {
 		properties?: Record<string, string>,
 	): Promise<void> {
 		const errorObj = ErrorReporter.unknownToError(error);
+
 		const errorObjMessage = errorObj
 			? ` - Inner Message: ${errorObj.message}`
 			: "";
+
 		const errorStack = errorObj ? ` - Stack: ${errorObj.stack}` : "";
+
 		const errorMessage = `${message}${errorObjMessage}`;
 		logger.sendTelemetryException(
 			new Error(`${errorIdentifier}: ${errorMessage}${errorStack}`),

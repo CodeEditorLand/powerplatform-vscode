@@ -59,10 +59,14 @@ export function getCommonHeaders(
 //Get access token for Intelligence API service
 export async function intelligenceAPIAuthentication(telemetry: ITelemetry, sessionID: string, orgId: string, firstTimeAuth = false): Promise<{ accessToken: string, user: string, userId: string }> {
     let accessToken = '';
+
     let user = '';
+
     let userId = '';
+
     try {
         let session = await vscode.authentication.getSession(PROVIDER_ID, [`${INTELLIGENCE_SCOPE_DEFAULT}`], { silent: true });
+
         if (!session) {
             session = await vscode.authentication.getSession(PROVIDER_ID, [`${INTELLIGENCE_SCOPE_DEFAULT}`], { createIfNone: true });
             firstTimeAuth = true;
@@ -70,6 +74,7 @@ export async function intelligenceAPIAuthentication(telemetry: ITelemetry, sessi
         accessToken = session?.accessToken ?? '';
         user = session.account.label;
         userId = getOIDFromToken(accessToken, telemetry);
+
         if (!accessToken) {
             throw new Error(ERROR_CONSTANTS.NO_ACCESS_TOKEN);
         }
@@ -91,7 +96,9 @@ export async function dataverseAuthentication(
     firstTimeAuth = false
 ): Promise<{ accessToken: string, userId: string }> {
     let accessToken = "";
+
     let userId = "";
+
     try {
         let session = await vscode.authentication.getSession(
             PROVIDER_ID,
@@ -101,6 +108,7 @@ export async function dataverseAuthentication(
             ],
             { silent: true }
         );
+
         if (!session) {
             session = await vscode.authentication.getSession(
                 PROVIDER_ID,
@@ -114,6 +122,7 @@ export async function dataverseAuthentication(
 
         accessToken = session?.accessToken ?? "";
         userId = getOIDFromToken(accessToken, telemetry);
+
         if (!accessToken) {
             throw new Error(ERROR_CONSTANTS.NO_ACCESS_TOKEN);
         }
@@ -152,6 +161,7 @@ export async function npsAuthentication(
     sendTelemetryEvent(telemetry,
         { eventName: VSCODE_EXTENSION_NPS_AUTHENTICATION_STARTED }
     );
+
     try {
         const session = await vscode.authentication.getSession(
             PROVIDER_ID,
@@ -159,6 +169,7 @@ export async function npsAuthentication(
             { silent: true }
         );
         accessToken = session?.accessToken ?? "";
+
         if (!accessToken) {
             throw new Error(ERROR_CONSTANTS.NO_ACCESS_TOKEN);
         }
@@ -189,6 +200,7 @@ export async function graphClientAuthentication(
     firstTimeAuth = false
 ): Promise<string> {
     let accessToken = "";
+
     try {
         let session = await vscode.authentication.getSession(
             PROVIDER_ID,
@@ -211,6 +223,7 @@ export async function graphClientAuthentication(
         }
 
         accessToken = session?.accessToken ?? "";
+
         if (!accessToken) {
             throw new Error(ERROR_CONSTANTS.NO_ACCESS_TOKEN);
         }
@@ -241,6 +254,7 @@ export async function bapServiceAuthentication(
     firstTimeAuth = false
 ): Promise<string> {
     let accessToken = "";
+
     try {
         let session = await vscode.authentication.getSession(
             PROVIDER_ID,
@@ -257,6 +271,7 @@ export async function bapServiceAuthentication(
         }
 
         accessToken = session?.accessToken ?? "";
+
         if (!accessToken) {
             throw new Error(ERROR_CONSTANTS.NO_ACCESS_TOKEN);
         }
@@ -285,6 +300,7 @@ export async function bapServiceAuthentication(
 export function getOIDFromToken(token: string, telemetry: ITelemetry) {
     try {
         const decoded = jwt_decode(token);
+
         return decoded?.oid ?? "";
     } catch (error) {
         sendTelemetryEvent(telemetry,
@@ -300,7 +316,9 @@ export async function powerPlatformAPIAuthentication(
     firstTimeAuth = false
 ): Promise<string> {
     let accessToken = "";
+
     const PPAPI_WEBSITES_ENDPOINT = [ServiceEndpointCategory.TEST, ServiceEndpointCategory.PREPROD].includes(serviceEndpointStamp) ? PPAPI_PREPROD_WEBSITES_SERVICE_SCOPE_DEFAULT : PPAPI_WEBSITES_SERVICE_SCOPE_DEFAULT;
+
     try {
         let session = await vscode.authentication.getSession(
             PROVIDER_ID,
@@ -317,6 +335,7 @@ export async function powerPlatformAPIAuthentication(
         }
 
         accessToken = session?.accessToken ?? "";
+
         if (!accessToken) {
             throw new Error(ERROR_CONSTANTS.NO_ACCESS_TOKEN);
         }

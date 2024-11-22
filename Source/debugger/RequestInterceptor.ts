@@ -126,6 +126,7 @@ export class RequestInterceptor implements Disposable {
 				error,
 				"Could not respond to request",
 			);
+
 			return;
 		}
 

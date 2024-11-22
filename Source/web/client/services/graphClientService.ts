@@ -29,6 +29,7 @@ export class GraphClientService {
 			WebExtensionContext.telemetry.getTelemetryReporter(),
 			firstTimeAuth,
 		);
+
 		if (!accessToken) {
 			WebExtensionContext.telemetry.sendErrorTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_GRAPH_CLIENT_AUTHENTICATION_FAILED,
@@ -49,12 +50,15 @@ export class GraphClientService {
 		let requestSentAtTime = new Date().getTime();
 
 		const basePath = Constants.MICROSOFT_GRAPH_USERS_BASE_URL;
+
 		let requestUrl;
 
 		switch (service) {
 			case Constants.GraphService.GRAPH_MAIL:
 				requestUrl = new URL(userId, basePath);
+
 				break;
+
 			case Constants.GraphService.GRAPH_PROFILE_PICTURE:
 				requestUrl = new URL(
 					path.join(
@@ -63,7 +67,9 @@ export class GraphClientService {
 					),
 					basePath,
 				);
+
 				break;
+
 			default:
 				return;
 		}
@@ -103,6 +109,7 @@ export class GraphClientService {
 			return await response.json();
 		} catch (error) {
 			const errorMsg = (error as Error)?.message;
+
 			if ((error as Response)?.status > 0) {
 				WebExtensionContext.telemetry.sendAPIFailureTelemetry(
 					requestUrl.href,
@@ -135,6 +142,7 @@ export class GraphClientService {
 				Constants.GraphService.GRAPH_MAIL,
 				userId,
 			);
+
 			return await response.mail;
 		} catch (error) {
 			WebExtensionContext.telemetry.sendErrorTelemetry(
@@ -156,6 +164,7 @@ export class GraphClientService {
 				Constants.GraphService.GRAPH_PROFILE_PICTURE,
 				userId,
 			);
+
 			return await response;
 		} catch (error) {
 			WebExtensionContext.telemetry.sendErrorTelemetry(

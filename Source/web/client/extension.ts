@@ -49,6 +49,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // setup telemetry
     // TODO: Determine how to determine the user's dataBoundary
     const dataBoundary = undefined;
+
     const appInsightsResource =
         vscodeExtAppInsightsResourceProvider.GetAppInsightsResourceForDataBoundary(
             dataBoundary
@@ -65,6 +66,7 @@ export function activate(context: vscode.ExtensionContext): void {
     );
 
     WebExtensionContext.telemetry.sendInfoTelemetry("activated");
+
     const portalsFS = new PortalsFS();
     context.subscriptions.push(
         vscode.workspace.registerFileSystemProvider(
@@ -87,10 +89,12 @@ export function activate(context: vscode.ExtensionContext): void {
                 );
 
                 const { appName, entity, entityId, searchParams } = args;
+
                 const queryParamsMap = new Map<string, string>();
 
                 if (searchParams) {
                     const queryParams = new URLSearchParams(searchParams);
+
                     for (const pair of queryParams.entries()) {
                         queryParamsMap.set(
                             pair[0].trim().toLowerCase(),
@@ -168,6 +172,7 @@ export function activate(context: vscode.ExtensionContext): void {
                                 powerPagesNavigation();
 
                                 await NPSService.setEligibility();
+
                                 if (WebExtensionContext.npsEligibility) {
                                     NPSWebView.createOrShow(
                                         context.extensionUri
@@ -175,6 +180,7 @@ export function activate(context: vscode.ExtensionContext): void {
                                 }
                             }
                             break;
+
                         default:
                             {
                                 showErrorDialog(
@@ -204,6 +210,7 @@ export function activate(context: vscode.ExtensionContext): void {
                         activate.name,
                         `appName:${appName}`
                     );
+
                     return;
                 }
             }
@@ -272,6 +279,7 @@ export function processWalkthroughFirstRunExperience(context: vscode.ExtensionCo
         IS_MULTIFILE_FIRST_RUN_EXPERIENCE,
         true
     );
+
     if (isMultifileFirstRun && WebExtensionContext.showMultifileInVSCode) {
         vscode.commands.executeCommand(
             `workbench.action.openWalkthrough`,
@@ -300,11 +308,13 @@ export function processWorkspaceStateChanges(context: vscode.ExtensionContext) {
             event.opened.concat(event.changed).forEach(tab => {
                 if (tab.input instanceof vscode.TabInputCustom || tab.input instanceof vscode.TabInputText) {
                     const document = tab.input;
+
                     const entityInfo: IEntityInfo = {
                         entityId: getFileEntityId(document.uri.fsPath),
                         entityName: getFileEntityName(document.uri.fsPath),
                         rootWebPageId: getFileRootWebPageId(document.uri.fsPath),
                     };
+
                     if (entityInfo.entityId && entityInfo.entityName) {
                         context.workspaceState.update(document.uri.fsPath, entityInfo);
                         WebExtensionContext.updateVscodeWorkspaceState(document.uri.fsPath, entityInfo);
@@ -334,11 +344,13 @@ export function processActiveTextEditorChange(context: vscode.ExtensionContext) 
         vscode.window.onDidChangeActiveTextEditor((editor) => {
             if (editor) {
                 const document = editor.document;
+
                 const entityInfo: IEntityInfo = {
                     entityId: getFileEntityId(document.uri.fsPath),
                     entityName: getFileEntityName(document.uri.fsPath),
                     rootWebPageId: getFileRootWebPageId(document.uri.fsPath),
                 };
+
                 if (entityInfo.entityId && entityInfo.entityName && isCoPresenceEnabled()) {
                     // sending message to webworker event listener for Co-Presence feature
                     sendingMessageToWebWorkerForCoPresence(entityInfo);
@@ -444,6 +456,7 @@ export function createWebWorkerInstance(
                 }
 
                 const entityInfo = context.workspaceState.get(vscode.window.activeTextEditor?.document.uri.fsPath as string) as IEntityInfo;
+
                 if (entityInfo.rootWebPageId === undefined || entityInfo.rootWebPageId === "" || entityInfo.rootWebPageId === " ") {
                     entityInfo.rootWebPageId = getFileRootWebPageId(vscode.window.activeTextEditor?.document.uri.fsPath as string);
                 }
@@ -472,9 +485,11 @@ export async function showSiteVisibilityDialog() {
             isCloseAffordance: true,
             title: vscode.l10n.t("Edit the site"),
         };
+
         const siteMessage = vscode.l10n.t(
             "Be careful making changes. Anyone can see the changes you make immediately. Choose Edit the site to make edits, or close the editor tab to cancel without editing."
         );
+
         const options = { detail: siteMessage, modal: true };
         await vscode.window.showWarningMessage(
             vscode.l10n.t("You are editing a live, public site "),
@@ -625,24 +640,29 @@ function showNotificationForCopilot(context: vscode.ExtensionContext, orgId: str
     }
 
     const currentVersion = vscode.extensions.getExtension(EXTENSION_ID)?.packageJSON.version;
+
     const storedVersion = context.globalState.get(EXTENSION_VERSION_KEY);
 
     if (!storedVersion || storedVersion !== currentVersion) {
         // Show notification panel for the first load or after an update
         WebExtensionContext.telemetry.sendInfoTelemetry(webExtensionTelemetryEventNames.WEB_EXTENSION_WEB_COPILOT_NOTIFICATION_SHOWN,
             { orgId: orgId });
+
         const telemetryData = JSON.stringify({ orgId: orgId });
         copilotNotificationPanel(context, WebExtensionContext.telemetry.getTelemetryReporter(), telemetryData);
 
         // Update the stored version to the current version
         context.globalState.update(EXTENSION_VERSION_KEY, currentVersion);
+
         return;
     }
 
     const isCopilotNotificationDisabled = context.globalState.get(COPILOT_NOTIFICATION_DISABLED, false);
+
     if (!isCopilotNotificationDisabled) {
         WebExtensionContext.telemetry.sendInfoTelemetry(webExtensionTelemetryEventNames.WEB_EXTENSION_WEB_COPILOT_NOTIFICATION_SHOWN,
             { orgId: orgId });
+
         const telemetryData = JSON.stringify({ orgId: orgId });
         copilotNotificationPanel(context, WebExtensionContext.telemetry.getTelemetryReporter(), telemetryData);
     }
@@ -650,6 +670,7 @@ function showNotificationForCopilot(context: vscode.ExtensionContext, orgId: str
 
 export async function deactivate(): Promise<void> {
     const telemetry = WebExtensionContext.telemetry;
+
     if (telemetry) {
         telemetry.sendInfoTelemetry("End");
     }
@@ -666,12 +687,14 @@ function isActiveDocument(fileFsPath: string): boolean {
 
 async function fetchArtemisData(orgId: string) {
     const artemisResponse = await ArtemisService.getArtemisResponse(orgId, WebExtensionContext.telemetry.getTelemetryReporter(), "");
+
     if (artemisResponse === null || artemisResponse.response === null) {
         WebExtensionContext.telemetry.sendErrorTelemetry(
             webExtensionTelemetryEventNames.WEB_EXTENSION_ARTEMIS_RESPONSE_FAILED,
             fetchArtemisData.name,
             ARTEMIS_RESPONSE_FAILED
         );
+
         return;
     }
 

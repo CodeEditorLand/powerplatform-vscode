@@ -96,6 +96,7 @@ export class ArtemisService {
 		sessionID: string,
 	): Promise<IArtemisServiceResponse | null> {
 		const endpointDetails = ArtemisService.convertGuidToUrls(orgId);
+
 		const artemisResponses = await ArtemisService.fetchIslandInfo(
 			endpointDetails,
 			telemetry,
@@ -126,6 +127,7 @@ export class ArtemisService {
 						endpointDetail.endpoint,
 						requestInit,
 					);
+
 					if (!response.ok) {
 						throw new Error("Request failed");
 					}
@@ -140,9 +142,11 @@ export class ArtemisService {
 			});
 
 			const results = await Promise.all(promises);
+
 			const successfulResponses = results.filter(
 				(result) => result !== null && result.response !== null,
 			);
+
 			return successfulResponses as IArtemisServiceResponse[];
 		} catch (error) {
 			sendTelemetryEvent(telemetry, {
@@ -150,6 +154,7 @@ export class ArtemisService {
 				copilotSessionId: sessionID,
 				error: error as Error,
 			});
+
 			return null;
 		}
 	}
@@ -166,16 +171,27 @@ export class ArtemisService {
 		orgId: string,
 	): IArtemisServiceEndpointInformation[] {
 		const updatedOrgId = orgId.replace(/-/g, "");
+
 		const domain = updatedOrgId.slice(0, -1);
+
 		const domainProd = updatedOrgId.slice(0, -2);
+
 		const nonProdSegment = updatedOrgId.slice(-1);
+
 		const prodSegment = updatedOrgId.slice(-2);
+
 		const tstUrl = `https://${domain}.${nonProdSegment}.organization.api.test.powerplatform.com/gateway/cluster?api-version=1`;
+
 		const preprodUrl = `https://${domain}.${nonProdSegment}.organization.api.preprod.powerplatform.com/gateway/cluster?api-version=1`;
+
 		const prodUrl = `https://${domainProd}.${prodSegment}.organization.api.powerplatform.com/gateway/cluster?api-version=1`;
+
 		const gccUrl = `https://${domain}.${nonProdSegment}.organization.api.gov.powerplatform.microsoft.us/gateway/cluster?api-version=1`;
+
 		const highUrl = `https://${domain}.${nonProdSegment}.organization.api.high.powerplatform.microsoft.us/gateway/cluster?api-version=1`;
+
 		const mooncakeUrl = `https://${domain}.${nonProdSegment}.organization.api.powerplatform.partner.microsoftonline.cn/gateway/cluster?app-version=1`;
+
 		const dodUrl = `https://${domain}.${nonProdSegment}.organization.api.appsplatform.us/gateway/cluster?app-version=1`;
 
 		return [

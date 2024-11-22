@@ -47,12 +47,15 @@ export class GeneratorAcquisition implements IDisposable {
 
     public get npmCommand(): string {
         const execName = (os.platform() === 'win32') ? 'npm.cmd' : 'npm';
+
         return execName;
     }
 
     public get yoCommandPath(): string | null {
         const execName = (os.platform() === 'win32') ? 'yo.cmd' : 'yo';
+
         const yoBinaryPath = path.join(this._ppagesGlobalPath, 'node_modules', ".bin", execName);
+
         return fs.pathExistsSync(yoBinaryPath) ? yoBinaryPath : null;
     }
 
@@ -83,6 +86,7 @@ export class GeneratorAcquisition implements IDisposable {
                     message: 'Cannot install Power Pages generator. Please install npm and try again.',
                     comment: ["Do not translate 'npm'"]
                 }));
+
                 return null;
             }
             this._context.showInformationMessage(
@@ -104,6 +108,7 @@ export class GeneratorAcquisition implements IDisposable {
             fs.writeFileSync(path.join(this._ppagesGlobalPath, "package.json"), JSON.stringify(packageJson), 'utf-8');
 
             const child = this.npm(['install']);
+
             if (child.error) {
                 this._context.telemetry.sendTelemetryErrorEvent('PowerPagesGeneratorInstallComplete', { cliVersion: this._generatorVersion }, {}, [String(child.error)]);
                 oneDSLoggerWrapper.getLogger().traceError(
@@ -134,6 +139,7 @@ export class GeneratorAcquisition implements IDisposable {
         }
         try {
             const packageJson = JSON.parse(fs.readFileSync(this._installedPackageJson, 'utf-8'));
+
             return packageJson?.dependencies?.[PORTAL_YEOMAN_GENERATOR_PACKAGE_NAME];
         }
         catch {

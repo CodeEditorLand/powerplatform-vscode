@@ -28,6 +28,7 @@ export class EtagHandlerService {
 		portalFs: PortalsFS,
 	): Promise<string> {
 		const entityName = getFileEntityName(fileFsPath);
+
 		const entityId = getFileEntityId(fileFsPath);
 
 		const requestSentAtTime = new Date().getTime();
@@ -79,6 +80,7 @@ export class EtagHandlerService {
 			);
 
 			await WebExtensionContext.dataverseAuthentication();
+
 			const response =
 				await WebExtensionContext.concurrencyHandler.handleRequest(
 					requestUrl,
@@ -87,9 +89,11 @@ export class EtagHandlerService {
 
 			if (response.ok) {
 				const result = await response.json();
+
 				const currentContent = new TextDecoder().decode(
 					await portalFs.readFile(vscode.Uri.parse(fileFsPath)),
 				);
+
 				const latestContent = getAttributeContent(
 					result,
 					attributePath,
@@ -119,6 +123,7 @@ export class EtagHandlerService {
 					this.getLatestFileContentAndUpdateMetadata.name,
 					response.statusText,
 				);
+
 				throw new Error(JSON.stringify(response));
 			}
 
@@ -156,7 +161,9 @@ export class EtagHandlerService {
 
 	public static async updateFileEtag(fileFsPath: string) {
 		const entityName = getFileEntityName(fileFsPath);
+
 		const entityId = getFileEntityId(fileFsPath);
+
 		const requestSentAtTime = new Date().getTime();
 
 		const dataverseOrgUrl = WebExtensionContext.urlParametersMap.get(
@@ -188,6 +195,7 @@ export class EtagHandlerService {
 			);
 
 			await WebExtensionContext.dataverseAuthentication();
+
 			const response =
 				await WebExtensionContext.concurrencyHandler.handleRequest(
 					requestUrl,
@@ -203,6 +211,7 @@ export class EtagHandlerService {
 					this.updateFileEtag.name,
 					response.statusText,
 				);
+
 				throw new Error(JSON.stringify(response));
 			}
 

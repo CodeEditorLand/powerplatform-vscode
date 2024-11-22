@@ -46,6 +46,7 @@ export const createWebTemplate = (
 			.then(async (webTemplateName) => {
 				if (!isNullOrEmpty(webTemplateName) && webTemplateName) {
 					const webTemplateFile = formatFileName(webTemplateName);
+
 					const webTemplateFolder = formatFolderName(webTemplateName);
 
 					const watcherPattern = path.join(
@@ -79,6 +80,7 @@ export const createWebTemplate = (
 			fileEntityType: Tables.WEBTEMPLATE,
 			exception: error as Error,
 		});
+
 		throw new Error(error);
 	}
 };
@@ -91,7 +93,9 @@ function validateTemplateName(
 		return vscode.l10n.t("Please enter a name for the web template.");
 	}
 	const file = formatFileName(name);
+
 	const folder = formatFolderName(name);
+
 	if (selectedWorkspaceFolder) {
 		const filePath = path.join(
 			selectedWorkspaceFolder,
@@ -99,8 +103,10 @@ function validateTemplateName(
 			folder,
 			`${file}.webtemplate.source.html`,
 		);
+
 		try {
 			const stat = statSync(filePath);
+
 			if (stat) {
 				return vscode.l10n.t(
 					"A webtemplate with the same name already exists. Please enter a different name.",

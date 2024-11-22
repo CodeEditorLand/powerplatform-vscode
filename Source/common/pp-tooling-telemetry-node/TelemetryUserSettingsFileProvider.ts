@@ -73,6 +73,7 @@ export class TelemetryUserSettingsFileProvider
 			settings.uniqueId === "00000000-0000-0000-0000-000000000000"
 		) {
 			// BatchedTelemetryTraceSource.TraceInformation($"{nameof(TelemetryUserSettingsFileProvider)} User settings file missing unique id. Generating and saving new id. Settings file path: {SettingsFilePath}.");
+
 			settings.uniqueId = uuid.v4();
 			this.WriteSettings(settings, /*allowOverwrite*/ true);
 		}
@@ -115,14 +116,17 @@ export class TelemetryUserSettingsFileProvider
 			const parsed = JSON.parse(
 				json,
 			) as Partial<IUserSettingsDataContract>;
+
 			if (parsed.settingVersion !== SettingVersionId)
 				throw new Error(
 					`settingVersion should be '${SettingVersionId}'.`,
 				);
+
 			if (parsed.uniqueId && parsed.uniqueId.length !== 36)
 				throw new Error(
 					`uniqueId is allowed to be undefined or it should be a Guid of length 36.`,
 				);
+
 			if (typeof parsed.telemetryEnabled !== "boolean")
 				throw new Error(`telemetryEnabled should be a boolean.`);
 
@@ -142,13 +146,16 @@ export class TelemetryUserSettingsFileProvider
 		// Serialize the settings to json
 		if (proposedUserSettings.settingVersion !== SettingVersionId)
 			throw new Error(`settingVersion should be '${SettingVersionId}'.`);
+
 		if (
 			!proposedUserSettings.uniqueId ||
 			proposedUserSettings.uniqueId.length !== 36
 		)
 			throw new Error(`uniqueId should be a Guid of length 36.`);
+
 		if (typeof proposedUserSettings.telemetryEnabled !== "boolean")
 			throw new Error(`telemetryEnabled should be a boolean.`);
+
 		const json = JSON.stringify(proposedUserSettings);
 
 		// see: https://nodejs.org/api/fs.html#file-system-flags

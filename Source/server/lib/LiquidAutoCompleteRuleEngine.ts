@@ -34,9 +34,11 @@ interface ILiquidAutoComplete {
 }
 
 const liquidTagStartExpression = "{%";
+
 const liquidTagEndExpression = "%}";
 
 const liquidOutputStartExpression = "{{";
+
 const liquidOutputEndExpression = "}}";
 
 const rules: ILiquidAutoCompleteRule[] = [];
@@ -72,6 +74,7 @@ const getSuggestionsFromRules = (
 						success: "true",
 					},
 				} as IAutoCompleteTelemetryData);
+
 				return suggestions;
 			} else {
 				return [];
@@ -91,15 +94,18 @@ export const getSuggestions = (
 	connection: Connection,
 ) => {
 	const editedLine = getEditedLineContent(rowIndex, editedTextDocument);
+
 	const liquidForAutocomplete = getEditedLiquidExpression(
 		colIndex,
 		editedLine,
 	);
+
 	if (!liquidForAutocomplete) {
 		return [];
 	}
 	try {
 		const startTime = performance.now();
+
 		const tokenizer = new Tokenizer(
 			liquidForAutocomplete.LiquidExpression.slice(
 				0,
@@ -110,7 +116,9 @@ export const getSuggestions = (
 					liquidForAutocomplete.AutoCompleteAtIndex,
 				),
 		);
+
 		const liquidTokens = tokenizer.readTopLevelTokens();
+
 		if (liquidTokens[0].kind === TokenKind.HTML) {
 			return [];
 		}
@@ -124,6 +132,7 @@ export const getSuggestions = (
 				liquidAutoCompleteTimeMs: performance.now() - startTime,
 			},
 		} as IAutoCompleteTelemetryData);
+
 		return suggestions;
 	} catch (e) {
 		// Add telemetry log. Failed to parse liquid expression. (This may bloat up the logs so double check about this)
@@ -159,24 +168,30 @@ const getLiquidExpression = (
 	endDelimiter: string,
 ) => {
 	const contentOnLeftOfCursor = editedLine.substring(0, colIndex);
+
 	const startIndexOfEditedLiquidExpression =
 		contentOnLeftOfCursor.lastIndexOf(startDelimiter);
+
 	const editedLiquidExpressionOnLeftOfCursor =
 		contentOnLeftOfCursor.substring(
 			startIndexOfEditedLiquidExpression,
 			contentOnLeftOfCursor.length,
 		);
+
 	const contentOnRightOfCursor = editedLine.substring(
 		colIndex,
 		editedLine.length,
 	);
+
 	const endIndexOfEditedLiquidExpression =
 		contentOnRightOfCursor.indexOf(endDelimiter);
+
 	const editedLiquidExpressionOnRightOfCursor =
 		contentOnRightOfCursor.substring(
 			0,
 			endIndexOfEditedLiquidExpression + liquidTagEndExpression.length,
 		);
+
 	if (
 		startIndexOfEditedLiquidExpression >= 0 &&
 		endIndexOfEditedLiquidExpression >= 0

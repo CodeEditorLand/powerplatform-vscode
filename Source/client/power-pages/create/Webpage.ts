@@ -60,6 +60,7 @@ export const createWebpage = async (
 			vscode.window.showErrorMessage(
 				vscode.l10n.t("No page templates found"),
 			);
+
 			return;
 		}
 
@@ -68,6 +69,7 @@ export const createWebpage = async (
 
 		if (paths.length === 0) {
 			vscode.window.showErrorMessage(vscode.l10n.t("No webpages found"));
+
 			return;
 		}
 
@@ -87,6 +89,7 @@ export const createWebpage = async (
 		// Create the webpage using the yo command
 		if (!isNullOrEmpty(webpageName) && selectedWorkspaceFolder) {
 			const file = formatFileName(webpageName);
+
 			const folder = formatFolderName(webpageName);
 
 			const watcherPattern = path.join(
@@ -95,6 +98,7 @@ export const createWebpage = async (
 				"content-pages",
 				`${file}.*.webpage.copy.html`,
 			);
+
 			const watcher = createFileWatcher(
 				context,
 				selectedWorkspaceFolder,
@@ -117,6 +121,7 @@ export const createWebpage = async (
 			fileEntityType: Tables.WEBPAGE,
 			exception: error as Error,
 		});
+
 		throw new Error(error);
 	}
 };
@@ -139,6 +144,7 @@ async function getWebpageInputs(
 	async function collectInputs() {
 		const state = {} as Partial<IWebpageInputState>;
 		await MultiStepInput.run((input) => inputWebpageName(input, state));
+
 		return state as IWebpageInputState;
 	}
 
@@ -154,6 +160,7 @@ async function getWebpageInputs(
 			placeholder: vscode.l10n.t("Enter name"),
 			validate: validateNameIsUnique,
 		});
+
 		return (input: MultiStepInput) => pickPageTemplate(input, state);
 	}
 
@@ -173,6 +180,7 @@ async function getWebpageInputs(
 					: undefined,
 		});
 		state.pageTemplate = pick.label;
+
 		return (input: MultiStepInput) => pickParentPage(input, state);
 	}
 
@@ -217,5 +225,6 @@ async function getWebpageInputs(
 	}
 
 	const state = await collectInputs();
+
 	return state;
 }

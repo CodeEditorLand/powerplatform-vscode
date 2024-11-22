@@ -28,10 +28,13 @@ export class PacWrapperContext implements IPacWrapperContext {
 	}
 	public GetCloudSetting(): string {
 		const config = vscode.workspace.getConfiguration("powerPlatform");
+
 		const cloud = config.get<string>("auth.cloud");
+
 		const override = config
 			.get<string>("experimental.auth.testCloudOverride")
 			?.trim();
+
 		return override || cloud || "Public";
 	}
 }

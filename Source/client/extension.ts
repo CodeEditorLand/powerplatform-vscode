@@ -61,9 +61,13 @@ import { disposeDiagnostics } from "./power-pages/validationDiagnostics";
 import { readUserSettings } from "./telemetry/localfileusersettings";
 
 let client: LanguageClient;
+
 let _context: vscode.ExtensionContext;
+
 let htmlServerRunning = false;
+
 let yamlServerRunning = false;
+
 let _telemetry: TelemetryReporter;
 
 export async function activate(
@@ -74,6 +78,7 @@ export async function activate(
 	// setup telemetry
 	const telemetryEnv =
 		AppTelemetryConfigUtility.createGlobalTelemetryEnvironment();
+
 	const appInsightsResource =
 		vscodeExtAppInsightsResourceProvider.GetAppInsightsResourceForDataBoundary(
 			telemetryEnv.dataBoundary,
@@ -199,8 +204,11 @@ export async function activate(
 	await handleFileSystemCallbacks(_context, _telemetry);
 
 	const cliContext = new CliAcquisitionContext(_context, _telemetry);
+
 	const cli = new CliAcquisition(cliContext);
+
 	const cliPath = await cli.ensureInstalled();
+
 	const pacTerminal = new PacTerminal(_context, _telemetry, cliPath);
 	_context.subscriptions.push(cli);
 	_context.subscriptions.push(pacTerminal);
@@ -215,18 +223,23 @@ export async function activate(
 	_context.subscriptions.push(
 		orgChangeEvent(async (orgDetails: ActiveOrgOutput) => {
 			const orgID = orgDetails.OrgId;
+
 			const artemisResponse = await ArtemisService.getArtemisResponse(
 				orgID,
 				_telemetry,
 				"",
 			);
+
 			if (artemisResponse !== null && artemisResponse.response !== null) {
 				const { geoName, geoLongName, clusterName, clusterNumber } =
 					artemisResponse.response;
+
 				const pacActiveAuth = await pacTerminal
 					.getWrapper()
 					?.activeAuth();
+
 				let AadIdObject, EnvID, TenantID;
+
 				if (pacActiveAuth && pacActiveAuth.Status === SUCCESS) {
 					AadIdObject = pacActiveAuth.Results?.filter(
 						(obj) => obj.Key === AadIdKey,
@@ -263,7 +276,9 @@ export async function activate(
 				}
 
 				oneDSLoggerWrapper.instantiate(geoName, geoLongName);
+
 				let initContext: object = { ...orgDetails, orgGeo: geoName };
+
 				if (AadIdObject?.[0]?.Value) {
 					initContext = {
 						...initContext,
@@ -280,7 +295,9 @@ export async function activate(
 
 			if (!copilotNotificationShown) {
 				let telemetryData = "";
+
 				let listOfActivePortals = [];
+
 				try {
 					listOfActivePortals = getPortalsOrgURLs(
 						workspaceFolders,
@@ -424,6 +441,7 @@ function didOpenTextDocument(document: vscode.TextDocument): void {
 
 		// Start the client. This will also launch the server
 		const disposable = client.start();
+
 		if (disposable) {
 			yamlServerRunning = true;
 			_context.subscriptions.push(disposable);
@@ -468,6 +486,7 @@ function didOpenTextDocument(document: vscode.TextDocument): void {
 
 		// Start the client. This will also launch the server
 		const disposable = client.start();
+
 		if (disposable) {
 			htmlServerRunning = true;
 			_context.subscriptions.push(disposable);
@@ -482,6 +501,7 @@ function registerClientToReceiveNotifications(client: LanguageClient) {
 	client.onReady().then(() => {
 		client.onNotification("telemetry/event", (payload: string) => {
 			const serverTelemetry = JSON.parse(payload) as ITelemetryData;
+
 			if (!!serverTelemetry && !!serverTelemetry.eventName) {
 				_telemetry.sendTelemetryEvent(
 					serverTelemetry.eventName,
@@ -503,7 +523,9 @@ function registerClientToReceiveNotifications(client: LanguageClient) {
 function isCurrentDocumentEdited(): boolean {
 	const workspaceFolderExists =
 		vscode.workspace.workspaceFolders !== undefined;
+
 	let currentPanelExists = false;
+
 	if (PortalWebView?.currentPanel) {
 		currentPanelExists = true;
 	}
@@ -520,6 +542,7 @@ function handleWorkspaceFolderChange() {
 		vscode.workspace.workspaceFolders?.map(
 			(fl) => ({ ...fl, uri: fl.uri.fsPath }) as WorkspaceFolder,
 		) || [];
+
 	if (workspaceContainsPortalConfigFolder(workspaceFolders)) {
 		vscode.commands.executeCommand(
 			"setContext",
@@ -550,6 +573,7 @@ function showNotificationForCopilot(
 
 	const currentVersion =
 		vscode.extensions.getExtension(EXTENSION_ID)?.packageJSON.version;
+
 	const storedVersion = _context.globalState.get(EXTENSION_VERSION_KEY);
 
 	if (!storedVersion || storedVersion !== currentVersion) {
@@ -571,6 +595,7 @@ function showNotificationForCopilot(
 
 		// Update the stored version to the current version
 		_context.globalState.update(EXTENSION_VERSION_KEY, currentVersion);
+
 		return;
 	}
 

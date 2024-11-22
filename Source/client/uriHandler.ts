@@ -9,6 +9,7 @@ import { PacWrapper } from "./pac/PacWrapper";
 
 export function RegisterUriHandler(pacWrapper: PacWrapper): vscode.Disposable {
 	const uriHandler = new UriHandler(pacWrapper);
+
 	return vscode.window.registerUriHandler(uriHandler);
 }
 

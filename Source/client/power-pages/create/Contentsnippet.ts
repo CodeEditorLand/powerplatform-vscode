@@ -51,6 +51,7 @@ export const createContentSnippet = async (
 
 		if (!isNullOrEmpty(contentSnippetName)) {
 			const folder = formatFolderName(contentSnippetName);
+
 			const file = formatFileName(contentSnippetName);
 
 			const watcherPattern = path.join(
@@ -58,6 +59,7 @@ export const createContentSnippet = async (
 				folder,
 				`${file}.*.contentsnippet.yml`,
 			);
+
 			const watcher = createFileWatcher(
 				context,
 				selectedWorkspaceFolder,
@@ -80,6 +82,7 @@ export const createContentSnippet = async (
 			fileEntityType: CONTENT_SNIPPET,
 			exception: error as Error,
 		});
+
 		throw new Error(error);
 	}
 };
@@ -94,6 +97,7 @@ async function getContentSnippetInputs(selectedWorkspaceFolder: string) {
 	async function collectInputs() {
 		const state = {} as Partial<State>;
 		await MultiStepInput.run((input) => inputName(input, state));
+
 		return state as State;
 	}
 
@@ -108,6 +112,7 @@ async function getContentSnippetInputs(selectedWorkspaceFolder: string) {
 			),
 			validate: validateNameIsUnique,
 		});
+
 		return (input: MultiStepInput) => pickType(input, state);
 	}
 
@@ -134,13 +139,16 @@ async function getContentSnippetInputs(selectedWorkspaceFolder: string) {
 			);
 		}
 		const folder = formatFolderName(name);
+
 		const filePath = path.join(
 			selectedWorkspaceFolder,
 			TableFolder.CONTENT_SNIPPET_FOLDER,
 			folder,
 		);
+
 		try {
 			const stat = statSync(filePath);
+
 			if (stat) {
 				return vscode.l10n.t(
 					"A content snippet with the same name already exists. Please enter a different name.",
@@ -154,5 +162,6 @@ async function getContentSnippetInputs(selectedWorkspaceFolder: string) {
 	}
 
 	const state = await collectInputs();
+
 	return state;
 }

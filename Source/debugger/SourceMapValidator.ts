@@ -23,6 +23,7 @@ export class SourceMapValidator {
 	 */
 	public static isValid(fileContents: string): boolean {
 		const sourceMapMatch = fileContents.match(this.sourceMapRegex);
+
 		return !!sourceMapMatch;
 	}
 }

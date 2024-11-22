@@ -45,8 +45,11 @@ export async function copilotNotificationPanel(
 	} = getWebviewURIs(context, NotificationPanel);
 
 	const nonce = getNonce();
+
 	const webview = NotificationPanel.webview;
+
 	let isGitHubCopilotPresent = false;
+
 	let GITHUB_COPILOT_CHAT: string;
 
 	if (vscode.extensions.getExtension("github.copilot-chat")) {
@@ -93,7 +96,9 @@ export async function copilotNotificationPanel(
 						COPILOT_NOTIFICATION_DISABLED,
 						true,
 					);
+
 					break;
+
 				case "unchecked":
 					telemetry.sendTelemetryEvent(
 						CopilotNotificationDoNotShowUnchecked,
@@ -114,7 +119,9 @@ export async function copilotNotificationPanel(
 						COPILOT_NOTIFICATION_DISABLED,
 						false,
 					);
+
 					break;
+
 				case "tryCopilot":
 					telemetry.sendTelemetryEvent(
 						CopilotTryNotificationClickedEvent,
@@ -133,7 +140,9 @@ export async function copilotNotificationPanel(
 						});
 					vscode.commands.executeCommand("powerpages.copilot.focus");
 					NotificationPanel?.dispose();
+
 					break;
+
 				case "learnMore":
 					telemetry.sendTelemetryEvent(
 						CopilotNotificationTryGitHubCopilotClicked,
@@ -150,6 +159,7 @@ export async function copilotNotificationPanel(
 							countOfActivePortals:
 								countOfActivePortals as string,
 						});
+
 					if (isGitHubCopilotPresent) {
 						telemetry.sendTelemetryEvent(
 							VSCodeExtensionGitHubChatPanelOpened,
@@ -234,6 +244,7 @@ function getWebviewURIs(
 		srcPath,
 		"copilotNotification.css",
 	);
+
 	const notificationCssUri =
 		NotificationPanel.webview.asWebviewUri(notificationCssPath);
 
@@ -241,14 +252,17 @@ function getWebviewURIs(
 		srcPath,
 		"copilotNotification.js",
 	);
+
 	const notificationJsUri =
 		NotificationPanel.webview.asWebviewUri(notificationJsPath);
 
 	const copilotImagePath = vscode.Uri.joinPath(srcPath, "notification.svg");
+
 	const copilotImageUri =
 		NotificationPanel.webview.asWebviewUri(copilotImagePath);
 
 	const arrowImagePath = vscode.Uri.joinPath(srcPath, "arrow.svg");
+
 	const arrowImageUri =
 		NotificationPanel.webview.asWebviewUri(arrowImagePath);
 

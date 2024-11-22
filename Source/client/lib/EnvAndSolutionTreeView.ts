@@ -76,6 +76,7 @@ export class EnvAndSolutionTreeView
 		if (!element) {
 			// root
 			const envOutput = await this.envDataSource();
+
 			if (
 				envOutput &&
 				envOutput.Status === "Success" &&
@@ -95,6 +96,7 @@ export class EnvAndSolutionTreeView
 			const solutionOutput = await this.solutionDataSource(
 				element.model.EnvironmentUrl,
 			);
+
 			if (
 				solutionOutput &&
 				solutionOutput.Status === "Success" &&
@@ -194,8 +196,10 @@ class EnvOrSolutionTreeItem extends vscode.TreeItem {
 			EnvOrSolutionTreeItem.createLabel(model),
 			EnvOrSolutionTreeItem.setCollapsibleState(model),
 		);
+
 		if ("SolutionUniqueName" in model) {
 			this.contextValue = "SOLUTION";
+
 			const solutionType = model.IsManaged
 				? vscode.l10n.t("Managed")
 				: vscode.l10n.t("Unmanaged");
@@ -216,6 +220,7 @@ class EnvOrSolutionTreeItem extends vscode.TreeItem {
 					"The {3} represents Solution's Type (Managed or Unmanaged), but that test is localized separately.",
 				],
 			});
+
 			if (model.IsManaged) {
 				this.iconPath = new vscode.ThemeIcon("lock");
 			}
@@ -238,6 +243,7 @@ class EnvOrSolutionTreeItem extends vscode.TreeItem {
 					"The {3} represents Dataverse Environment's Organization ID (GUID)",
 				],
 			});
+
 			if (model.IsActive) {
 				this.iconPath = new vscode.ThemeIcon("star-full");
 			}

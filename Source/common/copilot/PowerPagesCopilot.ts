@@ -90,14 +90,19 @@ import {
 } from "./utils/copilotUtil";
 
 let intelligenceApiToken: string;
+
 let userID: string; // Populated from PAC or intelligence API
 let userName: string; // Populated from intelligence API
 let sessionID: string; // Generated per session
 
 let orgID: string;
+
 let environmentName: string;
+
 let activeOrgUrl: string;
+
 let tenantId: string | undefined;
+
 let environmentId: string;
 
 declare const IS_DESKTOP: string | undefined;
@@ -151,19 +156,24 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 			const handleSelectionChange = async (commandType: string) => {
 				const editor = vscode.window.activeTextEditor;
+
 				if (!editor) {
 					return;
 				}
 				const selectedCode = getSelectedCode(editor);
+
 				const selectedCodeLineRange = getSelectedCodeLineRange(editor);
+
 				if (commandType === EXPLAIN_CODE && selectedCode.length === 0) {
 					// Show a message if the selection is empty and don't send the message to webview
 					vscode.window.showInformationMessage(
 						vscode.l10n.t("Selection is empty."),
 					);
+
 					return;
 				}
 				const withinTokenLimit = isWithinTokenLimit(selectedCode, 1000);
+
 				if (commandType === EXPLAIN_CODE) {
 					const tokenSize = encode(selectedCode).length;
 					sendTelemetryEvent(this.telemetry, {
@@ -177,6 +187,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						),
 						tokenSize: String(tokenSize),
 					});
+
 					if (withinTokenLimit === false) {
 						return;
 					}
@@ -246,6 +257,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 	private async handleOrgChange() {
 		orgID = "";
+
 		const pacOutput = await this._pacWrapper?.activeOrg();
 
 		if (pacOutput && pacOutput.Status === SUCCESS) {
@@ -368,6 +380,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 					if (this.aibEndpoint === COPILOT_UNAVAILABLE) {
 						this.sendMessageToWebview({ type: "Unavailable" });
+
 						return;
 					} else if (
 						getDisabledOrgList()?.includes(orgID) ||
@@ -380,6 +393,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							userId: userID,
 						});
 						this.sendMessageToWebview({ type: "Unavailable" });
+
 						return;
 					}
 
@@ -391,6 +405,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 					});
 					this.sendMessageToWebview({ type: "env" });
 					await this.checkAuthentication();
+
 					if (orgID && userName) {
 						this.sendMessageToWebview({
 							type: "isLoggedIn",
@@ -408,10 +423,12 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						this.loginButtonRendered = true;
 					}
 					this.sendMessageToWebview({ type: "welcomeScreen" });
+
 					break;
 				}
 				case "login": {
 					this.handleLogin();
+
 					break;
 				}
 				case "newUserPrompt": {
@@ -458,6 +475,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						orgId: orgID,
 						userId: userID,
 					});
+
 					break;
 				}
 				case "copyCodeToClipboard": {
@@ -471,14 +489,17 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						orgId: orgID,
 						userId: userID,
 					});
+
 					break;
 				}
 				case "clearChat": {
 					sessionID = uuidv4();
+
 					break;
 				}
 				case "userFeedback": {
 					const feedbackValue = data.value.feedbackValue;
+
 					const messageScenario = data.value.messageScenario;
 
 					if (feedbackValue === THUMBS_UP) {
@@ -528,6 +549,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						userId: userID,
 					});
 					openWalkthrough(this._extensionUri);
+
 					break;
 				}
 				case "codeLineCount": {
@@ -538,6 +560,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						orgId: orgID,
 						userId: userID,
 					});
+
 					break;
 				}
 				case "openGitHubCopilotLink": {
@@ -548,6 +571,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						orgId: orgID,
 						userId: userID,
 					});
+
 					if (
 						vscode.extensions.getExtension(GITHUB_COPILOT_CHAT_EXT)
 					) {
@@ -586,6 +610,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 	private async handleLogin() {
 		const pacOutput = await this._pacWrapper?.activeOrg();
+
 		if (pacOutput && pacOutput.Status === SUCCESS) {
 			this.handleOrgChangeSuccess.call(this, pacOutput.Results);
 
@@ -603,6 +628,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 			});
 		} else if (this._view?.visible) {
 			const userOrgUrl = await showInputBoxAndGetOrgUrl();
+
 			if (!userOrgUrl) {
 				this.sendMessageToWebview({ type: "isLoggedIn", value: false });
 
@@ -644,6 +670,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 			[`${INTELLIGENCE_SCOPE_DEFAULT}`],
 			{ silent: true },
 		);
+
 		if (session) {
 			intelligenceApiToken = session.accessToken;
 			userName = getUserName(session.account.label);
@@ -674,6 +701,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 					getActiveEditorContent();
 
 				let metadataInfo = { entityName: "", formName: "" };
+
 				let componentInfo: string[] = [];
 
 				if (
@@ -785,6 +813,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 		if (!copilotAvailabilityStatus) {
 			this.sendMessageToWebview({ type: "Unavailable" });
+
 			return;
 		} else {
 			this.sendMessageToWebview({ type: "Available" });
@@ -827,12 +856,14 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 			"scripts",
 			"copilot.js",
 		);
+
 		const copilotScriptUri = webview.asWebviewUri(copilotScriptPath);
 
 		const copilotStylePath = vscode.Uri.joinPath(
 			this._extensionUri,
 			...CopilotStylePathSegments,
 		);
+
 		const copilotStyleUri = webview.asWebviewUri(copilotStylePath);
 
 		// Use a nonce to only allow specific scripts to be run

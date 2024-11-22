@@ -77,6 +77,7 @@ export function getAttributeContent(result: any, attributePath: IAttributePath, 
         WebExtensionContext.telemetry.sendErrorTelemetry(webExtensionTelemetryEventNames.WEB_EXTENSION_ATTRIBUTE_CONTENT_ERROR,
             getAttributeContent.name,
             `For ${entityName} with entityId ${entityId} and attributePath ${JSON.stringify(attributePath)} error: ${errorMsg}`);
+
         return undefined;
     }
 
@@ -191,6 +192,7 @@ export function getImageContent(mimeType: string, fileContent: string) {
 
 export function isWebfileContentLoadNeeded(fileName: string, fsPath: string): boolean {
     const fileExtension = getFileExtension(fileName) as string;
+
     const validImageExtensions = getFileExtensionForPreload();
 
     WebExtensionContext.telemetry.sendInfoTelemetry(webExtensionTelemetryEventNames.WEB_EXTENSION_WEBFILE_EXTENSION,
@@ -243,7 +245,9 @@ export function getSupportedImageFileExtensionsForEdit() {
 
 export function isImageFileSupportedForEdit(fileName: string): boolean {
     const fileExtension = getFileExtension(fileName) as string;
+
     const supportedImageFileExtensions = getSupportedImageFileExtensionsForEdit();
+
     const isSupported = fileExtension !== undefined ?
         supportedImageFileExtensions.includes(fileExtension.toLowerCase()) : false;
 
@@ -288,6 +292,7 @@ export function getMailToPath(mail: string) {
 
 export function getRangeForMultilineMatch(text: string, pattern: string, index: number) {
     const textBeforePattern = text.substring(0, index).split('\n');
+
     const textTillPattern = text.substring(0, index + pattern.length).split('\n');
 
     // start line index 0 based
@@ -303,12 +308,15 @@ export function getRangeForMultilineMatch(text: string, pattern: string, index: 
     const endIndex = textTillPattern[endLine].length;
 
     const range = new vscode.Range(startLine, startIndex, endLine, endIndex);
+
     return range;
 }
 
 export async function validateWebsitePreviewURL(): Promise<boolean> {
     const envId = getEnvironmentIdFromUrl();
+
     const serviceEndpointStamp = WebExtensionContext.serviceEndpointCategory;
+
     const websitePreviewId = WebExtensionContext.urlParametersMap?.get(queryParameters.PORTAL_ID);
 
     if (serviceEndpointStamp === ServiceEndpointCategory.NONE || !envId || !websitePreviewId) {
@@ -317,6 +325,7 @@ export async function validateWebsitePreviewURL(): Promise<boolean> {
             validateWebsitePreviewURL.name,
             `serviceEndpointStamp:${serviceEndpointStamp}, envId:${envId}, websitePreviewId:${websitePreviewId}`
         );
+
         return false;
     }
 
@@ -327,6 +336,7 @@ export async function validateWebsitePreviewURL(): Promise<boolean> {
             webExtensionTelemetryEventNames.WEB_EXTENSION_WEBSITE_PREVIEW_URL_VALIDATION_SITE_DETAILS_FETCH_FAILED,
             validateWebsitePreviewURL.name,
         );
+
         return false;
     }
 

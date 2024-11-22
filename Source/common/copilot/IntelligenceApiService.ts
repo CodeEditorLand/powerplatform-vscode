@@ -30,6 +30,7 @@ import {
 import { enableCrossGeoDataFlowInGeo } from "./utils/copilotUtil";
 
 const clientType = EXTENSION_NAME + "-" + getExtensionType();
+
 const clientVersion = getExtensionVersion();
 
 export async function sendApiRequest(params: IApiRequestParams) {
@@ -120,12 +121,14 @@ export async function sendApiRequest(params: IApiRequestParams) {
 						durationInMills: responseTime,
 						orgId: orgID,
 					});
+
 					if (
 						jsonResponse.additionalData &&
 						Array.isArray(jsonResponse.additionalData) &&
 						jsonResponse.additionalData.length > 0
 					) {
 						const additionalData = jsonResponse.additionalData[0];
+
 						if (
 							additionalData.properties &&
 							additionalData.properties.response
@@ -135,6 +138,7 @@ export async function sendApiRequest(params: IApiRequestParams) {
 							responseMessage.push(
 								additionalData.suggestions.subCategory ?? "",
 							);
+
 							return responseMessage;
 						}
 					}
@@ -151,13 +155,16 @@ export async function sendApiRequest(params: IApiRequestParams) {
 					durationInMills: responseTime,
 					orgId: orgID,
 				});
+
 				return InvalidResponse;
 			}
 		} else {
 			try {
 				const errorResponse = await response.json();
+
 				const errorCode =
 					errorResponse.error && errorResponse.error.code;
+
 				const errorMessage =
 					errorResponse.error && errorResponse.error.messages[0];
 
@@ -198,6 +205,7 @@ export async function sendApiRequest(params: IApiRequestParams) {
 					durationInMills: responseTime,
 					orgId: orgID,
 				});
+
 				return InvalidResponse;
 			}
 		}
@@ -208,6 +216,7 @@ export async function sendApiRequest(params: IApiRequestParams) {
 			error: error as Error,
 			orgId: orgID,
 		});
+
 		return NetworkError;
 	}
 }

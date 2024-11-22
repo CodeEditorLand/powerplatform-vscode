@@ -50,6 +50,7 @@ async function processOnDidDeleteFiles(
 
 			if (e.files.length > 0) {
 				const startTime = performance.now();
+
 				try {
 					const allFileNames: string[] = [];
 					currentWorkspaceURI = getCurrentWorkspaceURI(
@@ -76,6 +77,7 @@ async function processOnDidDeleteFiles(
 							}
 
 							const fileProperties = getFileProperties(f.path);
+
 							if (
 								fileProperties.fileName &&
 								fileProperties.fileCompleteName
@@ -95,6 +97,7 @@ async function processOnDidDeleteFiles(
 
 					if (currentWorkspaceURI && allFileNames.length > 0) {
 						const patterns = getRegExPattern(allFileNames);
+
 						const allDocumentsUriInWorkspace =
 							await vscode.workspace.findFiles(
 								`**/*.*`,
@@ -144,8 +147,10 @@ async function processOnDidRenameFiles(
 		vscode.workspace.onDidRenameFiles(async (e) => {
 			if (e.files.length > 0) {
 				const startTime = performance.now();
+
 				try {
 					const allFileNames: string[] = [];
+
 					const currentWorkspaceURI = getCurrentWorkspaceURI(
 						e.files[0].oldUri.fsPath,
 					);
@@ -185,6 +190,7 @@ async function processOnDidRenameFiles(
 										fileProperties,
 										telemetry,
 									);
+
 								if (isValidationSuccess) {
 									await updateEntityPathNames(
 										f.oldUri,
@@ -202,6 +208,7 @@ async function processOnDidRenameFiles(
 
 					if (currentWorkspaceURI && allFileNames.length > 0) {
 						const patterns = getRegExPattern(allFileNames);
+
 						const allDocumentsUriInWorkspace =
 							await vscode.workspace.findFiles(
 								`**/*.*`,

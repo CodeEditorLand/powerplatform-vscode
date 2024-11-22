@@ -114,6 +114,7 @@ export class BrowserManager implements Disposable {
 		this.logger.sendTelemetryEvent("BrowserManager.launch", telemetryProps);
 
 		const browser = await this.getBrowser();
+
 		const pages = await browser.pages();
 
 		if (pages.length > 0) {
@@ -128,6 +129,7 @@ export class BrowserManager implements Disposable {
 					true,
 					telemetryProps,
 				);
+
 				throw error;
 			}
 		} else {
@@ -140,6 +142,7 @@ export class BrowserManager implements Disposable {
 				message,
 				true,
 			);
+
 			throw new Error(message);
 		}
 	}
@@ -170,6 +173,7 @@ export class BrowserManager implements Disposable {
 			this.browserInstance.on("disconnected", () => {
 				this.browserInstance = undefined;
 			});
+
 			const version = await this.browserInstance.version();
 			this.logger.sendTelemetryEvent("BrowserManager.getBrowser", {
 				port: `${port}`,
@@ -204,13 +208,16 @@ export class BrowserManager implements Disposable {
 		userDataDir?: string,
 	) {
 		const argsBuilder = new BrowserArgsBuilder(port, userDataDir);
+
 		const args = argsBuilder.build();
+
 		const browserInstance = await this.puppeteerLaunchWrapper({
 			executablePath: browserPath,
 			args,
 			headless: false,
 			defaultViewport: null,
 		});
+
 		return browserInstance;
 	}
 
@@ -240,6 +247,7 @@ export class BrowserManager implements Disposable {
 			this.onBrowserReady && (await this.onBrowserReady());
 		};
 		this.bundleWatcher.register(onFileChangeHandler);
+
 		try {
 			await this.bundleInterceptor?.register(page, onBundleLoaded);
 			await this.controlLocator?.navigateToControl(page);

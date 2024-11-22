@@ -50,6 +50,7 @@ export class ConfigurationManager {
 		selectedLaunchConfig?: LaunchDebugConfiguration,
 	): IPcfLaunchConfig {
 		const userConfig = UserSettingsConfigManager.getConfig();
+
 		const mergedConfig = this.mergeConfigs(
 			selectedLaunchConfig,
 			userConfig,
@@ -84,6 +85,7 @@ export class ConfigurationManager {
 		debugConfig: IPcfLaunchConfig,
 	): IDevToolsSettings {
 		const userDataDir = this.resolveUserDataDirPath(debugConfig);
+
 		return {
 			port: debugConfig.port,
 			userDataDir,
@@ -100,11 +102,13 @@ export class ConfigurationManager {
 		debugConfig: IPcfLaunchConfig,
 	): string {
 		let userDataDir: UserDataDir;
+
 		if (typeof debugConfig.userDataDir !== "undefined") {
 			userDataDir = debugConfig.userDataDir;
 		} else {
 			const { userDataDir: settingsUserDataDir } =
 				UserSettingsConfigManager.getConfig();
+
 			if (typeof settingsUserDataDir !== "undefined") {
 				userDataDir = settingsUserDataDir;
 			}

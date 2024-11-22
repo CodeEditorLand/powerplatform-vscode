@@ -66,6 +66,7 @@ export class LaunchJsonConfigManager {
 		}
 
 		let controlLocation: ControlLocation;
+
 		if (!renderFullPage) {
 			if (!tabName) {
 				throw new Error(

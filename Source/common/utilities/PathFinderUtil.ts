@@ -35,6 +35,7 @@ export function getPortalConfigFolderUrl(
 			workspaceRootFolders[i].uri,
 			pathOfFileBeingEdited,
 		);
+
 		if (portalConfigFolderUrl) {
 			return portalConfigFolderUrl;
 		}
@@ -53,6 +54,7 @@ export function searchPortalConfigFolder(
 	if (!file.startsWith(rootFolder)) return null; // if 'file' is not a node in the tree with root as 'rootFolder'
 	if (file === rootFolder) return null; // if we have already traversed all the nodes in the tree under 'rootFolder'
 	const portalConfigIsSibling = isSibling(file);
+
 	if (portalConfigIsSibling) {
 		return portalConfigIsSibling;
 	}
@@ -72,14 +74,20 @@ function getParentDirectory(file: string): string {
  */
 function isSibling(file: string): URL | null {
 	const parentDirectory = getParentDirectory(file);
+
 	if (parentDirectory) {
 		const parentDirectoryUrl = new URL(parentDirectory);
+
 		const parentDirectoryContents: string[] =
 			fs.readdirSync(parentDirectoryUrl);
+
 		for (let i = 0; i < parentDirectoryContents.length; i++) {
 			const fileName = parentDirectoryContents[i];
+
 			const filePath = path.join(parentDirectoryUrl.href, fileName);
+
 			const fileUrl = new URL(filePath);
+
 			if (fileName === portalConfigFolderName) {
 				return fileUrl;
 			}

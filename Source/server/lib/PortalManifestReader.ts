@@ -24,6 +24,7 @@ export function getMatchedManifestRecords(
 	pathOfFileBeingEdited?: string,
 ): IManifestElement[] {
 	let matchedManifestRecords: IManifestElement[] = [];
+
 	if (pathOfFileBeingEdited) {
 		const portalConfigFolderUrl = getPortalConfigFolderUrl(
 			workspaceRootFolders,
@@ -38,10 +39,12 @@ export function getMatchedManifestRecords(
 						portalConfigFolderUrl.href,
 						configFile,
 					);
+
 					const manifestData = fs.readFileSync(
 						new URL(manifestFilePath),
 						"utf8",
 					);
+
 					try {
 						const parsedManifestData = YAML.parse(manifestData);
 						matchedManifestRecords =

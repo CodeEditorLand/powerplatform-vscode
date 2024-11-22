@@ -22,11 +22,17 @@ export class UserSettingsConfigManager {
 	 */
 	public static getConfig(): Partial<IUserSettings> {
 		const settings = this.getSettings();
+
 		const port = settings.get<number>("port");
+
 		const defaultUrl = settings.get<string>("defaultUrl");
+
 		const appId = settings.get<string>("appId");
+
 		const userDataDir = settings.get<UserDataDir>("userDataDir");
+
 		const webRoot = settings.get<string>("webRoot");
+
 		const browserFlavor = this.getBrowserFlavor();
 
 		return {
@@ -46,8 +52,10 @@ export class UserSettingsConfigManager {
 	 */
 	public static getBrowserFlavor(): BrowserFlavor {
 		const settings = this.getSettings();
+
 		const browserFlavor =
 			settings.get<BrowserFlavor>("browserFlavor") || "Default";
+
 		return browserFlavor;
 	}
 
@@ -57,12 +65,15 @@ export class UserSettingsConfigManager {
 	 */
 	public static getBrowserArgs(): string[] {
 		const settings = this.getSettings();
+
 		const browserArgs: string[] = settings.get("browserArgs") || [];
+
 		return browserArgs.map((arg) => arg.trim());
 	}
 
 	public static shouldEnableDebugger(): boolean {
 		const settings = this.getSettings();
+
 		return (
 			settings.get<boolean>("enablePcfDebuggingFeatures") ||
 			DEBUGGER_ENABLED_DEFAULT_VALUE

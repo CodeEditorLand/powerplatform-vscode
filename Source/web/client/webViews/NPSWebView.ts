@@ -25,17 +25,25 @@ export class NPSWebView {
 	private _getHtml() {
 		try {
 			const nonce = getNonce();
+
 			const mainJs = this.extensionResourceUrl("media", "main.js");
+
 			const tid = WebExtensionContext.urlParametersMap?.get(
 				queryParameters.TENANT_ID,
 			);
+
 			const envId = getEnvironmentIdFromUrl();
+
 			const geo = WebExtensionContext.urlParametersMap?.get(
 				queryParameters.GEO,
 			);
+
 			const culture = vscode.env.language;
+
 			const productVersion = process?.env?.BUILD_NAME;
+
 			const deviceType = getDeviceType();
+
 			const referrerPath: string[] = [
 				"https:/",
 				vscode.env.appHost,
@@ -43,12 +51,15 @@ export class NPSWebView {
 				WebExtensionContext.defaultEntityType,
 				WebExtensionContext.defaultEntityId,
 			];
+
 			const urlReferrer = referrerPath.join("/");
+
 			const formsProEligibilityId =
 				WebExtensionContext.formsProEligibilityId;
 			WebExtensionContext.telemetry.sendInfoTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_RENDER_NPS,
 			);
+
 			return `<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -69,6 +80,7 @@ export class NPSWebView {
 				this._getHtml.name,
 				(error as Error)?.message,
 			);
+
 			return "";
 		}
 	}
@@ -91,14 +103,17 @@ export class NPSWebView {
 				],
 			},
 		);
+
 		return new NPSWebView(extensionUri, webview);
 	}
 }
 
 function getNonce() {
 	let text = "";
+
 	const possible =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
 	for (let i = 0; i < 64; i++) {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}

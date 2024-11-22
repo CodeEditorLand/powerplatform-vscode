@@ -50,6 +50,7 @@ export class BAPService {
 					data: data.properties.copilotPolicies
 						?.crossGeoCopilotDataMovementEnabled,
 				});
+
 				return data.properties.copilotPolicies
 					?.crossGeoCopilotDataMovementEnabled;
 			}
@@ -74,12 +75,17 @@ export class BAPService {
 		switch (serviceEndpointStamp) {
 			case ServiceEndpointCategory.TEST:
 				bapEndpoint = "https://test.api.bap.microsoft.com";
+
 				break;
+
 			case ServiceEndpointCategory.PREPROD:
 				bapEndpoint = "https://preprod.api.bap.microsoft.com";
+
 				break;
+
 			case ServiceEndpointCategory.PROD:
 				bapEndpoint = "https://api.bap.microsoft.com";
+
 				break;
 			// All below endpoints are not supported yet
 			case ServiceEndpointCategory.DOD:
@@ -92,6 +98,7 @@ export class BAPService {
 						VSCODE_EXTENSION_GET_BAP_ENDPOINT_UNSUPPORTED_REGION,
 					data: serviceEndpointStamp,
 				});
+
 				break;
 		}
 

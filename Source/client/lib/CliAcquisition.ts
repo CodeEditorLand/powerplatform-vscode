@@ -47,6 +47,7 @@ export class CliAcquisition implements IDisposable {
 
 	public get cliExePath(): string {
 		const execName = os.platform() === "win32" ? "pac.exe" : "pac";
+
 		return path.join(this._cliPath, "tools", execName);
 	}
 
@@ -72,6 +73,7 @@ export class CliAcquisition implements IDisposable {
 
 	public async ensureInstalled(): Promise<string> {
 		const basename = this.getNupkgBasename();
+
 		return this.installCli(
 			path.join(this._context.extensionPath, "dist", "pac"),
 			basename,
@@ -106,6 +108,7 @@ export class CliAcquisition implements IDisposable {
 						this._context.locDotnetNotInstalledOrInsufficient();
 					this._context.showCliInstallFailedError(error);
 					reject(error);
+
 					return;
 				}
 
@@ -175,6 +178,7 @@ export class CliAcquisition implements IDisposable {
 				nupkgDirectory,
 				`${packageName}.${this.cliVersion}.nupkg`,
 			);
+
 			return new Promise((resolve, reject) => {
 				fs.createReadStream(pathToNupkg)
 					.pipe(Extract({ path: this._cliPath }))
@@ -189,6 +193,7 @@ export class CliAcquisition implements IDisposable {
 								cliVersion: this.cliVersion,
 							});
 						this._context.showCliReadyMessage();
+
 						if (os.platform() !== "win32") {
 							fs.chmodSync(this.cliExePath, 0o755);
 						}
@@ -205,6 +210,7 @@ export class CliAcquisition implements IDisposable {
 
 	isCliExpectedVersion(): boolean {
 		const installedVersion = this.getInstalledVersion();
+
 		if (!installedVersion) {
 			return false;
 		}
@@ -268,6 +274,7 @@ export class CliAcquisition implements IDisposable {
 
 	getLatestNupkgVersion(): string {
 		const basename = this.getNupkgBasename();
+
 		const nuPkgExtension = ".nupkg";
 
 		const versions = glob
@@ -279,6 +286,7 @@ export class CliAcquisition implements IDisposable {
 			) // isolate version part of file name
 			.filter((version) => !isNaN(Number.parseInt(version.charAt(0)))) // expect version to start with number; dotnetCore and .NET pkg names share common base name
 			.sort();
+
 		if (versions.length < 1) {
 			throw new Error(
 				`Corrupt .vsix? Did not find any *.nupkg files under: ${this._nupkgsFolder}`,
@@ -289,13 +297,17 @@ export class CliAcquisition implements IDisposable {
 
 	getNupkgBasename(): string {
 		const platformName = os.platform();
+
 		switch (platformName) {
 			case "win32":
 				return "microsoft.powerapps.cli";
+
 			case "darwin":
 				return "microsoft.powerapps.cli.tool";
+
 			case "linux":
 				return "microsoft.powerapps.cli.tool";
+
 			default:
 				throw new Error(
 					`Unsupported OS platform for pac CLI: ${platformName}`,
@@ -322,6 +334,7 @@ export class CliAcquisition implements IDisposable {
 			const trackerInfo = JSON.parse(
 				fs.readFileSync(this._installedTrackerFile, "utf-8"),
 			);
+
 			return trackerInfo.pac;
 		} catch {
 			return undefined;

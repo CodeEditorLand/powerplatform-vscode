@@ -49,6 +49,7 @@ export class FileDataMap {
 
 		if (existingEntity) {
 			existingEntity.setHasDirtyChanges = dirtyFlagValue;
+
 			return;
 		}
 		throw Error("File does not exist in the map"); // TODO - Revisit errors and dialog experience here
@@ -62,6 +63,7 @@ export class FileDataMap {
 
 		if (existingEntity) {
 			existingEntity.setHasDiffViewTriggered = diffViewTriggerValue;
+
 			return;
 		}
 		throw Error("File does not exist in the map"); // TODO - Revisit errors and dialog experience here
@@ -72,6 +74,7 @@ export class FileDataMap {
 
 		if (existingEntity) {
 			existingEntity.setEntityEtag = etag;
+
 			return;
 		}
 		throw Error("File does not exist in the map"); // TODO - Revisit errors and dialog experience here

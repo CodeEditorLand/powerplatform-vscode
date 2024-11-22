@@ -51,6 +51,7 @@ export class Debugger implements Disposable, DebugAdapter {
 	 */
 	public get isRunning(): boolean {
 		const activeSession = debug.activeDebugSession;
+
 		return (
 			activeSession !== undefined &&
 			activeSession.id === this.edgeDebugSession?.id
@@ -119,9 +120,12 @@ export class Debugger implements Disposable, DebugAdapter {
 		switch (message.command) {
 			case "disconnect":
 				void this.stopDebugging();
+
 				break;
+
 			case "initialize":
 				void this.browserManagerLaunch();
+
 				break;
 		}
 	}
@@ -158,9 +162,12 @@ export class Debugger implements Disposable, DebugAdapter {
 			running: "" + this.isRunning,
 			retryCount: `${retryCount}`,
 		});
+
 		const activeSession = debug.activeDebugSession;
+
 		if (activeSession && this.isRunning) {
 			this.onDebugSessionStarted(activeSession);
+
 			return;
 		}
 
@@ -173,6 +180,7 @@ export class Debugger implements Disposable, DebugAdapter {
 		};
 
 		let success: boolean;
+
 		try {
 			success = await debug.startDebugging(
 				this.workspaceFolder,
@@ -285,6 +293,7 @@ export class Debugger implements Disposable, DebugAdapter {
 		// Disposes the debugger if it the parent session is stopped after 4 seconds.
 		this.debuggingDisposeTimeout > 0 &&
 			(await sleep(this.debuggingDisposeTimeout));
+
 		if (this.isRunning) {
 			return;
 		}

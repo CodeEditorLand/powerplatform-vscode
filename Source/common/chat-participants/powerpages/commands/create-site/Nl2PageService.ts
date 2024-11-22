@@ -37,7 +37,9 @@ export async function getNL2PageData(aibEndpoint: string, aibToken: string, user
 
     const requests = sitePagesList.map(async pageType => {
         const colorNumber = generateRandomColorNumber();
+
         const exampleNumber = generateRandomExampleNumber(pageType);
+
         const requestBody = constructRequestBody(pageType, colorNumber, exampleNumber);
 
         const requestInit: RequestInit = {
@@ -48,6 +50,7 @@ export async function getNL2PageData(aibEndpoint: string, aibToken: string, user
 
         try {
             const response = await fetch(aibEndpoint, requestInit);
+
             if (!response.ok) {
                 throw new Error(`${NL2PAGE_REQUEST_FAILED} ${pageType}`);
             }
@@ -61,6 +64,7 @@ export async function getNL2PageData(aibEndpoint: string, aibToken: string, user
         } catch (error) {
             telemetry.sendTelemetryErrorEvent(VSCODE_EXTENSION_NL2PAGE_REQUEST_FAILED, { error: (error as Error)?.message, pageType });
             oneDSLoggerWrapper.getLogger().traceError(VSCODE_EXTENSION_NL2PAGE_REQUEST_FAILED, error as string, error as Error, { sessionId: sessionId, orgId:orgId, envId: envId, userId: userId, pageType: pageType}, {});
+
             return null;
         }
     });
@@ -75,11 +79,13 @@ export async function getNL2PageData(aibEndpoint: string, aibToken: string, user
 
 export const generateRandomColorNumber = () => {
     const colorNumbers = [1, 2, 3, 5, 6, 7, 8];
+
     return colorNumbers[Math.floor(Math.random() * colorNumbers.length)];
   };
 
   export const generateRandomExampleNumber = (pageType: string) => {
     const isFaqOrAboutPage = pageType === FAQ_PAGE_TYPE || pageType === ABOUT_PAGE_TYPE;
+
     if (isFaqOrAboutPage) {
       return 0;
     } else if (pageType === HOME_PAGE_TYPE) {

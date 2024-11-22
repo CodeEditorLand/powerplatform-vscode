@@ -58,7 +58,9 @@ export interface IWebExtensionContext {
     rootDirectory: vscode.Uri;
     fileDataMap: FileDataMap; // VFS file URI to file detail map
     defaultEntityId: string;
+
     defaultEntityType: string;
+
     defaultFileUri: vscode.Uri; // This will default to home page or current page in multifile scenario
     showMultifileInVSCode: boolean;
     extensionActivationTime: number;
@@ -345,6 +347,7 @@ class WebExtensionContext implements IWebExtensionContext {
 
         // Initialize multifile FF here
         const enableMultifile = queryParamsMap?.get(Constants.queryParameters.ENABLE_MULTIFILE);
+
         const isEnableMultifile = (String(enableMultifile).toLowerCase() === 'true');
         this._showMultifileInVSCode = isMultifileEnabled() && isEnableMultifile;
 
@@ -390,6 +393,7 @@ class WebExtensionContext implements IWebExtensionContext {
         const dataverseOrgUrl = this.urlParametersMap.get(
             Constants.queryParameters.ORG_URL
         ) as string;
+
         const schema = this.urlParametersMap
             .get(schemaKey.SCHEMA_VERSION)
             ?.toLowerCase() as string;
@@ -428,6 +432,7 @@ class WebExtensionContext implements IWebExtensionContext {
         const dataverseOrgUrl = this.urlParametersMap.get(
             Constants.queryParameters.ORG_URL
         ) as string;
+
         const { accessToken, userId } = await dataverseAuthentication(
             this._telemetry.getTelemetryReporter(),
             dataverseOrgUrl,
@@ -450,6 +455,7 @@ class WebExtensionContext implements IWebExtensionContext {
                 webExtensionTelemetryEventNames.WEB_EXTENSION_DATAVERSE_AUTHENTICATION_MISSING,
                 dataverseAuthentication.name
             );
+
             throw vscode.FileSystemError.NoPermissions();
         }
 
@@ -534,7 +540,9 @@ class WebExtensionContext implements IWebExtensionContext {
         schema: string
     ) {
         let requestUrl = "";
+
         let requestSentAtTime = new Date().getTime();
+
         const languageEntityName =
             Constants.initializationEntityName.PORTALLANGUAGE;
 
@@ -551,9 +559,11 @@ class WebExtensionContext implements IWebExtensionContext {
             );
 
             requestSentAtTime = new Date().getTime();
+
             const response = await this._concurrencyHandler.handleRequest(requestUrl, {
                 headers: getCommonHeadersForDataverse(accessToken),
             });
+
             if (!response?.ok) {
                 throw new Error(JSON.stringify(response));
             }
@@ -564,6 +574,7 @@ class WebExtensionContext implements IWebExtensionContext {
                 new Date().getTime() - requestSentAtTime,
                 this.populateLanguageIdToCode.name
             );
+
             const result = await response?.json();
             this._languageIdCodeMap = getLcidCodeMap(result, schema);
             this._portalLanguageIdCodeMap = getPortalLanguageIdToLcidMap(
@@ -600,7 +611,9 @@ class WebExtensionContext implements IWebExtensionContext {
         schema: string
     ) {
         let requestUrl = "";
+
         let requestSentAtTime = new Date().getTime();
+
         const languageEntityName =
             Constants.initializationEntityName.WEBSITELANGUAGE;
 
@@ -617,9 +630,11 @@ class WebExtensionContext implements IWebExtensionContext {
             );
 
             requestSentAtTime = new Date().getTime();
+
             const response = await this._concurrencyHandler.handleRequest(requestUrl, {
                 headers: getCommonHeadersForDataverse(accessToken),
             });
+
             if (!response?.ok) {
                 throw new Error(JSON.stringify(response));
             }
@@ -630,6 +645,7 @@ class WebExtensionContext implements IWebExtensionContext {
                 new Date().getTime() - requestSentAtTime,
                 this.populateWebsiteLanguageIdToPortalLanguageMap.name
             );
+
             const result = await response?.json();
             this._websiteLanguageIdToPortalLanguageMap =
                 getWebsiteLanguageIdToPortalLanguageIdMap(result, schema);
@@ -663,7 +679,9 @@ class WebExtensionContext implements IWebExtensionContext {
         schema: string
     ) {
         let requestUrl = "";
+
         let requestSentAtTime = new Date().getTime();
+
         const websiteEntityName = Constants.initializationEntityName.WEBSITE;
 
         try {
@@ -679,6 +697,7 @@ class WebExtensionContext implements IWebExtensionContext {
             );
 
             requestSentAtTime = new Date().getTime();
+
             const response = await this._concurrencyHandler.handleRequest(requestUrl, {
                 headers: getCommonHeadersForDataverse(accessToken),
             });
@@ -693,6 +712,7 @@ class WebExtensionContext implements IWebExtensionContext {
                 new Date().getTime() - requestSentAtTime,
                 this.populateWebsiteIdToLanguageMap.name
             );
+
             const result = await response?.json();
             this._websiteIdToLanguage = getWebsiteIdToLcidMap(result, schema);
         } catch (error) {
@@ -764,6 +784,7 @@ class WebExtensionContext implements IWebExtensionContext {
     public updateVscodeWorkspaceState(key: string, value?: IEntityInfo) {
         if (value === undefined) {
             this._vscodeWorkspaceState.delete(key);
+
             return;
         }
         this._vscodeWorkspaceState.set(key, value);
@@ -824,6 +845,7 @@ class WebExtensionContext implements IWebExtensionContext {
             });
 
             const sharedWorkSpaceParamsMap = new Map<string, string>();
+
             for (const key in sharedWorkspace) {
                 sharedWorkSpaceParamsMap.set(
                     String(key).trim().toLocaleLowerCase(),
@@ -871,6 +893,7 @@ class WebExtensionContext implements IWebExtensionContext {
 
     public async getMail(userId: string): Promise<string> {
         const mail = await this.graphClientService.getUserEmail(userId);
+
         return mail;
     }
 
@@ -878,6 +901,7 @@ class WebExtensionContext implements IWebExtensionContext {
         this.getMail(userId).then((mail) => {
             if (mail === undefined) {
                 vscode.window.showErrorMessage(Constants.WEB_EXTENSION_TEAMS_CHAT_NOT_AVAILABLE);
+
                 return;
             } else {
                 const teamsChatLink = getTeamChatURL(mail);
@@ -890,6 +914,7 @@ class WebExtensionContext implements IWebExtensionContext {
         this.getMail(userId).then((mail) => {
             if (mail === undefined) {
                 vscode.window.showErrorMessage(Constants.WEB_EXTENSION_SEND_EMAIL_NOT_AVAILABLE);
+
                 return;
             } else {
                 const mailToPath = getMailToPath(mail);

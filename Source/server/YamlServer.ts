@@ -34,8 +34,11 @@ const connection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability = false;
+
 let hasWorkspaceFolderCapability = false;
+
 let workspaceRootFolders: WorkspaceFolder[] | null = null;
+
 let editedTextDocument: TextDocument;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let hasDiagnosticRelatedInformationCapability = false;
@@ -67,6 +70,7 @@ connection.onInitialize((params: InitializeParams) => {
 			},
 		},
 	};
+
 	if (hasWorkspaceFolderCapability) {
 		result.capabilities.workspace = {
 			workspaceFolders: {
@@ -104,7 +108,9 @@ connection.onCompletion(
 		_textDocumentPosition: TextDocumentPositionParams,
 	): Promise<CompletionItem[]> => {
 		const pathOfFileBeingEdited = _textDocumentPosition.textDocument.uri;
+
 		const rowIndex = _textDocumentPosition.position.line;
+
 		return await getSuggestions(rowIndex, pathOfFileBeingEdited);
 	},
 );
@@ -117,15 +123,21 @@ function getSuggestions(rowIndex: number, pathOfFileBeingEdited: string) {
 		},
 		measurements: {},
 	};
+
 	const portalAttributeKeyPattern = /(.*?):/; // regex to match text like adx_pagetemplateid:
 	const matches = getEditedLineContent(rowIndex, editedTextDocument)?.match(
 		portalAttributeKeyPattern,
 	);
+
 	const completionItems: CompletionItem[] = [];
+
 	if (matches) {
 		telemetryData.properties.keyForCompletion = matches[1];
+
 		const keyForCompletion = getKeyForCompletion(matches);
+
 		const timeStampBeforeParsingManifestFile = new Date().getTime();
+
 		const matchedManifestRecords: IManifestElement[] =
 			getMatchedManifestRecords(
 				workspaceRootFolders,
@@ -134,6 +146,7 @@ function getSuggestions(rowIndex: number, pathOfFileBeingEdited: string) {
 			);
 		telemetryData.measurements.manifestParseTimeMs =
 			new Date().getTime() - timeStampBeforeParsingManifestFile;
+
 		if (matchedManifestRecords) {
 			matchedManifestRecords.forEach((element: IManifestElement) => {
 				const item: CompletionItem = {

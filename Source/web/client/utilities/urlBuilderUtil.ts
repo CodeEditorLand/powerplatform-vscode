@@ -61,7 +61,9 @@ export function getRequestURL(
 							entity,
 							entityId.length > 0 && entity.length > 0,
 						));
+
 				break;
+
 			default:
 				break;
 		}
@@ -164,8 +166,10 @@ export function getPatchRequestUrl(
 // this function removes hostName from the url
 export function sanitizeURL(url: string): string {
 	let sanitizedUrl = "";
+
 	try {
 		const completeUrl = new URL(url);
+
 		const hostName = completeUrl.hostname;
 		sanitizedUrl = url.replace(hostName, "[redact]");
 	} catch (error) {
@@ -238,6 +242,7 @@ export function getMetadataInfo(
 	if (metadataKeys) {
 		for (const key of metadataKeys) {
 			const attributePath = getAttributePath(key);
+
 			const value =
 				attributePath.relativePath.length > 0
 					? JSON.parse(result[attributePath.source])[
@@ -249,11 +254,15 @@ export function getMetadataInfo(
 				case EntityMetadataKeyCore.ENTITY_LOGICAL_NAME:
 				case EntityMetadataKeyAdx.ENTITY_LOGICAL_NAME:
 					entityMetadata.logicalEntityName = value;
+
 					break;
+
 				case EntityMetadataKeyCore.FORM_LOGICAL_NAME:
 				case EntityMetadataKeyAdx.FORM_LOGICAL_NAME:
 					entityMetadata.logicalFormName = value;
+
 					break;
+
 				default:
 					break;
 			}
@@ -306,7 +315,9 @@ export async function getOrCreateSharedWorkspace(config: any) {
 	let requestSentAtTime = new Date().getTime();
 
 	const origin = config.dataverseOrgUrl;
+
 	const apiName = Constants.GET_OR_CREATE_SHARED_WORK_SPACE;
+
 	const requestUrl = new URL(apiName, origin);
 
 	try {
@@ -350,6 +361,7 @@ export async function getOrCreateSharedWorkspace(config: any) {
 		return await createWorkspaceResponse.json();
 	} catch (error) {
 		const errorMsg = (error as Error)?.message;
+
 		if ((error as Response)?.status > 0) {
 			WebExtensionContext.telemetry.sendAPIFailureTelemetry(
 				requestUrl.href,

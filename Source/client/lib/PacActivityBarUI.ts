@@ -18,6 +18,7 @@ export function RegisterPanels(
 	telemetry: ITelemetry,
 ): vscode.Disposable[] {
 	const authPanel = new AuthTreeView(() => pacWrapper.authList(), pacWrapper);
+
 	const envAndSolutionPanel = new EnvAndSolutionTreeView(
 		() => pacWrapper.orgList(),
 		(environmentUrl) =>

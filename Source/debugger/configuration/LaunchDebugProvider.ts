@@ -50,6 +50,7 @@ export class LaunchDebugProvider implements vscode.DebugConfigurationProvider {
 			if (config.request && config.request === "launch") {
 				const debugConfig =
 					ConfigurationManager.getLaunchConfig(selectedConfig);
+
 				return debugConfig;
 			}
 		} else {

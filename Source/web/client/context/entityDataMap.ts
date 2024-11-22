@@ -19,6 +19,7 @@ export class EntityDataMap {
 		if (existingEntity) {
 			existingEntity.entityColumn.set(columnName, columnContent);
 			this.entityMap.set(entityId, existingEntity);
+
 			return;
 		}
 		throw Error("Entity does not exist in the map"); // TODO - Revisit errors and dialog experience here
@@ -39,6 +40,7 @@ export class EntityDataMap {
 		rootWebPageId?: string,
 	) {
 		let entityColumnMap = new Map<string, string | Uint8Array>();
+
 		const existingEntity = this.entityMap.get(entityId);
 
 		if (existingEntity) {
@@ -47,6 +49,7 @@ export class EntityDataMap {
 		entityColumnMap.set(attributePath.source, attributeContent);
 
 		const filePath = this.entityMap.get(entityId)?.filePath ?? new Set();
+
 		if (fileUri) {
 			filePath.add(fileUri);
 		}
@@ -65,6 +68,7 @@ export class EntityDataMap {
 
 	public getColumnContent(entityId: string, columnName: string) {
 		const existingEntity = this.entityMap.get(entityId);
+
 		if (existingEntity) {
 			return existingEntity.entityColumn.get(columnName);
 		}
@@ -114,6 +118,7 @@ export class EntityDataMap {
 					JSON.stringify(jsonFromOriginalContent),
 				);
 				this.entityMap.set(entityId, existingEntity);
+
 				return;
 			} else if (columnName.source.length) {
 				this.updateEntityContent(
@@ -121,6 +126,7 @@ export class EntityDataMap {
 					columnName.source,
 					columnAttributeContent,
 				);
+
 				return;
 			}
 		}
@@ -132,6 +138,7 @@ export class EntityDataMap {
 
 		if (existingEntity) {
 			existingEntity.setEntityEtag = etag;
+
 			return;
 		}
 		throw Error("Entity does not exist in the map"); // TODO - Revisit errors and dialog experience here

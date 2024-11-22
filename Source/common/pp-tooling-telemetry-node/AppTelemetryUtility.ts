@@ -11,6 +11,7 @@ const MaxAutomationAgentLength = 64;
 // This is a limited char set than is supported with HTTP User-Agent for now, as in practice, most symbols aren't used for user agents.
 // However, we do want to allow for using package names (nuget, npm, etc), .net assembly names, etc.
 const ProductNameRegex = /^[a-zA-Z0-9.+_-]+$/;
+
 const SystemVersionRegex = /^\d+(\.\d+){1,3}$/;
 
 export function composeAutomationAgentString(
@@ -18,6 +19,7 @@ export function composeAutomationAgentString(
 	productVersion: string,
 ): string {
 	if (!productName) throw new Error("productName must be specified.");
+
 	if (!productVersion) throw new Error("productVersion must be specified.");
 
 	if (!ProductNameRegex.test(productName)) {
@@ -40,7 +42,9 @@ export function isSupportedAgentProductVersion(
 	if (productVersion) {
 		// For simplicity, we ignore all content after the SemVer pre-release tag (-) or build metadata (+)
 		const idxPreRelease = productVersion.indexOf("-");
+
 		const idxMetadata = productVersion.indexOf("+");
+
 		const idxPreReleaseOrMetadata =
 			idxPreRelease < 0
 				? idxMetadata
@@ -52,6 +56,7 @@ export function isSupportedAgentProductVersion(
 			idxPreReleaseOrMetadata === -1
 				? productVersion
 				: productVersion.substring(0, idxPreReleaseOrMetadata);
+
 		return (
 			versionSubStr.length >= 1 && SystemVersionRegex.test(versionSubStr)
 		);
@@ -73,6 +78,7 @@ export function tryParseAutomationAgentStringProductNameVersion(agent: string):
 	if (!agent) throw new Error("agent must be specified.");
 
 	const firstProduct = agent.split(" ", 2)[0];
+
 	if (firstProduct.length > MaxAutomationAgentLength) {
 		return {
 			success: false,
@@ -81,6 +87,7 @@ export function tryParseAutomationAgentStringProductNameVersion(agent: string):
 	}
 
 	const parts = firstProduct.split("/");
+
 	if (parts.length !== 2) {
 		// both parts are required
 		return {
@@ -90,6 +97,7 @@ export function tryParseAutomationAgentStringProductNameVersion(agent: string):
 	}
 
 	const productName = parts[0];
+
 	if (!productName || !ProductNameRegex.test(productName)) {
 		return {
 			success: false,
@@ -99,6 +107,7 @@ export function tryParseAutomationAgentStringProductNameVersion(agent: string):
 	}
 
 	const productVersion = parts[1];
+
 	if (!isSupportedAgentProductVersion(productVersion)) {
 		return {
 			success: false,
@@ -124,6 +133,7 @@ function validateAndSanitizeAutomationAgent(
 	const result = tryParseAutomationAgentStringProductNameVersion(
 		environment.automationAgent,
 	);
+
 	if (result.success !== true) {
 		// We throw here because otherwise this corrupts our ability to have accurate telemetry based on automationAgent
 		throw new Error(
@@ -167,6 +177,7 @@ export function createCommonAppStartProperties(
 	const properties: Record<string, string> = {};
 
 	const agent = validateAndSanitizeAutomationAgent(environment);
+
 	if (agent) {
 		properties[TelemetryConstants.PropertyNames.automationAgent] = agent;
 	}

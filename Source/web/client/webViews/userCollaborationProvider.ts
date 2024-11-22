@@ -31,6 +31,7 @@ export class UserCollaborationProvider
 
 	getConnectedUsers(): UserNode[] {
 		const connectedUsersMap = WebExtensionContext.connectedUsers.getUserMap;
+
 		const connectedUsers: UserNode[] = Array.from(
 			connectedUsersMap.values(),
 		)

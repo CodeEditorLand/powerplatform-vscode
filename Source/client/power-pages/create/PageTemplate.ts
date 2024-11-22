@@ -48,6 +48,7 @@ export const createPageTemplate = async (
 			return;
 		}
 		const portalDir = selectedWorkspaceFolder;
+
 		const portalContext = getPortalContext(portalDir);
 
 		const { webTemplateNames, webTemplateMap } =
@@ -57,7 +58,9 @@ export const createPageTemplate = async (
 			webTemplateNames,
 			selectedWorkspaceFolder,
 		);
+
 		const webtemplateId = webTemplateMap.get(pageTemplateInputs.type);
+
 		const pageTemplateName = pageTemplateInputs.name;
 
 		if (!pageTemplateName) {
@@ -67,10 +70,12 @@ export const createPageTemplate = async (
 		}
 
 		const file = formatFileName(pageTemplateName);
+
 		const watcherPattern = path.join(
 			TableFolder.PAGETEMPLATE_FOLDER,
 			`${file}.pagetemplate.yml`,
 		);
+
 		const watcher = createFileWatcher(
 			context,
 			selectedWorkspaceFolder,
@@ -92,6 +97,7 @@ export const createPageTemplate = async (
 			fileEntityType: Tables.PAGETEMPLATE,
 			exception: error as Error,
 		});
+
 		throw new Error(error);
 	}
 };
@@ -114,6 +120,7 @@ async function getPageTemplateInputs(
 	async function collectInputs() {
 		const state = {} as Partial<IPagetemplateInputState>;
 		await MultiStepInput.run((input) => inputName(input, state));
+
 		return state as IPagetemplateInputState;
 	}
 
@@ -129,6 +136,7 @@ async function getPageTemplateInputs(
 			placeholder: vscode.l10n.t("Enter name"),
 			validate: validateNameIsUnique,
 		});
+
 		return (input: MultiStepInput) => pickWebtemplate(input, state);
 	}
 
@@ -155,13 +163,16 @@ async function getPageTemplateInputs(
 		}
 
 		const file = formatFileName(name);
+
 		const filePath = path.join(
 			selectedWorkspaceFolder,
 			"page-templates",
 			`${file}.pagetemplate.yml`,
 		);
+
 		try {
 			const stat = statSync(filePath);
+
 			if (stat) {
 				return vscode.l10n.t(
 					"A page template with the same name already exists. Please enter a different name.",
@@ -175,5 +186,6 @@ async function getPageTemplateInputs(
 	}
 
 	const state = await collectInputs();
+
 	return state;
 }

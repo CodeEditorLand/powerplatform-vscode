@@ -108,6 +108,7 @@ export class BrowserLocator {
 	public async getPath(): Promise<string> {
 		try {
 			const browserPath = await this.verifyFlavorPath();
+
 			return browserPath;
 		} catch (error) {
 			await ErrorReporter.report(
@@ -116,6 +117,7 @@ export class BrowserLocator {
 				undefined,
 				"Microsoft Edge could not be found. Ensure you have installed Microsoft Edge and that you have selected 'default' or the appropriate version of Microsoft Edge in the extension settings panel.",
 			);
+
 			throw error;
 		}
 	}
@@ -128,8 +130,10 @@ export class BrowserLocator {
 		switch (os.platform()) {
 			case "darwin":
 				return "OSX";
+
 			case "win32":
 				return "Windows";
+
 			default:
 				return "Linux";
 		}
@@ -145,10 +149,12 @@ export class BrowserLocator {
 	 */
 	private async verifyFlavorPath(): Promise<string> {
 		let item = this.browserPathMapping.get(this.browserFlavor || "Default");
+
 		if (!item) {
 			// if no flavor is specified search for any path present.
 			for (item of this.browserPathMapping.values()) {
 				const result = await this.verifyExecutableExists(item);
+
 				if (result) {
 					return result;
 				}

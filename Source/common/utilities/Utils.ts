@@ -40,7 +40,9 @@ export function getSelectedCode(editor: vscode.TextEditor): string {
 		return "";
 	}
 	const selection = editor.selection;
+
 	const text = editor.document.getText(selection);
+
 	return text.trim(); //handles empty selection
 }
 
@@ -60,6 +62,7 @@ export function getSelectedCodeLineRange(editor: vscode.TextEditor): {
 	const selection = editor.selection;
 
 	const startLine = selection.start.line;
+
 	const endLine = selection.end.line;
 
 	return { start: startLine, end: endLine };
@@ -70,6 +73,7 @@ export async function getOrgID(): Promise<string> {
 	const orgID = await vscode.window.showInputBox({
 		placeHolder: vscode.l10n.t("Enter Organization ID"),
 	});
+
 	if (!orgID) {
 		throw new Error("Organization ID is required");
 	}
@@ -78,8 +82,10 @@ export async function getOrgID(): Promise<string> {
 
 export function getNonce() {
 	let text = "";
+
 	const possible =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
 	for (let i = 0; i < 32; i++) {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
@@ -88,11 +94,13 @@ export function getNonce() {
 
 export function getUserName(user: string) {
 	const parts = user.split(" - ");
+
 	return parts[0];
 }
 
 export function getLastThreePartsOfFileName(string: string): string[] {
 	const parts: string[] = string.split(".");
+
 	if (parts.length >= 3) {
 		return parts.slice(-3);
 	} else {
@@ -147,6 +155,7 @@ export async function showProgressWithNotification<T>(
 
 export function getExtensionVersion(): string {
 	const extension = vscode.extensions.getExtension(EXTENSION_ID);
+
 	return extension ? extension.packageJSON.version : "";
 }
 
@@ -171,6 +180,7 @@ export function isCustomTelemetryEnabled(): boolean {
 	const isCustomTelemetryEnabled = vscode.workspace
 		.getConfiguration(SETTINGS_EXPERIMENTAL_STORE_NAME)
 		.get(CUSTOM_TELEMETRY_FOR_POWER_PAGES_SETTING_NAME);
+
 	return isCustomTelemetryEnabled as boolean;
 }
 
@@ -257,6 +267,7 @@ export function checkCopilotAvailability(
 			copilotSessionId: sessionID,
 			orgId: orgID,
 		});
+
 		return false;
 	} else if (
 		getDisabledOrgList()?.includes(orgID) ||
@@ -268,6 +279,7 @@ export function checkCopilotAvailability(
 			copilotSessionId: sessionID,
 			orgId: orgID,
 		});
+
 		return false;
 	} else {
 		return true;
@@ -280,10 +292,13 @@ export function getVisibleCode(editor: vscode.TextEditor): {
 	endLine: number;
 } {
 	const visibleRanges = editor.visibleRanges;
+
 	const visibleCode = visibleRanges
 		.map((range) => editor.document.getText(range))
 		.join("\n");
+
 	const firstVisibleRange = visibleRanges[0];
+
 	return {
 		code: visibleCode,
 		startLine: firstVisibleRange.start.line,
@@ -297,6 +312,7 @@ async function getFileContent(
 ): Promise<{ customFileContent: string; customFileName: string }> {
 	try {
 		const activeFileFolderPath = getFolderPathFromUri(activeFileUri);
+
 		const activeFileName = getFileNameFromUri(activeFileUri);
 
 		const activeFileNameParts = activeFileName.split(".");
@@ -313,6 +329,7 @@ async function getFileContent(
 
 		// Read the content of the custom file
 		const diskRead = await import("fs");
+
 		const customFileContent = diskRead.readFileSync(customFilePath, "utf8");
 
 		return { customFileContent, customFileName };
@@ -329,6 +346,7 @@ async function getFileContentByType(
 ): Promise<{ customFileContent: string; customFileName: string }> {
 	try {
 		const extension = componentTypeSchema[componentType]?.[fileType];
+
 		if (!extension) {
 			throw new Error(
 				`File type ${fileType} not found for component type ${componentType}`,
@@ -337,6 +355,7 @@ async function getFileContentByType(
 		return await getFileContent(activeFileUri, extension);
 	} catch (error) {
 		const message = (error as Error)?.message;
+
 		throw new Error(message);
 	}
 }
@@ -351,6 +370,7 @@ export async function fetchRelatedFiles(
 ): Promise<IRelatedFiles[]> {
 	try {
 		const relatedFileTypes = relatedFilesSchema[componentType]?.[fieldType];
+
 		if (!relatedFileTypes) {
 			return [];
 		}
@@ -362,6 +382,7 @@ export async function fetchRelatedFiles(
 					componentType,
 					fileType,
 				);
+
 				return {
 					fileType,
 					fileContent: fileContentResult.customFileContent,
@@ -386,6 +407,7 @@ export async function fetchRelatedFiles(
 				{ sessionId: sessionId },
 				{},
 			);
+
 		return [];
 	}
 }

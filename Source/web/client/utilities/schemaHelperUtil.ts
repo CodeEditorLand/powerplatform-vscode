@@ -29,6 +29,7 @@ export function getLogicalEntityParameter(entity: string) {
 	const entityMetadata = getEntity(entity)?.get(
 		schemaEntityKey.DATAVERSE_ENTITY_METADATA,
 	);
+
 	return entityMetadata
 		? (entityMetadata as unknown as Map<string, string>).get(
 				schemaMetaDataKey.DATAVERSE_LOGICAL_ENTITY_NAME,
@@ -40,6 +41,7 @@ export function getLogicalFormNameParameter(entity: string) {
 	const entityMetadata = getEntity(entity)?.get(
 		schemaEntityKey.DATAVERSE_ENTITY_METADATA,
 	);
+
 	return entityMetadata
 		? (entityMetadata as unknown as Map<string, string>).get(
 				schemaMetaDataKey.DATAVERSE_FORM_NAME,
@@ -51,7 +53,9 @@ export function getEntityParameters(
 	entityName: string,
 ): Array<string | undefined> {
 	const logicalFormNameParameter = getLogicalFormNameParameter(entityName);
+
 	const logicalEntityName = getLogicalEntityParameter(entityName);
+
 	return [logicalEntityName, logicalFormNameParameter];
 }
 
@@ -116,6 +120,7 @@ export function isWebFileV2(entity: string, attributeType: string) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getLcidCodeMap(result: any, schema: string) {
 	const languageIdCodeMap = new Map<string, string>();
+
 	if (result) {
 		if (result.value?.length > 0) {
 			if (
@@ -130,6 +135,7 @@ export function getLcidCodeMap(result: any, schema: string) {
 					const lcid = result.value[counter].lcid
 						? result.value[counter].lcid
 						: Constants.PORTAL_LANGUAGE_DEFAULT;
+
 					const languagecode = result.value[counter].languagecode;
 					languageIdCodeMap.set(lcid.toString(), languagecode);
 				}
@@ -142,6 +148,7 @@ export function getLcidCodeMap(result: any, schema: string) {
 					const adx_lcid = result.value[counter].adx_lcid
 						? result.value[counter].adx_lcid
 						: Constants.PORTAL_LANGUAGE_DEFAULT;
+
 					const adx_languagecode =
 						result.value[counter].adx_languagecode;
 					languageIdCodeMap.set(adx_lcid, adx_languagecode);
@@ -156,6 +163,7 @@ export function getLcidCodeMap(result: any, schema: string) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getPortalLanguageIdToLcidMap(result: any, schema: string) {
 	const portalLanguageIdCodeMap = new Map<string, string>();
+
 	if (result) {
 		if (result.value?.length > 0) {
 			if (
@@ -171,6 +179,7 @@ export function getPortalLanguageIdToLcidMap(result: any, schema: string) {
 						.powerpagesitelanguageid
 						? result.value[counter].powerpagesitelanguageid
 						: null;
+
 					const languagecode = result.value[counter].languagecode;
 					portalLanguageIdCodeMap.set(
 						powerpagesitelanguageid.toString(),
@@ -187,6 +196,7 @@ export function getPortalLanguageIdToLcidMap(result: any, schema: string) {
 						.adx_portallanguageid
 						? result.value[counter].adx_portallanguageid
 						: Constants.DEFAULT_LANGUAGE_CODE;
+
 					const adx_languagecode =
 						result.value[counter].adx_languagecode;
 					portalLanguageIdCodeMap.set(
@@ -204,6 +214,7 @@ export function getPortalLanguageIdToLcidMap(result: any, schema: string) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getWebsiteIdToLcidMap(result: any, schema: string) {
 	const websiteIdToLanguage = new Map<string, string>();
+
 	if (result) {
 		if (result.value?.length > 0) {
 			if (
@@ -219,6 +230,7 @@ export function getWebsiteIdToLcidMap(result: any, schema: string) {
 						.powerpagesiteid
 						? result.value[counter].powerpagesiteid
 						: null;
+
 					const lcid = JSON.parse(result.value[counter].content)
 						.website_language as string;
 					websiteIdToLanguage.set(powerpagesiteid, lcid.toString());
@@ -232,6 +244,7 @@ export function getWebsiteIdToLcidMap(result: any, schema: string) {
 					const adx_websiteId = result.value[counter].adx_websiteid
 						? result.value[counter].adx_websiteid
 						: null;
+
 					const lcid = result.value[counter].adx_website_language;
 					websiteIdToLanguage.set(adx_websiteId, lcid);
 				}
@@ -248,6 +261,7 @@ export function getWebsiteLanguageIdToPortalLanguageIdMap(
 	schema: string,
 ) {
 	const websiteLanguageIdToPortalLanguageMap = new Map<string, string>();
+
 	if (result) {
 		if (result.value?.length > 0) {
 			if (
@@ -278,6 +292,7 @@ export function getWebsiteLanguageIdToPortalLanguageIdMap(
 						._adx_portallanguageid_value
 						? result.value[counter]._adx_portallanguageid_value
 						: Constants.PORTAL_LANGUAGE_DEFAULT;
+
 					const adx_websitelanguageid =
 						result.value[counter].adx_websitelanguageid;
 					websiteLanguageIdToPortalLanguageMap.set(

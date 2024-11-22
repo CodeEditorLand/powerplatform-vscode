@@ -21,12 +21,14 @@ import { AUTH_CREATE_FAILED, AUTH_CREATE_MESSAGE } from "../constants";
 
 export async function createAuthProfileExp(pacWrapper: PacWrapper | undefined) {
 	const userOrgUrl = await showInputBoxAndGetOrgUrl();
+
 	if (!userOrgUrl) {
 		return;
 	}
 
 	if (!pacWrapper) {
 		vscode.window.showErrorMessage(AUTH_CREATE_FAILED);
+
 		return;
 	}
 
@@ -36,8 +38,10 @@ export async function createAuthProfileExp(pacWrapper: PacWrapper | undefined) {
 			return await pacWrapper?.authCreateNewAuthProfileForOrg(userOrgUrl);
 		},
 	);
+
 	if (pacAuthCreateOutput && pacAuthCreateOutput.Status !== SUCCESS) {
 		vscode.window.showErrorMessage(AUTH_CREATE_FAILED);
+
 		return;
 	}
 }

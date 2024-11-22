@@ -19,7 +19,9 @@ export function getFolderSubUris(): string[] {
 
 	if (!WebExtensionContext.showMultifileInVSCode) {
 		const entityDetails = getEntity(WebExtensionContext.defaultEntityType);
+
 		const subUri = entityDetails?.get(schemaEntityKey.FILE_FOLDER_NAME);
+
 		return [subUri as string];
 	}
 
@@ -27,6 +29,7 @@ export function getFolderSubUris(): string[] {
 		const entityDetails = WebExtensionContext.schemaEntitiesMap.get(
 			entry[1],
 		);
+
 		const subUri = entityDetails?.get(
 			schemaEntityKey.FILE_FOLDER_NAME,
 		) as string;
@@ -42,6 +45,7 @@ export function getRequestUrlForEntities(
 	entityName?: string,
 ): IEntityRequestUrl[] {
 	const entityRequestURLs: IEntityRequestUrl[] = [];
+
 	const dataverseOrgUrl = WebExtensionContext.urlParametersMap.get(
 		queryParameters.ORG_URL,
 	) as string;
@@ -54,6 +58,7 @@ export function getRequestUrlForEntities(
 			entityName && entityName.length > 0
 				? entityName
 				: WebExtensionContext.defaultEntityType;
+
 		const requestURL = getRequestURL(
 			dataverseOrgUrl,
 			entityName,
@@ -62,6 +67,7 @@ export function getRequestUrlForEntities(
 				: WebExtensionContext.defaultEntityId,
 			httpMethod.GET,
 		);
+
 		return [
 			{
 				requestUrl: requestURL,
@@ -76,6 +82,7 @@ export function getRequestUrlForEntities(
 		);
 
 		const folderName = entityDetails?.get(schemaEntityKey.FILE_FOLDER_NAME);
+
 		if (folderName && folderName?.length > 0) {
 			const requestURL = getRequestURL(
 				dataverseOrgUrl,

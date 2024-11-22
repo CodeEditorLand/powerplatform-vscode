@@ -29,17 +29,20 @@ let matchedClasses: ClassRange[][];
 
 export async function bootstrapDiff() {
 	const editor = vscode.window.activeTextEditor;
+
 	if (!editor) {
 		// Handle this to prompt the user to open a file and the run the command
 		vscode.window.showErrorMessage(
 			"Open a file before executing the command",
 		);
+
 		return;
 	}
 
 	const inputPath = editor.document.uri.path;
 
 	const diffFileName = inputPath + "-diff.json";
+
 	let diffData = "";
 	await vscode.workspace
 		.openTextDocument(vscode.Uri.file(diffFileName))
@@ -53,8 +56,10 @@ export async function bootstrapDiff() {
 	const websiteFolder = vscode.workspace.getWorkspaceFolder(
 		editor.document.uri,
 	)?.name;
+
 	if (!websiteFolder) {
 		vscode.window.showErrorMessage("Open Website folder in the wrokspace");
+
 		return;
 		``;
 	}
@@ -63,6 +68,7 @@ export async function bootstrapDiff() {
 		0,
 		websiteFolder.length - 2,
 	);
+
 	const v3FilePath = inputPath.replace(websiteFolder, v3websiteFolder);
 
 	const options: vscode.TextDocumentShowOptions = {
@@ -71,7 +77,9 @@ export async function bootstrapDiff() {
 	};
 
 	await vscode.window.showTextDocument(vscode.Uri.file(v3FilePath), options);
+
 	const v3editor = vscode.window.activeTextEditor;
+
 	if (!v3editor) {
 		// Handle this case
 		return;
@@ -82,16 +90,19 @@ export async function bootstrapDiff() {
 // Hihglights the replaced classes in V5 file
 function hihglightReplacedClasses(editor: vscode.TextEditor) {
 	const hoverMessages: vscode.DecorationOptions[] = [];
+
 	let offset = 0;
 
 	for (let l = 0; l < matchedClasses.length; l++) {
 		offset = 0;
+
 		for (let i = 0; i < matchedClasses[l].length; i++) {
 			const start = new vscode.Position(
 				l,
 				matchedClasses[l][i].Start + offset,
 			);
 			offset += matchedClasses[l][i].Offset;
+
 			const end = new vscode.Position(
 				l,
 				matchedClasses[l][i].End + offset,
@@ -112,6 +123,7 @@ function hihglightMatchedClasses(editor: vscode.TextEditor) {
 	for (let l = 0; l < matchedClasses.length; l++) {
 		for (let i = 0; i < matchedClasses[l].length; i++) {
 			const start = new vscode.Position(l, matchedClasses[l][i].Start);
+
 			const end = new vscode.Position(l, matchedClasses[l][i].End);
 			matchedClassPositionRanges.push(new vscode.Range(start, end));
 		}

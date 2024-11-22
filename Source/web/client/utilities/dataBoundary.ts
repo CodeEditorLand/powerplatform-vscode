@@ -227,6 +227,7 @@ export function getGeoShortCodeForLocation(
 }
 
 export type DataBoundariesType = (typeof DataBoundaries)[number];
+
 const _currentGeo: GeoShortCodesType = getGeoShortCodeForLocation(
 	WebExtensionContext.urlParametersMap
 		?.get(queryParameters.GEO)

@@ -46,6 +46,7 @@ export async function CESUserFeedback(
 	);
 
 	const nonce = getNonce();
+
 	const webview = feedbackPanel.webview;
 	feedbackPanel.webview.html = getWebviewContent(
 		feedbackCssUri,
@@ -102,6 +103,7 @@ export async function CESUserFeedback(
 						type: "copilotStrings",
 						value: copilotStrings,
 					});
+
 					break;
 				}
 				case "feedback":
@@ -115,6 +117,7 @@ export async function CESUserFeedback(
 						sessionId,
 					);
 					feedbackPanel?.dispose();
+
 					break;
 			}
 		},
@@ -152,6 +155,7 @@ function getWebviewURIs(
 		"user-feedback",
 		"feedback.css",
 	);
+
 	const feedbackCssUri = feedbackPanel.webview.asWebviewUri(feedbackCssPath);
 
 	const feedbackJsPath = vscode.Uri.joinPath(
@@ -162,6 +166,7 @@ function getWebviewURIs(
 		"user-feedback",
 		"feedback.js",
 	);
+
 	const feedbackJsUri = feedbackPanel.webview.asWebviewUri(feedbackJsPath);
 
 	return { feedbackCssUri, feedbackJsUri };
@@ -213,6 +218,7 @@ async function handleFeedbackSubmission(
 	sessionID: string,
 ) {
 	feedbackData.Feedbacks[0].value = thumbType + " - " + text;
+
 	try {
 		const response = await fetch(endpointUrl, {
 			method: "POST",
@@ -226,6 +232,7 @@ async function handleFeedbackSubmission(
 		if (response.ok) {
 			// Feedback sent successfully
 			const responseJson = await response.json();
+
 			const feedbackId = responseJson.FeedbackId;
 			sendTelemetryEvent(telemetry, {
 				eventName: CopilotUserFeedbackSuccessEvent,

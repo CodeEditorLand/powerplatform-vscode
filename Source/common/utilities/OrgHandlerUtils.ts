@@ -28,6 +28,7 @@ async function fetchOrgDetailsFromPac(
 	pacWrapper: PacWrapper,
 ): Promise<IOrgDetails> {
 	const pacActiveOrg = await pacWrapper.activeOrg();
+
 	if (pacActiveOrg && pacActiveOrg.Status === SUCCESS) {
 		return handleOrgChangeSuccess(pacActiveOrg.Results);
 	}
@@ -56,6 +57,7 @@ export async function initializeOrgDetails(
 			orgDetails.environmentID = fetchedOrgDetails.environmentID;
 		} catch (error) {
 			await createAuthProfileExp(pacWrapper);
+
 			const fetchedOrgDetails = await fetchOrgDetailsFromPac(pacWrapper);
 			orgDetails.orgID = fetchedOrgDetails.orgID;
 			orgDetails.orgUrl = fetchedOrgDetails.orgUrl;

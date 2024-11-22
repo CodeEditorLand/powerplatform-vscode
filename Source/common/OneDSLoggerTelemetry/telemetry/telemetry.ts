@@ -39,6 +39,7 @@ export function sendTelemetryEvent(
 	telemetryData: ITelemetryData,
 ): void {
 	const telemetryDataProperties: Record<string, string> = {};
+
 	const telemetryDataMeasurements: Record<string, number> = {};
 
 	if (telemetryData.numberOfFiles) {
