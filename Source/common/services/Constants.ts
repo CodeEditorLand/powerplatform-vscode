@@ -21,9 +21,11 @@ export const BAP_SERVICE_ENDPOINT = `{rootURL}/providers/Microsoft.BusinessAppPl
 export const BAP_SERVICE_COPILOT_CROSS_GEO_FLAG_RELATIVE_URL = `scopes/admin/environments/{environmentID}?$expand=properties/copilotPolicies&api-version={apiVersion}`;
 
 // PPAPI constants
-export const PPAPI_WEBSITES_API_VERSION = '2022-03-01-preview';
-export const PPAPI_WEBSITES_SERVICE_SCOPE_DEFAULT = "https://api.powerplatform.com/.default";
-export const PPAPI_PREPROD_WEBSITES_SERVICE_SCOPE_DEFAULT = "https://api.preprod.powerplatform.com/.default";
+export const PPAPI_WEBSITES_API_VERSION = "2022-03-01-preview";
+export const PPAPI_WEBSITES_SERVICE_SCOPE_DEFAULT =
+	"https://api.powerplatform.com/.default";
+export const PPAPI_PREPROD_WEBSITES_SERVICE_SCOPE_DEFAULT =
+	"https://api.preprod.powerplatform.com/.default";
 export const PPAPI_WEBSITES_ENDPOINT = `{rootURL}/powerpages/environments/{environmentId}/websites`;
 
 export enum ServiceEndpointCategory {
