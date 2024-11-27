@@ -152,18 +152,16 @@ export class GeneratorAcquisition implements IDisposable {
 					{},
 					[String(child.error)],
 				);
-				oneDSLoggerWrapper
-					.getLogger()
-					.traceError(
-						"PowerPagesGeneratorInstallComplete",
-						String(child.error),
-						{
-							name: "PowerPagesGeneratorInstallComplete",
-							message: String(child.error),
-						} as Error,
-						{ cliVersion: this._generatorVersion },
-						{},
-					);
+				oneDSLoggerWrapper.getLogger().traceError(
+					"PowerPagesGeneratorInstallComplete",
+					String(child.error),
+					{
+						name: "PowerPagesGeneratorInstallComplete",
+						message: String(child.error),
+					} as Error,
+					{ cliVersion: this._generatorVersion },
+					{},
+				);
 
 				this._context.showErrorMessage(
 					vscode.l10n.t({
