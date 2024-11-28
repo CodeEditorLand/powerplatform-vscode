@@ -17,15 +17,21 @@ export enum Tables {
 export const NOT_A_PORTAL_DIRECTORY = vscode.l10n.t(
 	"No Website Data Found in Current Directory. Please switch to a directory that contains the PAC downloaded website data to continue.",
 );
+
 export const WEBSITE_YML = "website.yml";
+
 export const NO_WORKSPACEFOLDER_FOUND = vscode.l10n.t(
 	"No workspace folder found",
 );
+
 export const CONTENT_SNIPPET = "ContentSnippet";
+
 export const WEBFILE = "Webfile";
+
 export const ERROR_MESSAGE = vscode.l10n.t(
 	`Operation failed. See output panel for details.`,
 );
+
 export const SHOW_OUTPUT_PANEL = vscode.l10n.t(`Show Output Panel`);
 
 export enum YoSubGenerator {

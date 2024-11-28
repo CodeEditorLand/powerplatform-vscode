@@ -4,4 +4,5 @@
  */
 
 export { ControlLocator } from "./ControlLocator";
+
 export { ControlLocation } from "./ControlLocation";

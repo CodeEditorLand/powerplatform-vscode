@@ -4,5 +4,7 @@
  */
 
 export { BrowserFlavor } from "./BrowserFlavor";
+
 export { Platform } from "./Platform";
+
 export { IBrowserPath } from "./IBrowserPath";

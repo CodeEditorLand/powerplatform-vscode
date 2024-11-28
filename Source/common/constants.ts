@@ -90,4 +90,5 @@ export interface IApiRequestParams {
 
 export const VSCODE_EXTENSION_COPILOT_CONTEXT_RELATED_FILES_FETCH_FAILED =
 	"VSCodeExtensionCopilotContextRelatedFilesFetchFailed";
+
 export const ADX_WEBPAGE = "adx_webpage";

@@ -4,4 +4,5 @@
  */
 
 export { LaunchDebugProvider } from "./LaunchDebugProvider";
+
 export { ConfigurationManager } from "./ConfigurationManager";

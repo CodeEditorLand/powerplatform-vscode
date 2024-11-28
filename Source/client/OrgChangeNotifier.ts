@@ -11,8 +11,11 @@ import { ActiveOrgOutput } from "./pac/PacTypes";
 import { PacWrapper } from "./pac/PacWrapper";
 
 export const orgChangeEventEmitter = new vscode.EventEmitter<ActiveOrgOutput>();
+
 export const orgChangeEvent = orgChangeEventEmitter.event;
+
 export const orgChangeErrorEventEmitter = new vscode.EventEmitter<void>();
+
 export const orgChangeErrorEvent = orgChangeErrorEventEmitter.event;
 
 export class OrgChangeNotifier {

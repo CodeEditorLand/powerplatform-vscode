@@ -4,14 +4,23 @@
  */
 
 export const WebFileYmlExtension = ".webfile.yml";
+
 export const WebFilesFolder = "web-files";
+
 export const DataverseFieldAdxName = "adx_name";
+
 export const DataverseFieldAdxTitle = "adx_title";
+
 export const DataverseFieldAdxPartialUrl = "adx_partialurl";
+
 export const DataverseFieldFilename = "filename";
+
 export const DataverseFieldAdxEntityName = "adx_entityname";
+
 export const DataverseFieldAdxEntityLogicalName = "adx_entitylogicalname";
+
 export const DataverseFieldAdxDisplayName = "adx_display_name";
+
 export const AdvancedFormsStep = "advanced-form-steps"; // This is included as part of advanced-forms
 
 export const EntityFolderName = [

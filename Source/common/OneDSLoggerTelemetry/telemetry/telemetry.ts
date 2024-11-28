@@ -8,15 +8,25 @@ import { ITelemetry } from "./ITelemetry";
 
 // Telemetry Event Names
 export const FileDeleteEvent = "FileDeleteEvent";
+
 export const FileRenameEvent = "FileRenameEvent";
+
 export const UserFileDeleteEvent = "UserFileDeleteEvent";
+
 export const UserFileRenameEvent = "UserFileRenameEvent";
+
 export const ValidateTextDocumentEvent = "ValidateTextDocumentEvent";
+
 export const FileRenameValidationEvent = "FileRenameValidationEvent";
+
 export const UpdateEntityPathNamesEvent = "UpdateEntityPathNamesEvent";
+
 export const CleanupRelatedFilesEvent = "CleanupRelatedFilesEvent";
+
 export const UpdateEntityNameInYmlEvent = "UpdateEntityNameInYmlEvent";
+
 export const UserFileCreateEvent = "UserFileCreateEvent";
+
 export const FileCreateEvent = "FileCreateEvent";
 
 interface ITelemetryData {

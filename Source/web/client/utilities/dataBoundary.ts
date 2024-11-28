@@ -7,7 +7,9 @@ import { queryParameters } from "../common/constants";
 import WebExtensionContext from "../WebExtensionContext";
 
 export const DataBoundaries = ["em", "eu", "as", "na", "cn"] as const;
+
 export type GeoShortCodesType = (typeof GeoShortCodes)[number];
+
 export const GeoShortCodes = [
 	"ae",
 	"as",

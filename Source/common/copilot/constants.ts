@@ -19,6 +19,7 @@ export const CodiconStylePathSegments = [
 	"styles",
 	"codicon.css",
 ];
+
 export const CopilotStylePathSegments = [
 	"src",
 	"common",
@@ -27,31 +28,55 @@ export const CopilotStylePathSegments = [
 	"styles",
 	"copilot.css",
 ];
+
 export const EUROPE_GEO = "eu";
+
 export const UK_GEO = "uk";
+
 export const COPILOT_UNAVAILABLE = "copilotunavailable";
+
 export const AUTH_CREATE_MESSAGE = vscode.l10n.t("Creating new Auth Profile");
+
 export const AUTH_CREATE_FAILED = vscode.l10n.t(
 	"Error creating auth profile for org",
 );
+
 export const RELEVANCY_CHECK_FAILED = "RelevancyCheckFailed";
+
 export const INAPPROPRIATE_CONTENT = "InappropriateContentDetected";
+
 export const INPUT_CONTENT_FILTERED = "InputContentFiltered";
+
 export const PROMPT_LIMIT_EXCEEDED = "PromptLimitExceeded";
+
 export const INVALID_INFERENCE_INPUT = "InvalidInferenceInput";
+
 export const COPILOT_NOTIFICATION_DISABLED = "isCopilotNotificationDisabled";
+
 export const EXPLAIN_CODE = "explainCode";
+
 export const SELECTED_CODE_INFO = "selectedCodeInfo";
+
 export const SELECTED_CODE_INFO_ENABLED = true;
+
 export const THUMBS_UP = "thumbsUp";
+
 export const THUMBS_DOWN = "thumbsDown";
+
 export const ADX_ENTITYFORM = "adx_entityform";
+
 export const ADX_ENTITYLIST = "adx_entitylist";
+
 export const ATTRIBUTE_DESCRIPTION = "description";
+
 export const ATTRIBUTE_DATAFIELD_NAME = "datafieldname";
+
 export const ATTRIBUTE_CLASSID = "classid";
+
 export const SYSTEFORMS_API_PATH = "api/data/v9.2/systemforms";
+
 export const COPILOT_IN_POWERPAGES = "Copilot In Power Pages";
+
 export const EXTENSION_VERSION_KEY = "extensionVersion";
 
 export type WebViewMessage = {
@@ -89,8 +114,10 @@ export const ControlClassIdMap = new Map<string, string>([
 ]);
 
 export const GITHUB_COPILOT_CHAT_EXT = "github.copilot-chat";
+
 export const PowerPagesParticipantPrompt =
 	"@powerpages how can you help with coding for my website?";
+
 export const PowerPagesParticipantDocLink =
 	"https://go.microsoft.com/fwlink/?linkid=2276973";
 
@@ -101,6 +128,7 @@ export const AuthProfileNotFound = [
 		code: "",
 	},
 ];
+
 export const NetworkError = [
 	{
 		displayText:
@@ -108,12 +136,14 @@ export const NetworkError = [
 		code: "",
 	},
 ];
+
 export const InvalidResponse = [
 	{
 		displayText: "Something went wrong. Don’t worry, you can try again.",
 		code: "",
 	},
 ];
+
 export const MalaciousScenerioResponse = [
 	{
 		displayText:
@@ -121,15 +151,18 @@ export const MalaciousScenerioResponse = [
 		code: "",
 	},
 ];
+
 export const PromptLimitExceededResponse = [
 	{ displayText: "Please try again with a shorter prompt.", code: "" },
 ];
+
 export const RateLimitingResponse = [
 	{
 		displayText: "Too many requests at once. Try again after some time.",
 		code: "",
 	},
 ];
+
 export const UnauthorizedResponse = [
 	{
 		displayText:
