@@ -15,6 +15,7 @@ import uuid = require("uuid");
 
 interface IUserSettingsDataContract {
 	settingVersion: string;
+
 	uniqueId?: string; // May be undefined for some old installs
 	telemetryEnabled: boolean;
 }
@@ -75,6 +76,7 @@ export class TelemetryUserSettingsFileProvider
 			// BatchedTelemetryTraceSource.TraceInformation($"{nameof(TelemetryUserSettingsFileProvider)} User settings file missing unique id. Generating and saving new id. Settings file path: {SettingsFilePath}.");
 
 			settings.uniqueId = uuid.v4();
+
 			this.WriteSettings(settings, /*allowOverwrite*/ true);
 		}
 

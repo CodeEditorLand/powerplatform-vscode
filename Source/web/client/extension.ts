@@ -68,13 +68,17 @@ export function activate(context: vscode.ExtensionContext): void {
 		vscodeExtAppInsightsResourceProvider.GetAppInsightsResourceForDataBoundary(
 			dataBoundary,
 		);
+
 	oneDSLoggerWrapper.instantiate(GeoNames.US);
+
 	WebExtensionContext.setVscodeWorkspaceState(context.workspaceState);
+
 	WebExtensionContext.telemetry.setTelemetryReporter(
 		context.extension.id,
 		context.extension.packageJSON.version,
 		appInsightsResource,
 	);
+
 	context.subscriptions.push(
 		WebExtensionContext.telemetry.getTelemetryReporter(),
 	);
@@ -82,6 +86,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	WebExtensionContext.telemetry.sendInfoTelemetry("activated");
 
 	const portalsFS = new PortalsFS();
+
 	context.subscriptions.push(
 		vscode.workspace.registerFileSystemProvider(
 			PORTALS_URI_SCHEME,
@@ -116,11 +121,13 @@ export function activate(context: vscode.ExtensionContext): void {
 						);
 					}
 				}
+
 				if (!checkMandatoryParameters(appName, queryParamsMap)) {
 					return;
 				}
 
 				removeEncodingFromParameters(queryParamsMap);
+
 				WebExtensionContext.setWebExtensionContext(
 					entity,
 					entityId,
@@ -131,11 +138,14 @@ export function activate(context: vscode.ExtensionContext): void {
 				const orgId = queryParamsMap.get(
 					queryParameters.ORG_ID,
 				) as string;
+
 				await fetchArtemisData(orgId);
+
 				WebExtensionContext.telemetry.sendInfoTelemetry(
 					webExtensionTelemetryEventNames.WEB_EXTENSION_ORG_GEO,
 					{ orgId: orgId, orgGeo: WebExtensionContext.geoName },
 				);
+
 				oneDSLoggerWrapper.instantiate(
 					WebExtensionContext.geoName,
 					WebExtensionContext.geoLongName,
@@ -197,6 +207,7 @@ export function activate(context: vscode.ExtensionContext): void {
 										);
 
 										registerCopilot(context);
+
 										processWillStartCollaboration(context);
 									},
 								);
@@ -211,6 +222,7 @@ export function activate(context: vscode.ExtensionContext): void {
 									);
 								}
 							}
+
 							break;
 
 						default: {
@@ -298,12 +310,14 @@ export function registerCollaborationView() {
 		"powerpages.collaborationView",
 		WebExtensionContext.userCollaborationProvider,
 	);
+
 	vscode.commands.registerCommand(
 		"powerpages.collaboration.openTeamsChat",
 		(event) => {
 			WebExtensionContext.openTeamsChat(event.id);
 		},
 	);
+
 	vscode.commands.registerCommand(
 		"powerpages.collaboration.openMail",
 		(event) => {
@@ -314,18 +328,22 @@ export function registerCollaborationView() {
 
 export function powerPagesNavigation() {
 	const powerPagesNavigationProvider = new PowerPagesNavigationProvider();
+
 	vscode.window.registerTreeDataProvider(
 		"powerpages.powerPagesFileExplorer",
 		powerPagesNavigationProvider,
 	);
+
 	vscode.commands.registerCommand(
 		"powerpages.powerPagesFileExplorer.powerPagesRuntimePreview",
 		() => powerPagesNavigationProvider.previewPowerPageSite(),
 	);
+
 	vscode.commands.registerCommand(
 		"powerpages.powerPagesFileExplorer.backToStudio",
 		() => powerPagesNavigationProvider.backToStudio(),
 	);
+
 	WebExtensionContext.telemetry.sendInfoTelemetry(
 		webExtensionTelemetryEventNames.WEB_EXTENSION_POWER_PAGES_WEB_VIEW_REGISTERED,
 	);
@@ -345,7 +363,9 @@ export function processWalkthroughFirstRunExperience(
 			`microsoft-IsvExpTools.powerplatform-vscode#PowerPage-gettingStarted-multiFile`,
 			false,
 		);
+
 		context.globalState.update(IS_MULTIFILE_FIRST_RUN_EXPERIENCE, false);
+
 		WebExtensionContext.telemetry.sendInfoTelemetry("StartCommand", {
 			commandId: "workbench.action.openWalkthrough",
 			walkthroughId:
@@ -377,6 +397,7 @@ export function processWorkspaceStateChanges(context: vscode.ExtensionContext) {
 							document.uri.fsPath,
 							entityInfo,
 						);
+
 						WebExtensionContext.updateVscodeWorkspaceState(
 							document.uri.fsPath,
 							entityInfo,
@@ -388,6 +409,7 @@ export function processWorkspaceStateChanges(context: vscode.ExtensionContext) {
 						) {
 							// sending message to webworker event listener for Co-Presence feature
 							sendingMessageToWebWorkerForCoPresence(entityInfo);
+
 							WebExtensionContext.quickPickProvider.refresh();
 						}
 					}
@@ -400,10 +422,12 @@ export function processWorkspaceStateChanges(context: vscode.ExtensionContext) {
 					tab.input instanceof vscode.TabInputText
 				) {
 					const document = tab.input;
+
 					context.workspaceState.update(
 						document.uri.fsPath,
 						undefined,
 					);
+
 					WebExtensionContext.updateVscodeWorkspaceState(
 						document.uri.fsPath,
 						undefined,
@@ -467,10 +491,12 @@ export function processWillStartCollaboration(
 ) {
 	if (isCoPresenceEnabled()) {
 		registerCollaborationView();
+
 		vscode.commands.registerCommand(
 			"powerPlatform.previewCurrentActiveUsers",
 			() => WebExtensionContext.quickPickProvider.showQuickPick(),
 		);
+
 		createWebWorkerInstance(context);
 	}
 }
@@ -509,9 +535,12 @@ export function createWebWorkerInstance(context: vscode.ExtensionContext) {
 							data.userId,
 							data.removeConnectionData,
 						);
+
 						WebExtensionContext.userCollaborationProvider.refresh();
+
 						WebExtensionContext.quickPickProvider.refresh();
 					}
+
 					if (
 						data.type ===
 						Constants.workerEventMessages.UPDATE_CONNECTED_USERS
@@ -530,8 +559,10 @@ export function createWebWorkerInstance(context: vscode.ExtensionContext) {
 						}
 
 						WebExtensionContext.userCollaborationProvider.refresh();
+
 						WebExtensionContext.quickPickProvider.refresh();
 					}
+
 					if (
 						data.type ===
 						Constants.workerEventMessages.SEND_INFO_TELEMETRY
@@ -541,6 +572,7 @@ export function createWebWorkerInstance(context: vscode.ExtensionContext) {
 							data?.userId ? { userId: data.userId } : {},
 						);
 					}
+
 					if (
 						data.type ===
 						Constants.workerEventMessages.SEND_ERROR_TELEMETRY
@@ -603,6 +635,7 @@ export async function showSiteVisibilityDialog() {
 		);
 
 		const options = { detail: siteMessage, modal: true };
+
 		await vscode.window.showWarningMessage(
 			vscode.l10n.t("You are editing a live, public site "),
 			options,
@@ -622,6 +655,7 @@ export function showWalkthrough(
 				telemetry.sendInfoTelemetry("StartCommand", {
 					commandId: "powerplatform-walkthrough.overview-learn-more",
 				});
+
 				vscode.env.openExternal(
 					vscode.Uri.parse(
 						"https://go.microsoft.com/fwlink/?linkid=2207914",
@@ -639,6 +673,7 @@ export function showWalkthrough(
 					commandId:
 						"powerplatform-walkthrough.fileSystem-documentation",
 				});
+
 				vscode.env.openExternal(
 					vscode.Uri.parse(
 						"https://go.microsoft.com/fwlink/?linkid=2206616",
@@ -656,6 +691,7 @@ export function showWalkthrough(
 					commandId:
 						"powerplatform-walkthrough.fileSystem-open-folder",
 				});
+
 				vscode.commands.executeCommand("workbench.view.explorer");
 			},
 		),
@@ -669,6 +705,7 @@ export function showWalkthrough(
 					commandId:
 						"powerplatform-walkthrough.saveConflict-learn-more",
 				});
+
 				vscode.env.openExternal(
 					vscode.Uri.parse(
 						"https://go.microsoft.com/fwlink/?linkid=2241221",
@@ -686,6 +723,7 @@ export function showWalkthrough(
 					commandId:
 						"powerplatform-walkthrough.advancedCapabilities-learn-more",
 				});
+
 				vscode.env.openExternal(
 					vscode.Uri.parse(
 						"https://go.microsoft.com/fwlink/?linkid=2206366",
@@ -703,6 +741,7 @@ export function showWalkthrough(
 					commandId:
 						"powerplatform-walkthrough.advancedCapabilities-start-coding",
 				});
+
 				vscode.window.showTextDocument(
 					WebExtensionContext.defaultFileUri,
 				);
@@ -783,6 +822,7 @@ function showNotificationForCopilot(
 		);
 
 		const telemetryData = JSON.stringify({ orgId: orgId });
+
 		copilotNotificationPanel(
 			context,
 			WebExtensionContext.telemetry.getTelemetryReporter(),
@@ -807,6 +847,7 @@ function showNotificationForCopilot(
 		);
 
 		const telemetryData = JSON.stringify({ orgId: orgId });
+
 		copilotNotificationPanel(
 			context,
 			WebExtensionContext.telemetry.getTelemetryReporter(),
@@ -821,6 +862,7 @@ export async function deactivate(): Promise<void> {
 	if (telemetry) {
 		telemetry.sendInfoTelemetry("End");
 	}
+
 	disposeNotificationPanel();
 }
 
@@ -850,8 +892,11 @@ async function fetchArtemisData(orgId: string) {
 	}
 
 	WebExtensionContext.geoName = artemisResponse.response.geoName;
+
 	WebExtensionContext.geoLongName = artemisResponse.response.geoLongName;
+
 	WebExtensionContext.serviceEndpointCategory = artemisResponse.stamp;
+
 	WebExtensionContext.clusterLocation = getECSOrgLocationValue(
 		artemisResponse.response.clusterName,
 		artemisResponse.response.clusterNumber,

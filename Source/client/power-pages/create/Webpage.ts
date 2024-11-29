@@ -32,10 +32,15 @@ import {
 
 interface IWebpageInputState {
 	title: string;
+
 	step: number;
+
 	totalSteps: number;
+
 	pageTemplate: string;
+
 	name: string;
+
 	parentPage: string;
 }
 
@@ -49,6 +54,7 @@ export const createWebpage = async (
 		if (!selectedWorkspaceFolder) {
 			return;
 		}
+
 		const portalContext = getPortalContext(selectedWorkspaceFolder);
 		// Get the page templates & webpages from the portal directory
 		await portalContext.init([Tables.PAGETEMPLATE, Tables.WEBPAGE]);
@@ -106,6 +112,7 @@ export const createWebpage = async (
 			);
 
 			const command = `"${yoGenPath}" ${YoSubGenerator.WEBPAGE} "${webpageName}" "${parentPageId}" "${pageTemplateId}"`;
+
 			await createRecord(
 				Tables.WEBPAGE,
 				command,
@@ -143,6 +150,7 @@ async function getWebpageInputs(
 
 	async function collectInputs() {
 		const state = {} as Partial<IWebpageInputState>;
+
 		await MultiStepInput.run((input) => inputWebpageName(input, state));
 
 		return state as IWebpageInputState;
@@ -179,6 +187,7 @@ async function getWebpageInputs(
 					? state.pageTemplate
 					: undefined,
 		});
+
 		state.pageTemplate = pick.label;
 
 		return (input: MultiStepInput) => pickParentPage(input, state);
@@ -199,6 +208,7 @@ async function getWebpageInputs(
 					? state.parentPage
 					: undefined,
 		});
+
 		state.parentPage = pick.label;
 	}
 
@@ -206,11 +216,13 @@ async function getWebpageInputs(
 		if (!name) {
 			return vscode.l10n.t("Please enter a name for the webpage.");
 		}
+
 		if (!/^[A-Za-z0-9-_]+$/.test(name)) {
 			return vscode.l10n.t(
 				"Webpage names should contain only letters, numbers, hyphens, or underscores.",
 			);
 		}
+
 		if (
 			webpageNames
 				.map((n) => n.toLowerCase())

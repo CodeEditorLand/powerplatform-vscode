@@ -41,6 +41,7 @@ export function getFeatureConfigs<
 	};
 
 	const feature = createECSFeatureDefinition(featureInfo) as EnhancedFeature;
+
 	feature.getConfig = () => ECSFeaturesClient.getConfig(feature);
 
 	return {

@@ -46,6 +46,7 @@ export class NPSService {
 						npsSurveyEndpoint =
 							"https://world.tip1.ces.microsoftcloud.com";
 				}
+
 				break;
 
 			case "prod":
@@ -61,6 +62,7 @@ export class NPSService {
 						npsSurveyEndpoint =
 							"https://world.ces.microsoftcloud.com";
 				}
+
 				break;
 
 			case "gov":
@@ -97,6 +99,7 @@ export class NPSService {
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const parsedToken = jwt_decode(accessToken) as any;
+
 			WebExtensionContext.setUserId(parsedToken?.oid);
 
 			const apiEndpoint = `${baseApiUrl}/api/v1/${SurveyConstants.TEAM_NAME}/Eligibilities/${SurveyConstants.SURVEY_NAME}?userId=${parsedToken?.oid}&eventName=${SurveyConstants.EVENT_NAME}&tenantId=${parsedToken.tid}`;
@@ -125,7 +128,9 @@ export class NPSService {
 					new Date().getTime() - requestSentAtTime,
 					this.setEligibility.name,
 				);
+
 				WebExtensionContext.setNPSEligibility(true);
+
 				WebExtensionContext.setFormsProEligibilityId(
 					result?.FormsProEligibilityId,
 				);

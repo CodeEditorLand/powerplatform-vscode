@@ -37,6 +37,7 @@ export class BundleLoader {
 		private readonly openTextDocument = workspace.openTextDocument,
 	) {
 		this.filePath = this.getAbsoluteFilePath(relativeFilePath);
+
 		this.fileName = path.basename(this.filePath);
 	}
 
@@ -68,6 +69,7 @@ export class BundleLoader {
 			);
 
 			const fileContent = file.getText();
+
 			await this.warnIfNoSourceMap(fileContent);
 
 			return fileContent;

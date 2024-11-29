@@ -54,7 +54,9 @@ export class FileWatcher implements Disposable {
 		createFileSystemWatcher = workspace.createFileSystemWatcher,
 	) {
 		const pattern = new RelativePattern(workspaceFolder, filePattern);
+
 		this.watcher = createFileSystemWatcher(pattern, true, false, true);
+
 		this.watcher.onDidChange((uri) => this.onChange(uri));
 	}
 
@@ -94,8 +96,10 @@ export class FileWatcher implements Disposable {
 					false,
 				);
 			}
+
 			this.fileChangeTriggered = false;
 		};
+
 		void onChangeAction();
 	}
 
@@ -104,6 +108,7 @@ export class FileWatcher implements Disposable {
 	 */
 	dispose() {
 		this.watcher.dispose();
+
 		this.onFileChange = undefined;
 	}
 }

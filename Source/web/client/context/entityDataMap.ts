@@ -18,10 +18,12 @@ export class EntityDataMap {
 
 		if (existingEntity) {
 			existingEntity.entityColumn.set(columnName, columnContent);
+
 			this.entityMap.set(entityId, existingEntity);
 
 			return;
 		}
+
 		throw Error("Entity does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 
@@ -46,6 +48,7 @@ export class EntityDataMap {
 		if (existingEntity) {
 			entityColumnMap = existingEntity.entityColumn;
 		}
+
 		entityColumnMap.set(attributePath.source, attributeContent);
 
 		const filePath = this.entityMap.get(entityId)?.filePath ?? new Set();
@@ -63,6 +66,7 @@ export class EntityDataMap {
 			filePath,
 			rootWebPageId,
 		);
+
 		this.entityMap.set(entityId, entityData);
 	}
 
@@ -72,6 +76,7 @@ export class EntityDataMap {
 		if (existingEntity) {
 			return existingEntity.entityColumn.get(columnName);
 		}
+
 		throw Error("Entity does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 
@@ -91,6 +96,7 @@ export class EntityDataMap {
 		} else if (columnName.source.length) {
 			return existingColumnContent;
 		}
+
 		throw Error("Entity does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 
@@ -113,10 +119,12 @@ export class EntityDataMap {
 
 				jsonFromOriginalContent[columnName.relativePath] =
 					columnAttributeContent;
+
 				existingEntity.entityColumn.set(
 					columnName.source,
 					JSON.stringify(jsonFromOriginalContent),
 				);
+
 				this.entityMap.set(entityId, existingEntity);
 
 				return;
@@ -130,6 +138,7 @@ export class EntityDataMap {
 				return;
 			}
 		}
+
 		throw Error("Entity does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 
@@ -141,6 +150,7 @@ export class EntityDataMap {
 
 			return;
 		}
+
 		throw Error("Entity does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 }

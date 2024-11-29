@@ -29,6 +29,7 @@ export async function validateTextDocument(
 		let m: RegExpExecArray | null;
 
 		const diagnostics: vscode.Diagnostic[] = [];
+
 		patterns.forEach((pattern) => {
 			while ((m = pattern.exec(text))) {
 				const diagnostic: vscode.Diagnostic = {
@@ -54,6 +55,7 @@ export async function validateTextDocument(
 					//     new vscode.DiagnosticRelatedInformation(new vscode.Location(textDocument.uri, new vscode.Range(new vscode.Position(1, 8), new vscode.Position(1, 9))), 'first assignment to `x`')
 					// ]
 				};
+
 				diagnostics.push(diagnostic);
 			}
 		});
@@ -76,7 +78,9 @@ export function showDiagnosticMessage() {
 	const terminal = vscode.window.activeTerminal
 		? vscode.window.activeTerminal
 		: vscode.window.createTerminal("Power Apps Portal");
+
 	terminal.show(true);
+
 	vscode.window.showWarningMessage(
 		vscode.l10n.t(
 			`Some references might be broken. Please check diagnostics for details.`,

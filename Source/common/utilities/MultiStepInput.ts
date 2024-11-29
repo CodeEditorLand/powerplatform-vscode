@@ -16,33 +16,49 @@ type InputStep = (input: MultiStepInput) => Thenable<InputStep | void>;
 
 interface QuickPickParameters<T extends QuickPickItem> {
 	title: string;
+
 	step: number;
+
 	totalSteps: number;
+
 	items: T[];
+
 	activeItem?: T;
+
 	placeholder: string;
+
 	buttons?: QuickInputButton[];
 }
 
 interface InputBoxParameters {
 	title: string;
+
 	step: number;
+
 	totalSteps: number;
+
 	value: string;
+
 	prompt?: string;
+
 	placeholder: string;
+
 	validate: (value: string) => Promise<string | undefined>;
+
 	buttons?: QuickInputButton[];
 }
 
 class InputFlowAction {
 	static back = new InputFlowAction();
+
 	static cancel = new InputFlowAction();
+
 	static resume = new InputFlowAction();
 }
 
 export class MultiStepInput {
 	private current?: QuickInput;
+
 	private steps: InputStep[] = [];
 
 	static async run(start: InputStep) {
@@ -59,6 +75,7 @@ export class MultiStepInput {
 
 			if (this.current) {
 				this.current.enabled = false;
+
 				this.current.busy = true;
 			}
 
@@ -68,6 +85,7 @@ export class MultiStepInput {
 				switch (err) {
 					case InputFlowAction.back:
 						this.steps.pop();
+
 						step = this.steps.pop();
 
 						break;
@@ -104,17 +122,24 @@ export class MultiStepInput {
 				T | (P extends { buttons: (infer I)[] } ? I : never)
 			>((resolve, reject) => {
 				const input = window.createQuickPick<T>();
+
 				input.title = title;
+
 				input.step = step;
+
 				input.totalSteps = totalSteps;
+
 				input.placeholder = placeholder;
+
 				input.items = items;
+
 				input.activeItems = activeItem ? [activeItem] : [];
 
 				input.buttons = [
 					...(this.steps.length > 1 ? [QuickInputButtons.Back] : []),
 					...(buttons || []),
 				];
+
 				disposables.push(
 					input.onDidTriggerButton((item) => {
 						// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -128,7 +153,9 @@ export class MultiStepInput {
 				if (this.current) {
 					this.current.dispose();
 				}
+
 				this.current = input;
+
 				this.current.show();
 			});
 		} finally {
@@ -155,11 +182,17 @@ export class MultiStepInput {
 				string | (P extends { buttons: (infer I)[] } ? I : never)
 			>((resolve, reject) => {
 				const input = window.createInputBox();
+
 				input.title = title;
+
 				input.step = step;
+
 				input.totalSteps = totalSteps;
+
 				input.value = value;
+
 				input.prompt = prompt;
+
 				input.placeholder = placeholder;
 
 				input.buttons = [
@@ -177,7 +210,9 @@ export class MultiStepInput {
 
 					input.onDidAccept(async () => {
 						const inputValue = input.value;
+
 						input.enabled = false;
+
 						input.busy = true;
 
 						if (!(await validate(inputValue))) {
@@ -185,11 +220,13 @@ export class MultiStepInput {
 						}
 
 						input.enabled = true;
+
 						input.busy = false;
 					}),
 
 					input.onDidChangeValue(async (text) => {
 						const current = validate(text);
+
 						validating = current;
 
 						const validationMessage = await current;
@@ -211,6 +248,7 @@ export class MultiStepInput {
 				}
 
 				this.current = input;
+
 				this.current.show();
 			});
 		} finally {

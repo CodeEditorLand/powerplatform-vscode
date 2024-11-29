@@ -8,17 +8,22 @@ import * as vscode from "vscode";
 export interface IPowerPagesChatResult extends vscode.ChatResult {
 	metadata: {
 		command: string;
+
 		scenario: string;
+
 		orgId?: string;
 	};
 }
 export interface IOrgDetails {
 	orgID: string;
+
 	orgUrl: string;
+
 	environmentID: string;
 }
 
 export interface IComponentInfo {
 	componentInfo: string[];
+
 	entityName: string;
 }

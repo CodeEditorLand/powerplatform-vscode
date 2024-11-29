@@ -83,11 +83,13 @@ export async function activate(
 		vscodeExtAppInsightsResourceProvider.GetAppInsightsResourceForDataBoundary(
 			telemetryEnv.dataBoundary,
 		);
+
 	_telemetry = new TelemetryReporter(
 		context.extension.id,
 		context.extension.packageJSON.version,
 		appInsightsResource.instrumentationKey,
 	);
+
 	context.subscriptions.push(_telemetry);
 	// Logging telemetry in US cluster for unauthenticated scenario
 	oneDSLoggerWrapper.instantiate("us");
@@ -95,6 +97,7 @@ export async function activate(
 	_telemetry.sendTelemetryEvent("Start", {
 		"pac.userId": readUserSettings().uniqueId,
 	});
+
 	oneDSLoggerWrapper.getLogger().traceInfo("Start", {
 		"pac.userId": readUserSettings().uniqueId,
 	});
@@ -126,9 +129,11 @@ export async function activate(
 				_telemetry.sendTelemetryEvent("StartCommand", {
 					commandId: "microsoft-powerapps-portals.preview-show",
 				});
+
 				oneDSLoggerWrapper.getLogger().traceInfo("StartCommand", {
 					commandId: "microsoft-powerapps-portals.preview-show",
 				});
+
 				PortalWebView.createOrShow();
 			},
 		),
@@ -142,9 +147,11 @@ export async function activate(
 				_telemetry.sendTelemetryEvent("StartCommand", {
 					commandId: "microsoft-powerapps-portals.bootstrap-diff",
 				});
+
 				oneDSLoggerWrapper.getLogger().traceInfo("StartCommand", {
 					commandId: "microsoft-powerapps-portals.bootstrap-diff",
 				});
+
 				bootstrapDiff();
 			},
 		),
@@ -162,16 +169,19 @@ export async function activate(
 					_telemetry.sendTelemetryEvent("PortalWebPagePreview", {
 						page: "NewPage",
 					});
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo("PortalWebPagePreview", {
 							page: "NewPage",
 						});
+
 					PortalWebView?.currentPanel?._update();
 				}
 			}
 		}),
 	);
+
 	_context.subscriptions.push(
 		vscode.workspace.onDidChangeTextDocument(() => {
 			if (vscode.window.activeTextEditor === undefined) {
@@ -181,11 +191,13 @@ export async function activate(
 					_telemetry.sendTelemetryEvent("PortalWebPagePreview", {
 						page: "ExistingPage",
 					});
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo("PortalWebPagePreview", {
 							page: "ExistingPage",
 						});
+
 					PortalWebView?.currentPanel?._update();
 				}
 			}
@@ -210,7 +222,9 @@ export async function activate(
 	const cliPath = await cli.ensureInstalled();
 
 	const pacTerminal = new PacTerminal(_context, _telemetry, cliPath);
+
 	_context.subscriptions.push(cli);
+
 	_context.subscriptions.push(pacTerminal);
 
 	let copilotNotificationShown = false;
@@ -244,9 +258,11 @@ export async function activate(
 					AadIdObject = pacActiveAuth.Results?.filter(
 						(obj) => obj.Key === AadIdKey,
 					);
+
 					EnvID = pacActiveAuth.Results?.filter(
 						(obj) => obj.Key === EnvIdKey,
 					);
+
 					TenantID = pacActiveAuth.Results?.filter(
 						(obj) => obj.Key === TenantIdKey,
 					);
@@ -285,6 +301,7 @@ export async function activate(
 						AadId: AadIdObject[0].Value,
 					};
 				}
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -303,12 +320,15 @@ export async function activate(
 						workspaceFolders,
 						_telemetry,
 					);
+
 					telemetryData = JSON.stringify(listOfActivePortals);
+
 					_telemetry.sendTelemetryEvent("VscodeDesktopUsage", {
 						listOfActivePortals: telemetryData,
 						countOfActivePortals:
 							listOfActivePortals.length.toString(),
 					});
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo("VscodeDesktopUsage", {
@@ -318,9 +338,11 @@ export async function activate(
 						});
 				} catch (exception) {
 					const exceptionError = exception as Error;
+
 					_telemetry.sendTelemetryException(exceptionError, {
 						eventName: "VscodeDesktopUsage",
 					});
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceError(
@@ -337,6 +359,7 @@ export async function activate(
 					telemetryData,
 					listOfActivePortals.length.toString(),
 				);
+
 				copilotNotificationShown = true;
 			}
 		}),
@@ -349,15 +372,18 @@ export async function activate(
 		);
 
 		vscode.workspace.onDidOpenTextDocument(didOpenTextDocument);
+
 		vscode.workspace.textDocuments.forEach(didOpenTextDocument);
 
 		_telemetry.sendTelemetryEvent("PowerPagesWebsiteYmlExists"); // Capture's PowerPages Users
 		oneDSLoggerWrapper.getLogger().traceInfo("PowerPagesWebsiteYmlExists");
+
 		vscode.commands.executeCommand(
 			"setContext",
 			"powerpages.websiteYmlExists",
 			true,
 		);
+
 		initializeGenerator(_context, cliContext, _telemetry); // Showing the create command only if website.yml exists
 	} else {
 		vscode.commands.executeCommand(
@@ -370,6 +396,7 @@ export async function activate(
 	const workspaceFolderWatcher = vscode.workspace.onDidChangeWorkspaceFolders(
 		handleWorkspaceFolderChange,
 	);
+
 	_context.subscriptions.push(workspaceFolderWatcher);
 
 	if (shouldEnableDebugger()) {
@@ -377,12 +404,14 @@ export async function activate(
 	}
 
 	_telemetry.sendTelemetryEvent("activated");
+
 	oneDSLoggerWrapper.getLogger().traceInfo("activated");
 }
 
 export async function deactivate(): Promise<void> {
 	if (_telemetry) {
 		_telemetry.sendTelemetryEvent("End");
+
 		oneDSLoggerWrapper.getLogger().traceInfo("End");
 		// dispose() will flush any events not sent
 		// Note, while dispose() returns a promise, we don't await it so that we can unblock the rest of unloading logic
@@ -394,7 +423,9 @@ export async function deactivate(): Promise<void> {
 	}
 
 	disposeDiagnostics();
+
 	deactivateDebugger();
+
 	disposeNotificationPanel();
 }
 
@@ -444,6 +475,7 @@ function didOpenTextDocument(document: vscode.TextDocument): void {
 
 		if (disposable) {
 			yamlServerRunning = true;
+
 			_context.subscriptions.push(disposable);
 		}
 
@@ -489,6 +521,7 @@ function didOpenTextDocument(document: vscode.TextDocument): void {
 
 		if (disposable) {
 			htmlServerRunning = true;
+
 			_context.subscriptions.push(disposable);
 		}
 
@@ -508,6 +541,7 @@ function registerClientToReceiveNotifications(client: LanguageClient) {
 					serverTelemetry.properties,
 					serverTelemetry.measurements,
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -529,6 +563,7 @@ function isCurrentDocumentEdited(): boolean {
 	if (PortalWebView?.currentPanel) {
 		currentPanelExists = true;
 	}
+
 	return (
 		workspaceFolderExists &&
 		currentPanelExists &&
@@ -582,10 +617,12 @@ function showNotificationForCopilot(
 			listOfOrgs: telemetryData,
 			countOfActivePortals,
 		});
+
 		oneDSLoggerWrapper.getLogger().traceInfo(CopilotNotificationShown, {
 			listOfOrgs: telemetryData,
 			countOfActivePortals,
 		});
+
 		copilotNotificationPanel(
 			_context,
 			telemetry,
@@ -609,10 +646,12 @@ function showNotificationForCopilot(
 			listOfOrgs: telemetryData,
 			countOfActivePortals,
 		});
+
 		oneDSLoggerWrapper.getLogger().traceInfo(CopilotNotificationShown, {
 			listOfOrgs: telemetryData,
 			countOfActivePortals,
 		});
+
 		copilotNotificationPanel(
 			_context,
 			telemetry,
@@ -632,9 +671,11 @@ class CliAcquisitionContext implements ICliAcquisitionContext {
 	public get extensionPath(): string {
 		return this._context.extensionPath;
 	}
+
 	public get globalStorageLocalPath(): string {
 		return this._context.globalStorageUri.fsPath;
 	}
+
 	public get telemetry(): ITelemetry {
 		return this._telemetry;
 	}

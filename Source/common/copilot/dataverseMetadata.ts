@@ -164,6 +164,7 @@ function getAttributesFromResponse(jsonResponse: any): string[] {
 			const attrDisplayName = attr.DisplayName?.UserLocalizedLabel?.Label; // Optional chaining for handling missing values
 			if (attrDisplayName) {
 				logicalNameDisplayName.push(attrDisplayName);
+
 				logicalNameDisplayName.push(attr.LogicalName);
 			}
 		});
@@ -273,6 +274,7 @@ export async function getEntityName(
 					sessionID,
 					dataverseEntity,
 				);
+
 				entityName =
 					parsedData["adx_entityname"] ||
 					parsedData["adx_targetentitylogicalname"];
@@ -280,6 +282,7 @@ export async function getEntityName(
 				formName = parsedData["adx_formname"];
 			} else if (!IS_DESKTOP) {
 				const entityMetadata = getEntityMetadata(document.uri.fsPath);
+
 				entityName = entityMetadata.logicalEntityName ?? "";
 
 				formName = entityMetadata.logicalFormName ?? "";
@@ -292,8 +295,10 @@ export async function getEntityName(
 			dataverseEntity: dataverseEntity,
 			error: error as Error,
 		});
+
 		entityName = "";
 	}
+
 	return { entityName, formName };
 }
 

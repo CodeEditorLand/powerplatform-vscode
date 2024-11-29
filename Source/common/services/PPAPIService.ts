@@ -53,6 +53,7 @@ export class PPAPIService {
 			if (response.ok) {
 				const websiteDetails =
 					(await response.json()) as unknown as IWebsiteDetails;
+
 				sendTelemetryEvent(telemetry, {
 					eventName:
 						VSCODE_EXTENSION_PPAPI_GET_WEBSITE_BY_ID_COMPLETED,

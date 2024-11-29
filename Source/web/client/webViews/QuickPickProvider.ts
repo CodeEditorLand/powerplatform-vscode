@@ -16,6 +16,7 @@ import WebExtensionContext from "../WebExtensionContext";
 
 interface IQuickPickItem extends vscode.QuickPickItem {
 	label: string;
+
 	id?: string;
 }
 
@@ -43,6 +44,7 @@ export class QuickPickProvider {
 					entityName: getFileEntityName(fileFsPath),
 					rootWebPageId: getFileRootWebPageId(fileFsPath),
 				};
+
 				this.updateQuickPickItems(entityInfo);
 			}
 		}

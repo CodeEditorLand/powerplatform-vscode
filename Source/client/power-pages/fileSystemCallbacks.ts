@@ -37,6 +37,7 @@ export async function handleFileSystemCallbacks(
 ) {
 	// Add file system callback flows here - for rename and delete file actions
 	await processOnDidDeleteFiles(context, telemetry);
+
 	await processOnDidRenameFiles(context, telemetry);
 }
 
@@ -53,9 +54,11 @@ async function processOnDidDeleteFiles(
 
 				try {
 					const allFileNames: string[] = [];
+
 					currentWorkspaceURI = getCurrentWorkspaceURI(
 						e.files[0].path,
 					);
+
 					await Promise.all(
 						e.files.map(async (f) => {
 							const fileEntityType = getPowerPageEntityType(
@@ -104,6 +107,7 @@ async function processOnDidDeleteFiles(
 								getExcludedFileGlobPattern(allFileNames),
 								1000,
 							);
+
 						allDocumentsUriInWorkspace.forEach(
 							async (uri) =>
 								await validateTextDocument(
@@ -215,6 +219,7 @@ async function processOnDidRenameFiles(
 								getExcludedFileGlobPattern(allFileNames),
 								1000,
 							);
+
 						allDocumentsUriInWorkspace.forEach(
 							async (uri) =>
 								await validateTextDocument(

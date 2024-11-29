@@ -21,7 +21,9 @@ const winAppDataFolder = process.env.LOCALAPPDATA || "/";
  */
 export class BrowserLocator {
 	private readonly browserFlavor: BrowserFlavor;
+
 	private readonly platform: Platform;
+
 	private readonly browserPathMapping: Map<BrowserFlavor, IBrowserPath> =
 		new Map<BrowserFlavor, IBrowserPath>([
 			[
@@ -98,6 +100,7 @@ export class BrowserLocator {
 		this.browserFlavor =
 			debugConfig.browserFlavor ||
 			ConfigurationManager.getBrowserFlavor();
+
 		this.platform = this.getPlatform();
 	}
 
@@ -184,15 +187,18 @@ export class BrowserLocator {
 		) {
 			return browserPath.windows.primary;
 		}
+
 		if (
 			this.isDefaultOrWindows() &&
 			(await pathExists(browserPath.windows.secondary))
 		) {
 			return browserPath.windows.secondary;
 		}
+
 		if (this.isDefaultOrOsx() && (await pathExists(browserPath.osx))) {
 			return browserPath.osx;
 		}
+
 		if (
 			this.isDefaultOrLinux() &&
 			(await pathExists(browserPath.debianLinux))

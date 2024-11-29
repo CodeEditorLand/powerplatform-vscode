@@ -100,6 +100,7 @@ export class EtagHandlerService {
 					entityName,
 					entityId,
 				);
+
 				updateEntityEtag(entityId, result[ODATA_ETAG]);
 
 				if (currentContent !== latestContent) {
@@ -137,6 +138,7 @@ export class EtagHandlerService {
 		} catch (error) {
 			if ((error as Response)?.status > 0) {
 				const authError = (error as Error)?.message;
+
 				WebExtensionContext.telemetry.sendAPIFailureTelemetry(
 					requestUrl,
 					entityName,
@@ -204,6 +206,7 @@ export class EtagHandlerService {
 
 			if (response.ok) {
 				const result = await response.json();
+
 				updateFileEntityEtag(fileFsPath, result[ODATA_ETAG]);
 			} else {
 				WebExtensionContext.telemetry.sendErrorTelemetry(
@@ -225,6 +228,7 @@ export class EtagHandlerService {
 		} catch (error) {
 			if ((error as Response)?.status > 0) {
 				const authError = (error as Error)?.message;
+
 				WebExtensionContext.telemetry.sendAPIFailureTelemetry(
 					requestUrl,
 					entityName,

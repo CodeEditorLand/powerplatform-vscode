@@ -6,6 +6,7 @@
 export interface IPortalWebExtensionInitQueryParametersTelemetryData
 	extends IWebExtensionTelemetryData {
 	eventName: string;
+
 	properties: {
 		"orgId"?: string;
 		"tenantId"?: string;
@@ -29,6 +30,7 @@ export interface IPortalWebExtensionInitQueryParametersTelemetryData
 export interface IWebExtensionInitPathTelemetryData
 	extends IWebExtensionTelemetryData {
 	eventName: string;
+
 	properties: {
 		"appName": string;
 		"entity"?: string;
@@ -39,6 +41,7 @@ export interface IWebExtensionInitPathTelemetryData
 export interface IWebExtensionAPITelemetryData
 	extends IWebExtensionTelemetryData {
 	eventName: string;
+
 	properties: {
 		"url": string;
 		"entity": string;
@@ -48,6 +51,7 @@ export interface IWebExtensionAPITelemetryData
 		"status"?: string;
 		"methodName"?: string;
 	};
+
 	measurements: {
 		"durationInMillis": number;
 	};
@@ -67,6 +71,7 @@ export interface IWebExtensionExceptionTelemetryData
 export interface IWebExtensionPerfTelemetryData
 	extends IWebExtensionTelemetryData {
 	eventName: string;
+
 	measurements: {
 		"durationInMillis": number;
 	};
@@ -74,5 +79,6 @@ export interface IWebExtensionPerfTelemetryData
 
 export interface IWebExtensionTelemetryData {
 	properties?: Record<string, string>;
+
 	measurements?: Record<string, number>;
 }

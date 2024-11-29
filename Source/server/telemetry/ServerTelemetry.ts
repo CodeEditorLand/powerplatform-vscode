@@ -15,5 +15,6 @@ export function sendTelemetryEvent(
 	telemetryData: ITelemetryData,
 ): void {
 	const payload = JSON.stringify(telemetryData);
+
 	connection.sendNotification(TelemetryEventNotification.type, payload);
 }

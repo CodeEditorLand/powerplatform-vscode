@@ -30,9 +30,13 @@ import {
 
 interface State {
 	title: string;
+
 	step: number;
+
 	totalSteps: number;
+
 	contentSnippetType: QuickPickItem | string;
+
 	contentSnippetName: string;
 }
 
@@ -46,6 +50,7 @@ export const createContentSnippet = async (
 		if (!selectedWorkspaceFolder) {
 			return;
 		}
+
 		const { contentSnippetName, contentSnippetType } =
 			await getContentSnippetInputs(selectedWorkspaceFolder);
 
@@ -67,6 +72,7 @@ export const createContentSnippet = async (
 			);
 
 			const command = `"${yoGenPath}" ${YoSubGenerator.CONTENT_SNIPPET} "${contentSnippetName}" "${contentSnippetType}"`;
+
 			await createRecord(
 				CONTENT_SNIPPET,
 				command,
@@ -96,6 +102,7 @@ async function getContentSnippetInputs(selectedWorkspaceFolder: string) {
 
 	async function collectInputs() {
 		const state = {} as Partial<State>;
+
 		await MultiStepInput.run((input) => inputName(input, state));
 
 		return state as State;
@@ -138,6 +145,7 @@ async function getContentSnippetInputs(selectedWorkspaceFolder: string) {
 				"Please enter a name for the content snippet.",
 			);
 		}
+
 		const folder = formatFolderName(name);
 
 		const filePath = path.join(

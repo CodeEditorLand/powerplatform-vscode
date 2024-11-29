@@ -59,6 +59,7 @@ export function GetFileNameWithExtension(
 	fileName = isLanguageCodeNeededInFileName(entity)
 		? `${fileName}.${languageCode}`
 		: fileName;
+
 	fileName = isExtensionNeededInFileName(entity)
 		? `${fileName}.${extension}`
 		: fileName;
@@ -101,6 +102,7 @@ export function getAttributeContent(
 		}
 	} catch (error) {
 		const errorMsg = (error as Error)?.message;
+
 		WebExtensionContext.telemetry.sendErrorTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_ATTRIBUTE_CONTENT_ERROR,
 			getAttributeContent.name,
@@ -126,6 +128,7 @@ export function setFileContent(
 			);
 
 			jsonFromOriginalContent[attributePath.relativePath] = content;
+
 			result[attributePath.source] = JSON.stringify(
 				jsonFromOriginalContent,
 			);
@@ -134,6 +137,7 @@ export function setFileContent(
 		}
 	} catch (error) {
 		const errorMsg = (error as Error)?.message;
+
 		WebExtensionContext.telemetry.sendErrorTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_SET_FILE_CONTENT_ERROR,
 			setFileContent.name,
@@ -371,6 +375,7 @@ export function updateFileContentInFileDataMap(
 			fileData.attributePath,
 			fileContent,
 		);
+
 		updateFileDirtyChanges(fileFsPath, true);
 	}
 }

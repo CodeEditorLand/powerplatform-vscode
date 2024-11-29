@@ -56,6 +56,7 @@ export async function copilotNotificationPanel(
 		GITHUB_COPILOT_CHAT = vscode.l10n.t(
 			"Try @powerpages with GitHub Copilot",
 		);
+
 		isGitHubCopilotPresent = true;
 	} else {
 		GITHUB_COPILOT_CHAT = vscode.l10n.t(
@@ -85,6 +86,7 @@ export async function copilotNotificationPanel(
 								countOfActivePortals as string,
 						},
 					);
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo(CopilotNotificationDoNotShowChecked, {
@@ -92,6 +94,7 @@ export async function copilotNotificationPanel(
 							countOfActivePortals:
 								countOfActivePortals as string,
 						});
+
 					context.globalState.update(
 						COPILOT_NOTIFICATION_DISABLED,
 						true,
@@ -108,6 +111,7 @@ export async function copilotNotificationPanel(
 								countOfActivePortals as string,
 						},
 					);
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo(CopilotNotificationDoNotShowUnchecked, {
@@ -115,6 +119,7 @@ export async function copilotNotificationPanel(
 							countOfActivePortals:
 								countOfActivePortals as string,
 						});
+
 					context.globalState.update(
 						COPILOT_NOTIFICATION_DISABLED,
 						false,
@@ -131,6 +136,7 @@ export async function copilotNotificationPanel(
 								countOfActivePortals as string,
 						},
 					);
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo(CopilotTryNotificationClickedEvent, {
@@ -138,7 +144,9 @@ export async function copilotNotificationPanel(
 							countOfActivePortals:
 								countOfActivePortals as string,
 						});
+
 					vscode.commands.executeCommand("powerpages.copilot.focus");
+
 					NotificationPanel?.dispose();
 
 					break;
@@ -152,6 +160,7 @@ export async function copilotNotificationPanel(
 								countOfActivePortals as string,
 						},
 					);
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo(CopilotNotificationTryGitHubCopilotClicked, {
@@ -169,6 +178,7 @@ export async function copilotNotificationPanel(
 									countOfActivePortals as string,
 							},
 						);
+
 						oneDSLoggerWrapper
 							.getLogger()
 							.traceInfo(VSCodeExtensionGitHubChatPanelOpened, {
@@ -176,6 +186,7 @@ export async function copilotNotificationPanel(
 								countOfActivePortals:
 									countOfActivePortals as string,
 							});
+
 						vscode.commands.executeCommand(
 							"workbench.action.chat.open",
 							PowerPagesParticipantPrompt,
@@ -189,6 +200,7 @@ export async function copilotNotificationPanel(
 									countOfActivePortals as string,
 							},
 						);
+
 						oneDSLoggerWrapper
 							.getLogger()
 							.traceInfo(VSCodeExtensionGitHubChatNotFound, {
@@ -196,6 +208,7 @@ export async function copilotNotificationPanel(
 								countOfActivePortals:
 									countOfActivePortals as string,
 							});
+
 						vscode.env.openExternal(
 							vscode.Uri.parse(PowerPagesParticipantDocLink),
 						);
@@ -228,8 +241,11 @@ function getWebviewURIs(
 	NotificationPanel: vscode.WebviewPanel,
 ): {
 	notificationCssUri: vscode.Uri;
+
 	notificationJsUri: vscode.Uri;
+
 	copilotImageUri: vscode.Uri;
+
 	arrowImageUri: vscode.Uri;
 } {
 	const srcPath = vscode.Uri.joinPath(
@@ -318,6 +334,7 @@ function getWebviewContent(
 export function disposeNotificationPanel() {
 	if (NotificationPanel) {
 		NotificationPanel.dispose();
+
 		NotificationPanel = undefined;
 	}
 }

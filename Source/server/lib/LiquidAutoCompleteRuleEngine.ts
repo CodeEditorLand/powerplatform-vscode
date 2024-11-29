@@ -24,12 +24,15 @@ import {
 
 export interface ILiquidRuleEngineContext {
 	workspaceRootFolders: WorkspaceFolder[] | null;
+
 	pathOfFileBeingEdited: string;
+
 	connection: Connection;
 }
 
 interface ILiquidAutoComplete {
 	LiquidExpression: string;
+
 	AutoCompleteAtIndex: number;
 }
 
@@ -66,6 +69,7 @@ const getSuggestionsFromRules = (
 		.map((r) => {
 			if (r.isValid(liquidToken)) {
 				const suggestions = r.apply(liquidToken, context);
+
 				sendTelemetryEvent(context.connection, {
 					...telemetryData,
 					properties: {
@@ -103,6 +107,7 @@ export const getSuggestions = (
 	if (!liquidForAutocomplete) {
 		return [];
 	}
+
 	try {
 		const startTime = performance.now();
 
@@ -122,10 +127,12 @@ export const getSuggestions = (
 		if (liquidTokens[0].kind === TokenKind.HTML) {
 			return [];
 		}
+
 		const suggestions = getSuggestionsFromRules(
 			liquidTokens[0] as TagToken | OutputToken,
 			{ workspaceRootFolders, pathOfFileBeingEdited, connection },
 		);
+
 		sendTelemetryEvent(connection, {
 			...telemetryData,
 			measurements: {
@@ -137,6 +144,7 @@ export const getSuggestions = (
 	} catch (e) {
 		// Add telemetry log. Failed to parse liquid expression. (This may bloat up the logs so double check about this)
 	}
+
 	return [];
 };
 

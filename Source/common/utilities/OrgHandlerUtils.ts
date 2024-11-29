@@ -32,6 +32,7 @@ async function fetchOrgDetailsFromPac(
 	if (pacActiveOrg && pacActiveOrg.Status === SUCCESS) {
 		return handleOrgChangeSuccess(pacActiveOrg.Results);
 	}
+
 	throw new Error(ERROR_CONSTANTS.PAC_AUTH_FAILED);
 }
 
@@ -52,15 +53,21 @@ export async function initializeOrgDetails(
 	if (pacWrapper) {
 		try {
 			const fetchedOrgDetails = await fetchOrgDetailsFromPac(pacWrapper);
+
 			orgDetails.orgID = fetchedOrgDetails.orgID;
+
 			orgDetails.orgUrl = fetchedOrgDetails.orgUrl;
+
 			orgDetails.environmentID = fetchedOrgDetails.environmentID;
 		} catch (error) {
 			await createAuthProfileExp(pacWrapper);
 
 			const fetchedOrgDetails = await fetchOrgDetailsFromPac(pacWrapper);
+
 			orgDetails.orgID = fetchedOrgDetails.orgID;
+
 			orgDetails.orgUrl = fetchedOrgDetails.orgUrl;
+
 			orgDetails.environmentID = fetchedOrgDetails.environmentID;
 		}
 	}

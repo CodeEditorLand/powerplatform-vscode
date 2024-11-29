@@ -81,7 +81,9 @@ export const EXTENSION_VERSION_KEY = "extensionVersion";
 
 export type WebViewMessage = {
 	type: string;
+
 	value?: string | number | boolean | object;
+
 	envName?: string;
 };
 

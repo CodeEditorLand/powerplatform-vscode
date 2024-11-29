@@ -29,13 +29,16 @@ export function initializeGenerator(
 	telemetry: ITelemetry,
 ): void {
 	const generator = new GeneratorAcquisition(cliContext);
+
 	generator.ensureInstalled();
+
 	context.subscriptions.push(generator);
 
 	const yoCommandPath = generator.yoCommandPath;
 
 	if (yoCommandPath) {
 		registerCreateCommands(context, yoCommandPath, telemetry);
+
 		vscode.workspace
 			.getConfiguration("powerPlatform")
 			.update("generatorInstalled", true, true);
@@ -53,6 +56,7 @@ function registerCreateCommands(
 			const triggerPoint = uri
 				? TriggerPoint.CONTEXT_MENU
 				: TriggerPoint.COMMAND_PALETTE;
+
 			sendTelemetryEvent(telemetry, {
 				methodName: registerCreateCommands.name,
 				eventName: UserFileCreateEvent,
@@ -64,6 +68,7 @@ function registerCreateCommands(
 				uri,
 				activeEditor,
 			);
+
 			createContentSnippet(
 				context,
 				selectedWorkspaceFolder,
@@ -79,6 +84,7 @@ function registerCreateCommands(
 			const triggerPoint = uri
 				? TriggerPoint.CONTEXT_MENU
 				: TriggerPoint.COMMAND_PALETTE;
+
 			sendTelemetryEvent(telemetry, {
 				methodName: registerCreateCommands.name,
 				eventName: UserFileCreateEvent,
@@ -90,6 +96,7 @@ function registerCreateCommands(
 				uri,
 				activeEditor,
 			);
+
 			createWebTemplate(
 				context,
 				selectedWorkspaceFolder,
@@ -105,6 +112,7 @@ function registerCreateCommands(
 			const triggerPoint = uri
 				? TriggerPoint.CONTEXT_MENU
 				: TriggerPoint.COMMAND_PALETTE;
+
 			sendTelemetryEvent(telemetry, {
 				methodName: registerCreateCommands.name,
 				eventName: UserFileCreateEvent,
@@ -116,6 +124,7 @@ function registerCreateCommands(
 				uri,
 				activeEditor,
 			);
+
 			createWebpage(
 				context,
 				selectedWorkspaceFolder,
@@ -131,6 +140,7 @@ function registerCreateCommands(
 			const triggerPoint = uri
 				? TriggerPoint.CONTEXT_MENU
 				: TriggerPoint.COMMAND_PALETTE;
+
 			sendTelemetryEvent(telemetry, {
 				methodName: registerCreateCommands.name,
 				eventName: UserFileCreateEvent,
@@ -142,6 +152,7 @@ function registerCreateCommands(
 				uri,
 				activeEditor,
 			);
+
 			createPageTemplate(
 				context,
 				selectedWorkspaceFolder,
@@ -157,6 +168,7 @@ function registerCreateCommands(
 			const triggerPoint = uri
 				? TriggerPoint.CONTEXT_MENU
 				: TriggerPoint.COMMAND_PALETTE;
+
 			sendTelemetryEvent(telemetry, {
 				methodName: registerCreateCommands.name,
 				eventName: UserFileCreateEvent,
@@ -168,6 +180,7 @@ function registerCreateCommands(
 				uri,
 				activeEditor,
 			);
+
 			createWebfile(selectedWorkspaceFolder, yoCommandPath, telemetry);
 		},
 	);

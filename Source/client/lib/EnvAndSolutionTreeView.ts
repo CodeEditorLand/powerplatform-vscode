@@ -19,10 +19,13 @@ export class EnvAndSolutionTreeView
 		vscode.Disposable
 {
 	private readonly _disposables: vscode.Disposable[] = [];
+
 	private _refreshTimeout?: NodeJS.Timeout;
+
 	private _onDidChangeTreeData: vscode.EventEmitter<
 		EnvOrSolutionTreeItem | undefined | void
 	> = new vscode.EventEmitter<EnvOrSolutionTreeItem | undefined | void>();
+
 	readonly onDidChangeTreeData: vscode.Event<
 		EnvOrSolutionTreeItem | undefined | void
 	> = this._onDidChangeTreeData.event;
@@ -59,8 +62,10 @@ export class EnvAndSolutionTreeView
 	refresh(): void {
 		if (this._refreshTimeout) {
 			clearTimeout(this._refreshTimeout);
+
 			this._refreshTimeout = undefined;
 		}
+
 		this._onDidChangeTreeData.fire();
 	}
 
@@ -151,6 +156,7 @@ export class EnvAndSolutionTreeView
 					await pacWrapper.orgSelect(
 						(item.model as OrgListOutput).EnvironmentUrl,
 					);
+
 					this.delayRefresh();
 				},
 			),
@@ -203,6 +209,7 @@ class EnvOrSolutionTreeItem extends vscode.TreeItem {
 			const solutionType = model.IsManaged
 				? vscode.l10n.t("Managed")
 				: vscode.l10n.t("Unmanaged");
+
 			this.tooltip = vscode.l10n.t({
 				message:
 					"Display Name: {0}\nUnique Name: {1}\nVersion: {2}\nType: {3}",
@@ -226,6 +233,7 @@ class EnvOrSolutionTreeItem extends vscode.TreeItem {
 			}
 		} else {
 			this.contextValue = "ENVIRONMENT";
+
 			this.tooltip = vscode.l10n.t({
 				message:
 					"Name: {0}\nURL: {1}\nEnvironment ID: {2}\nOrganization ID: {3}",
@@ -264,6 +272,7 @@ class EnvOrSolutionTreeItem extends vscode.TreeItem {
 		if ("SolutionUniqueName" in model) {
 			return vscode.TreeItemCollapsibleState.None;
 		}
+
 		return vscode.TreeItemCollapsibleState.Collapsed;
 	}
 }

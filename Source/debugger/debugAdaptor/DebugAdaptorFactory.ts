@@ -129,6 +129,7 @@ export class DebugAdaptorFactory implements DebugAdapterDescriptorFactory {
 
 			return;
 		}
+
 		return workspaceFolder;
 	}
 }

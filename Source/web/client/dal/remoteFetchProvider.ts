@@ -66,9 +66,11 @@ export async function fetchDataFromDataverseAndUpdateVFS(
 		const dataverseOrgUrl = WebExtensionContext.urlParametersMap.get(
 			Constants.queryParameters.ORG_URL,
 		) as string;
+
 		await Promise.all(
 			entityRequestURLs.map(async (entity) => {
 				const startTime = new Date().getTime();
+
 				await fetchFromDataverseAndCreateFiles(
 					entity.entityName,
 					entity.requestUrl,
@@ -93,12 +95,14 @@ export async function fetchDataFromDataverseAndUpdateVFS(
 		);
 	} catch (error) {
 		const errorMsg = (error as Error)?.message;
+
 		showErrorDialog(
 			vscode.l10n.t("There was a problem opening the workspace"),
 			vscode.l10n.t(
 				"We encountered an error preparing the files for edit.",
 			),
 		);
+
 		WebExtensionContext.telemetry.sendErrorTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_FAILED_TO_PREPARE_WORKSPACE,
 			fetchDataFromDataverseAndUpdateVFS.name,
@@ -155,10 +159,12 @@ async function fetchFromDataverseAndCreateFiles(
 			}
 
 			const result = await response.json();
+
 			data = data.concat(result.value);
 
 			if (result[Constants.ODATA_NEXT_LINK]) {
 				makeRequestCall = true;
+
 				requestUrl = result[Constants.ODATA_NEXT_LINK];
 			} else {
 				makeRequestCall = false;
@@ -196,6 +202,7 @@ async function fetchFromDataverseAndCreateFiles(
 			makeRequestCall = false;
 
 			const errorMsg = (error as Error)?.message;
+
 			console.error(vscode.l10n.t("Failed to fetch some files."));
 
 			if ((error as Response)?.status > 0) {
@@ -303,6 +310,7 @@ async function createContentFiles(
 
 		if (exportType && exportType === folderExportType.SubFolders) {
 			filePathInPortalFS = `${filePathInPortalFS}${getSanitizedFileName(fileName)}/`;
+
 			await portalsFS.createDirectory(
 				vscode.Uri.parse(filePathInPortalFS, true),
 			);
@@ -364,9 +372,11 @@ async function createContentFiles(
 		);
 	} catch (error) {
 		const errorMsg = (error as Error)?.message;
+
 		console.error(
 			vscode.l10n.t("Failed to get file ready for edit: {0}", fileName),
 		);
+
 		WebExtensionContext.telemetry.sendErrorTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_CONTENT_FILE_CREATION_FAILED,
 			createContentFiles.name,
@@ -442,6 +452,7 @@ async function processDataAndCreateFile(
 					defaultFileInfo?.fileName === fileNameWithExtension ||
 					(defaultFileInfo?.fileName.startsWith(fileName) &&
 						defaultFileInfo?.fileName.endsWith(fileExtension));
+
 				fileNameWithExtension = defaultFileInfo?.fileName;
 			}
 
@@ -452,6 +463,7 @@ async function processDataAndCreateFile(
 				const rootWebPageIdPath: IAttributePath = getAttributePath(
 					rootWebPageIdAttribute,
 				);
+
 				rootWebPageId = getAttributeContent(
 					result,
 					rootWebPageIdPath,
@@ -462,6 +474,7 @@ async function processDataAndCreateFile(
 
 			if (fileCreationValid) {
 				fileUri = filePathInPortalFS + fileNameWithExtension;
+
 				await createFile(
 					attributeArray[counter],
 					fileExtension,
@@ -549,8 +562,11 @@ async function createFile(
 			WebExtensionContext.dataverseAccessToken,
 			dataverseOrgUrl,
 		);
+
 		mappingEntityId = getMappingEntityId(entityName, mappingContent);
+
 		mimeType = getMimeType(mappingContent);
+
 		fileContent = getMappingEntityContent(
 			entityName,
 			mappingContent,
@@ -625,6 +641,7 @@ async function fetchMappingEntityContent(
 		Constants.httpMethod.GET,
 		fetchMappingEntityContent.name,
 	);
+
 	requestSentAtTime = new Date().getTime();
 
 	const response = await WebExtensionContext.concurrencyHandler.handleRequest(
@@ -716,6 +733,7 @@ export async function preprocessData(
 				if (!entityId) {
 					throw new Error(ERROR_CONSTANTS.FILE_ID_EMPTY);
 				}
+
 				advancedFormStepData.set(entityId, dataItem);
 			});
 
@@ -745,6 +763,7 @@ export async function preprocessData(
 					setFileContent(dataItem, attributePath, steps);
 				} catch (error) {
 					const errorMsg = (error as Error)?.message;
+
 					WebExtensionContext.telemetry.sendErrorTelemetry(
 						webExtensionTelemetryEventNames.WEB_EXTENSION_PREPROCESS_DATA_WEBFORM_STEPS_FAILED,
 						preprocessData.name,
@@ -752,6 +771,7 @@ export async function preprocessData(
 					);
 				}
 			});
+
 			WebExtensionContext.telemetry.sendInfoTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_PREPROCESS_DATA_SUCCESS,
 				{ entityType: entityType },
@@ -759,6 +779,7 @@ export async function preprocessData(
 		}
 	} catch (error) {
 		const errorMsg = (error as Error)?.message;
+
 		WebExtensionContext.telemetry.sendErrorTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_PREPROCESS_DATA_FAILED,
 			preprocessData.name,
@@ -832,6 +853,7 @@ async function createVirtualFile(
 			);
 		} catch (error) {
 			const errorMsg = (error as Error)?.message;
+
 			WebExtensionContext.telemetry.sendErrorTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_FAILED_TO_UPDATE_FOREIGN_KEY_DETAILS,
 				createVirtualFile.name,

@@ -55,7 +55,9 @@ export class ControlLocator implements Disposable {
 		private readonly controlLocatorRetries: number = DEFAULT_CONTROL_LOCATOR_RETRIES,
 	) {
 		this.pageUrl = this.getPageUrl();
+
 		this.shouldRetryNavigation = true;
+
 		this.isDisposed = false;
 	}
 
@@ -92,6 +94,7 @@ export class ControlLocator implements Disposable {
 		retryCount: number = this.controlLocatorRetries,
 	): Promise<void> {
 		await this.navigateToPage(page, retryCount);
+
 		await this.navigateToTab(page, retryCount);
 	}
 
@@ -135,6 +138,7 @@ export class ControlLocator implements Disposable {
 		if (this.isDisposed && (error as Error).name === "ProtocolError") {
 			return;
 		}
+
 		throw error;
 	}
 
@@ -151,10 +155,12 @@ export class ControlLocator implements Disposable {
 		if (this.debugConfig.controlLocation.renderFullScreen) {
 			return;
 		}
+
 		const tabName = this.debugConfig.controlLocation.tabName;
 
 		try {
 			await page.waitForSelector("ul[role='tablist']");
+
 			await page.click(`li[aria-label='${tabName}']`);
 		} catch (error) {
 			if (this.shouldRetry(retryCount)) {

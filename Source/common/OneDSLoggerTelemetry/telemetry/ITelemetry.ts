@@ -13,12 +13,14 @@ export interface ITelemetry {
 		properties?: Record<string, string>,
 		measurements?: Record<string, number>,
 	): void;
+
 	sendTelemetryErrorEvent(
 		eventName: string,
 		properties?: Record<string, string>,
 		measurements?: Record<string, number>,
 		errorProps?: string[],
 	): void;
+
 	sendTelemetryException(
 		error: Error,
 		properties?: Record<string, string>,

@@ -49,6 +49,7 @@ export async function getEndpoint(
 			environmentID,
 		)) as IIntelligenceAPIEndpointInformation; // TODO - add session ID
 	}
+
 	return cachedEndpoint;
 }
 
@@ -86,6 +87,7 @@ export async function getComponentInfo(
 				telemetry,
 				sessionID,
 			);
+
 			componentInfo = formColumns;
 		} else {
 			const entityColumns = await getEntityColumns(
@@ -95,6 +97,7 @@ export async function getComponentInfo(
 				telemetry,
 				sessionID,
 			);
+
 			componentInfo = entityColumns;
 		}
 	}
@@ -125,6 +128,7 @@ export function handleChatParticipantFeedback(
 				sessionId: sessionId,
 			},
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceInfo(
@@ -146,6 +150,7 @@ export function handleChatParticipantFeedback(
 				sessionId: sessionId,
 			},
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceInfo(

@@ -171,10 +171,12 @@ export function sanitizeURL(url: string): string {
 		const completeUrl = new URL(url);
 
 		const hostName = completeUrl.hostname;
+
 		sanitizedUrl = url.replace(hostName, "[redact]");
 	} catch (error) {
 		return "";
 	}
+
 	return sanitizedUrl;
 }
 
@@ -221,6 +223,7 @@ export function getLogicalEntityName(result: any, logicalEntityName?: string) {
 
 	if (logicalEntityName) {
 		const attributePath = getAttributePath(logicalEntityName);
+
 		logicalEntity =
 			attributePath.relativePath.length > 0
 				? JSON.parse(result[attributePath.source])[

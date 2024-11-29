@@ -90,12 +90,14 @@ export async function getNL2PageData(
 			if (responseData && responseData.additionalData[0]) {
 				return responseData.additionalData[0].snippets[0];
 			}
+
 			return null;
 		} catch (error) {
 			telemetry.sendTelemetryErrorEvent(
 				VSCODE_EXTENSION_NL2PAGE_REQUEST_FAILED,
 				{ error: (error as Error)?.message, pageType },
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceError(
@@ -140,14 +142,17 @@ export const generateRandomExampleNumber = (pageType: string) => {
 		return 0;
 	} else if (pageType === HOME_PAGE_TYPE) {
 		const homeExampleNumbers = [1, 2, 3, 4];
+
 		return homeExampleNumbers[
 			Math.floor(Math.random() * homeExampleNumbers.length)
 		];
 	} else if (pageType === INFO_PAGE_TYPE) {
 		const infoExampleNumbers = [1, 2, 3];
+
 		return infoExampleNumbers[
 			Math.floor(Math.random() * infoExampleNumbers.length)
 		];
 	}
+
 	return 0;
 };

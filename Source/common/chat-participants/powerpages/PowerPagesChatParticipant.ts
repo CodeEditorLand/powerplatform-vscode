@@ -84,17 +84,27 @@ const commandRegistry = new CommandRegistry();
 
 export class PowerPagesChatParticipant {
 	private static instance: PowerPagesChatParticipant | null = null;
+
 	private chatParticipant: vscode.ChatParticipant;
+
 	private telemetry: ITelemetry;
+
 	private extensionContext: vscode.ExtensionContext;
+
 	private readonly _pacWrapper?: PacWrapper;
+
 	private isOrgDetailsInitialized = false;
+
 	private readonly _disposables: vscode.Disposable[] = [];
+
 	private cachedEndpoint: IIntelligenceAPIEndpointInformation | null = null;
+
 	private powerPagesAgentSessionId: string;
 
 	private orgID: string | undefined;
+
 	private orgUrl: string | undefined;
+
 	private environmentID: string | undefined;
 
 	private constructor(
@@ -127,6 +137,7 @@ export class PowerPagesChatParticipant {
 				);
 			},
 		);
+
 		this.chatParticipant.followupProvider = {
 			provideFollowups: provideChatParticipantFollowups,
 		};
@@ -186,6 +197,7 @@ export class PowerPagesChatParticipant {
 				VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_INVOKED,
 				{ sessionId: this.powerPagesAgentSessionId },
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo(VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_INVOKED, {
@@ -194,6 +206,7 @@ export class PowerPagesChatParticipant {
 
 			if (!this.isOrgDetailsInitialized) {
 				stream.progress(PAC_AUTH_INPUT);
+
 				await this.initializeOrgDetails();
 			}
 
@@ -204,6 +217,7 @@ export class PowerPagesChatParticipant {
 					VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_ORG_DETAILS_NOT_FOUND,
 					{ sessionId: this.powerPagesAgentSessionId },
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -226,6 +240,7 @@ export class PowerPagesChatParticipant {
 					sessionId: this.powerPagesAgentSessionId,
 				},
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo(
@@ -239,6 +254,7 @@ export class PowerPagesChatParticipant {
 
 			if (!isPowerPagesGitHubCopilotEnabled()) {
 				stream.markdown(COPILOT_NOT_RELEASED_MSG);
+
 				this.telemetry.sendTelemetryEvent(
 					VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_NOT_AVAILABLE_ECS,
 					{
@@ -246,6 +262,7 @@ export class PowerPagesChatParticipant {
 						orgID: this.orgID,
 					},
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -323,6 +340,7 @@ export class PowerPagesChatParticipant {
 					userId: userId,
 				},
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo(
@@ -337,6 +355,7 @@ export class PowerPagesChatParticipant {
 
 			if (userPrompt === WELCOME_PROMPT) {
 				stream.markdown(WELCOME_MESSAGE);
+
 				this.telemetry.sendTelemetryEvent(
 					VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_WELCOME_PROMPT,
 					{
@@ -346,6 +365,7 @@ export class PowerPagesChatParticipant {
 						userId: userId,
 					},
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -365,6 +385,7 @@ export class PowerPagesChatParticipant {
 				);
 			} else if (!userPrompt) {
 				stream.markdown(NO_PROMPT_MESSAGE);
+
 				this.telemetry.sendTelemetryEvent(
 					VSCODE_EXTENSION_GITHUB_POWER_PAGES_AGENT_NO_PROMPT,
 					{
@@ -374,6 +395,7 @@ export class PowerPagesChatParticipant {
 						userId: userId,
 					},
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -416,6 +438,7 @@ export class PowerPagesChatParticipant {
 						userId: userId,
 					},
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -455,6 +478,7 @@ export class PowerPagesChatParticipant {
 							userId: userId,
 						},
 					);
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo(
@@ -466,6 +490,7 @@ export class PowerPagesChatParticipant {
 								userId: userId,
 							},
 						);
+
 					stream.reference(location);
 				}
 
@@ -484,6 +509,7 @@ export class PowerPagesChatParticipant {
 									userId: userId,
 								},
 							);
+
 							oneDSLoggerWrapper
 								.getLogger()
 								.traceInfo(
@@ -504,8 +530,10 @@ export class PowerPagesChatParticipant {
 								this.telemetry,
 								this.powerPagesAgentSessionId,
 							);
+
 							relatedFiles.push(...files);
 						}
+
 						break;
 
 					default:
@@ -556,6 +584,7 @@ export class PowerPagesChatParticipant {
 						userId: userId,
 					},
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo(
@@ -572,12 +601,15 @@ export class PowerPagesChatParticipant {
 				llmResponse.forEach(
 					(response: {
 						displayText: string | vscode.MarkdownString;
+
 						code: string;
 					}) => {
 						if (response.displayText) {
 							stream.markdown(response.displayText);
+
 							stream.markdown("\n");
 						}
+
 						if (
 							response.code &&
 							!SKIP_CODES.includes(response.code)
@@ -586,6 +618,7 @@ export class PowerPagesChatParticipant {
 								"\n```javascript\n" + response.code + "\n```",
 							);
 						}
+
 						stream.markdown("\n");
 					},
 				);
@@ -602,6 +635,7 @@ export class PowerPagesChatParticipant {
 					error: error as string,
 				},
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceError(
@@ -630,9 +664,13 @@ export class PowerPagesChatParticipant {
 			if (!orgID) {
 				return;
 			}
+
 			this.orgID = orgID;
+
 			this.orgUrl = orgUrl;
+
 			this.environmentID = environmentID;
+
 			this.isOrgDetailsInitialized = true;
 		} catch (error) {
 			return;
@@ -644,8 +682,11 @@ export class PowerPagesChatParticipant {
 	): Promise<void> {
 		const { orgID, orgUrl, environmentID } =
 			handleOrgChangeSuccess(orgDetails);
+
 		this.orgID = orgID;
+
 		this.orgUrl = orgUrl;
+
 		this.environmentID = environmentID;
 	}
 }

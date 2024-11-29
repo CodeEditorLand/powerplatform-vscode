@@ -41,12 +41,14 @@ let hasDiagnosticRelatedInformationCapability = false;
 
 connection.onInitialize((params: InitializeParams) => {
 	const capabilities = params.capabilities;
+
 	workspaceRootFolders = params.workspaceFolders;
 	// Does the client support the `workspace/configuration` request?
 	// If not, we fall back using global settings.
 	hasConfigurationCapability = !!(
 		capabilities.workspace && !!capabilities.workspace.configuration
 	);
+
 	hasWorkspaceFolderCapability = !!(
 		capabilities.workspace && !!capabilities.workspace.workspaceFolders
 	);
@@ -56,6 +58,7 @@ connection.onInitialize((params: InitializeParams) => {
 		capabilities.textDocument.publishDiagnostics &&
 		capabilities.textDocument.publishDiagnostics.relatedInformation
 	);
+
 	initLiquidRuleEngine();
 
 	const result: InitializeResult = {
@@ -75,6 +78,7 @@ connection.onInitialize((params: InitializeParams) => {
 			},
 		};
 	}
+
 	return result;
 });
 
@@ -86,6 +90,7 @@ connection.onInitialized(() => {
 			undefined,
 		);
 	}
+
 	if (hasWorkspaceFolderCapability) {
 		connection.workspace.onDidChangeWorkspaceFolders(() => {
 			// connection.console.log('Workspace folder change event received.');

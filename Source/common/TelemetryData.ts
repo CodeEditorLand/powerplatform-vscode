@@ -8,18 +8,22 @@
  */
 export interface ITelemetryData {
 	eventName: string;
+
 	properties?: Record<string, string>;
+
 	measurements?: Record<string, number>;
 }
 
 export interface IAutoCompleteTelemetryData extends ITelemetryData {
 	eventName: "AutoComplete";
+
 	properties: {
 		"server": "yaml" | "html";
 		"keyForCompletion"?: string;
 		"tagForCompletion"?: string;
 		"success"?: "true" | "false";
 	};
+
 	measurements: {
 		"manifestParseTimeMs"?: number;
 		"liquidAutoCompleteTimeMs"?: number;

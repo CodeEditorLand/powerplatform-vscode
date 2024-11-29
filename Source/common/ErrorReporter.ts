@@ -37,6 +37,7 @@ export class ErrorReporter {
 		const errorStack = errorObj ? ` - Stack: ${errorObj.stack}` : "";
 
 		const errorMessage = `${message}${errorObjMessage}`;
+
 		logger.sendTelemetryException(
 			new Error(`${errorIdentifier}: ${errorMessage}${errorStack}`),
 			properties,

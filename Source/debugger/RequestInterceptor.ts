@@ -62,11 +62,14 @@ export class RequestInterceptor implements Disposable {
 		if (this.requestEvent) {
 			return;
 		}
+
 		this.fileContents = await this.bundleLoader.loadFileContents();
 
 		this.onRequestHandler = (event) =>
 			this.onRequest(event, onRequestIntercepted);
+
 		this.requestEvent = page.on("request", this.onRequestHandler);
+
 		await page.setRequestInterception(true);
 	}
 
@@ -162,6 +165,7 @@ export class RequestInterceptor implements Disposable {
 	dispose() {
 		if (this.requestEvent && this.onRequestHandler) {
 			this.requestEvent.off("request", this.onRequestHandler);
+
 			this.requestEvent = undefined;
 		}
 

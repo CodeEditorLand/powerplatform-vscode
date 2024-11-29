@@ -67,6 +67,7 @@ async function fetchSiteAndPageData(
 		environmentId: envId,
 		userId: userId,
 	});
+
 	oneDSLoggerWrapper
 		.getLogger()
 		.traceInfo(VSCODE_EXTENSION_NL2SITE_REQUEST, {
@@ -104,6 +105,7 @@ async function fetchSiteAndPageData(
 		environmentId: envId,
 		userId: userId,
 	});
+
 	oneDSLoggerWrapper
 		.getLogger()
 		.traceInfo(VSCODE_EXTENSION_NL2PAGE_REQUEST, {

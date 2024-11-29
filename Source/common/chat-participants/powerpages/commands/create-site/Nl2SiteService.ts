@@ -64,6 +64,7 @@ export async function getNL2SiteData(
 				VSCODE_EXTENSION_NL2SITE_REQUEST_SUCCESS,
 				{ sessionId: sessionId },
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo(VSCODE_EXTENSION_NL2SITE_REQUEST_SUCCESS, {
@@ -82,6 +83,7 @@ export async function getNL2SiteData(
 			VSCODE_EXTENSION_NL2SITE_REQUEST_FAILED,
 			{ sessionId: sessionId, error: (error as Error)?.message },
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceError(

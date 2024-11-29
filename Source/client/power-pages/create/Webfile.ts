@@ -27,8 +27,11 @@ import {
 
 interface IWebfileInputState {
 	title: string;
+
 	step: number;
+
 	totalSteps: number;
+
 	id: string;
 }
 
@@ -43,6 +46,7 @@ export const createWebfile = async (
 		}
 
 		const portalContext = getPortalContext(selectedWorkspaceFolder);
+
 		await portalContext.init([Tables.WEBPAGE]);
 
 		const { paths, pathsMap } = getParentPagePaths(portalContext);
@@ -109,6 +113,7 @@ async function getWebfileInputs(parentPage: string[]) {
 
 	async function collectInputs() {
 		const state = {} as Partial<IWebfileInputState>;
+
 		await MultiStepInput.run((input) => pickParentPage(input, state));
 
 		return state as IWebfileInputState;
@@ -126,8 +131,10 @@ async function getWebfileInputs(parentPage: string[]) {
 			items: parentPages,
 			activeItem: typeof state.id !== "string" ? state.id : undefined,
 		});
+
 		state.id = pick.label;
 	}
+
 	const state = await collectInputs();
 
 	return state;
@@ -159,12 +166,14 @@ const filterExistingWebfiles = (
 
 			if (stat) {
 				selectedFiles.splice(i, 1);
+
 				i--;
 			}
 		} catch (error) {
 			// File does not exist
 		}
 	}
+
 	return selectedFiles;
 };
 
@@ -179,6 +188,7 @@ const addWebfiles = async (
 		const webfileCount = selectedFiles.length;
 
 		const startTime = performance.now();
+
 		vscode.window.withProgress(
 			{
 				location: vscode.ProgressLocation.Notification,
@@ -205,6 +215,7 @@ const addWebfiles = async (
 									stdout.toString().includes("Error")
 								) {
 									const errorMsg = error?.message || stdout;
+
 									reject(
 										new Error(
 											`Failed to add webfile: ${errorMsg}`,
@@ -217,7 +228,9 @@ const addWebfiles = async (
 						);
 					});
 				});
+
 				await Promise.all(promises);
+
 				sendTelemetryEvent(telemetry, {
 					methodName: addWebfiles.name,
 					eventName: FileCreateEvent,
@@ -225,6 +238,7 @@ const addWebfiles = async (
 					numberOfFiles: webfileCount.toString(),
 					durationInMills: performance.now() - startTime,
 				});
+
 				vscode.window.showInformationMessage(
 					vscode.l10n.t("Webfile(s) added successfully"),
 				);
@@ -232,6 +246,7 @@ const addWebfiles = async (
 		);
 	} catch (error: any) {
 		logErrorAndNotifyUser(error);
+
 		sendTelemetryEvent(telemetry, {
 			methodName: addWebfiles.name,
 			eventName: FileCreateEvent,

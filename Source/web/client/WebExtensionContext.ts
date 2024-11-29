@@ -49,6 +49,7 @@ export interface IWebExtensionContext {
 	// From portalSchema properties
 	schemaDataSourcePropertiesMap: Map<string, string>; // dataSourceProperties in portal_schema_data
 	schemaEntitiesMap: Map<string, Map<string, string>>;
+
 	entitiesFolderNameMap: Map<string, string>; // FolderName for entity, schemaEntityName
 
 	// Passed from Vscode URL call
@@ -59,12 +60,16 @@ export interface IWebExtensionContext {
 
 	// Language maps from dataverse
 	languageIdCodeMap: Map<string, string>;
+
 	portalLanguageIdCodeMap: Map<string, string>;
+
 	websiteLanguageIdToPortalLanguageMap: Map<string, string>;
+
 	websiteIdToLanguage: Map<string, string>;
 
 	// VScode specific details
 	rootDirectory: vscode.Uri;
+
 	fileDataMap: FileDataMap; // VFS file URI to file detail map
 	defaultEntityId: string;
 
@@ -72,24 +77,37 @@ export interface IWebExtensionContext {
 
 	defaultFileUri: vscode.Uri; // This will default to home page or current page in multifile scenario
 	showMultifileInVSCode: boolean;
+
 	extensionActivationTime: number;
+
 	extensionUri: vscode.Uri;
 
 	// Org specific details
 	dataverseAccessToken: string;
+
 	entityDataMap: EntityDataMap;
+
 	isContextSet: boolean;
+
 	currentSchemaVersion: string;
+
 	websiteLanguageCode: string;
+
 	geoName: string;
+
 	geoLongName: string;
+
 	serviceEndpointCategory: ServiceEndpointCategory;
+
 	organizationId: string;
+
 	environmentId: string;
 
 	// Telemetry and survey
 	telemetry: WebExtensionTelemetry;
+
 	npsEligibility: boolean;
+
 	userId: string;
 
 	// Error handling
@@ -98,238 +116,366 @@ export interface IWebExtensionContext {
 
 class WebExtensionContext implements IWebExtensionContext {
 	private _schemaDataSourcePropertiesMap: Map<string, string>;
+
 	private _schemaEntitiesMap: Map<string, Map<string, string>>;
+
 	private _entitiesFolderNameMap: Map<string, string>;
+
 	private _urlParametersMap: Map<string, string>;
+
 	private _vscodeWorkspaceState: Map<string, IEntityInfo>;
+
 	private _languageIdCodeMap: Map<string, string>;
+
 	private _portalLanguageIdCodeMap: Map<string, string>;
+
 	private _websiteLanguageIdToPortalLanguageMap: Map<string, string>;
+
 	private _websiteIdToLanguage: Map<string, string>;
+
 	private _rootDirectory: vscode.Uri;
+
 	private _fileDataMap: FileDataMap;
+
 	private _defaultEntityId: string;
+
 	private _defaultEntityType: string;
+
 	private _defaultFileUri: vscode.Uri;
+
 	private _showMultifileInVSCode: boolean;
+
 	private _extensionActivationTime: number;
+
 	private _extensionUri: vscode.Uri;
+
 	private _dataverseAccessToken: string;
+
 	private _entityDataMap: EntityDataMap;
+
 	private _entityForeignKeyDataMap: EntityForeignKeyDataMap;
+
 	private _isContextSet: boolean;
+
 	private _currentSchemaVersion: string;
+
 	private _websiteLanguageCode: string;
+
 	private _geoName: string;
+
 	private _geoLongName: string;
+
 	private _clusterLocation: string;
+
 	private _serviceEndpointCategory: ServiceEndpointCategory;
+
 	private _organizationId: string;
+
 	private _environmentId: string;
+
 	private _telemetry: WebExtensionTelemetry;
+
 	private _npsEligibility: boolean;
+
 	private _userId: string;
+
 	private _formsProEligibilityId: string;
+
 	private _concurrencyHandler: ConcurrencyHandler;
 	// Co-Presence for Power Pages Vscode for web
 	private _worker: Worker | undefined;
+
 	private _sharedWorkSpaceMap: Map<string, string>;
+
 	private _containerId: string;
+
 	private _currentConnectionId: string;
+
 	private _connectedUsers: UserDataMap;
+
 	private _quickPickProvider: QuickPickProvider;
+
 	private _userCollaborationProvider: UserCollaborationProvider;
+
 	private _graphClientService: GraphClientService;
 
 	public get schemaDataSourcePropertiesMap() {
 		return this._schemaDataSourcePropertiesMap;
 	}
+
 	public get schemaEntitiesMap() {
 		return this._schemaEntitiesMap;
 	}
+
 	public get entitiesFolderNameMap() {
 		return this._entitiesFolderNameMap;
 	}
+
 	public get urlParametersMap() {
 		return this._urlParametersMap;
 	}
+
 	public get vscodeWorkspaceState() {
 		return this._vscodeWorkspaceState;
 	}
+
 	public get languageIdCodeMap() {
 		return this._languageIdCodeMap;
 	}
+
 	public get portalLanguageIdCodeMap() {
 		return this._portalLanguageIdCodeMap;
 	}
+
 	public get websiteLanguageIdToPortalLanguageMap() {
 		return this._websiteLanguageIdToPortalLanguageMap;
 	}
+
 	public get websiteIdToLanguage() {
 		return this._websiteIdToLanguage;
 	}
+
 	public get rootDirectory() {
 		return this._rootDirectory;
 	}
+
 	public get fileDataMap() {
 		return this._fileDataMap;
 	}
+
 	public get defaultEntityId() {
 		return this._defaultEntityId;
 	}
+
 	public get defaultEntityType() {
 		return this._defaultEntityType;
 	}
+
 	public get defaultFileUri() {
 		return this._defaultFileUri;
 	}
+
 	public get showMultifileInVSCode() {
 		return this._showMultifileInVSCode;
 	}
+
 	public get extensionActivationTime() {
 		return this._extensionActivationTime;
 	}
+
 	public get extensionUri() {
 		return this._extensionUri;
 	}
+
 	public get dataverseAccessToken() {
 		return this._dataverseAccessToken;
 	}
+
 	public get entityDataMap() {
 		return this._entityDataMap;
 	}
+
 	public get entityForeignKeyDataMap() {
 		return this._entityForeignKeyDataMap;
 	}
+
 	public get isContextSet() {
 		return this._isContextSet;
 	}
+
 	public get currentSchemaVersion() {
 		return this._currentSchemaVersion;
 	}
+
 	public get websiteLanguageCode() {
 		return this._websiteLanguageCode;
 	}
+
 	public get geoName() {
 		return this._geoName;
 	}
+
 	public set geoName(name: string) {
 		this._geoName = name;
 	}
+
 	public get geoLongName() {
 		return this._geoLongName;
 	}
+
 	public set geoLongName(name: string) {
 		this._geoLongName = name;
 	}
+
 	public get clusterLocation() {
 		return this._clusterLocation;
 	}
+
 	public set clusterLocation(name: string) {
 		this._clusterLocation = name;
 	}
+
 	public get serviceEndpointCategory() {
 		return this._serviceEndpointCategory;
 	}
+
 	public set serviceEndpointCategory(name: ServiceEndpointCategory) {
 		this._serviceEndpointCategory = name;
 	}
+
 	public get organizationId() {
 		return this._organizationId;
 	}
+
 	public set organizationId(name: string) {
 		this._organizationId = name;
 	}
+
 	public get environmentId() {
 		return this._environmentId;
 	}
+
 	public set environmentId(name: string) {
 		this._environmentId = name;
 	}
+
 	public get telemetry() {
 		return this._telemetry;
 	}
+
 	public get npsEligibility() {
 		return this._npsEligibility;
 	}
+
 	public get userId() {
 		return this._userId;
 	}
+
 	public get formsProEligibilityId() {
 		return this._formsProEligibilityId;
 	}
+
 	public get concurrencyHandler() {
 		return this._concurrencyHandler;
 	}
+
 	public get worker() {
 		return this._worker;
 	}
+
 	public get sharedWorkSpaceMap() {
 		return this._sharedWorkSpaceMap;
 	}
+
 	public get connectedUsers() {
 		return this._connectedUsers;
 	}
+
 	public get containerId() {
 		return this._containerId;
 	}
+
 	public set containerId(containerId: string) {
 		this._containerId = containerId;
 	}
+
 	public get currentConnectionId() {
 		return this._currentConnectionId;
 	}
+
 	public get quickPickProvider() {
 		return this._quickPickProvider;
 	}
+
 	public get userCollaborationProvider() {
 		return this._userCollaborationProvider;
 	}
+
 	public get graphClientService() {
 		return this._graphClientService;
 	}
 
 	constructor() {
 		this._schemaDataSourcePropertiesMap = new Map<string, string>();
+
 		this._schemaEntitiesMap = new Map<string, Map<string, string>>();
+
 		this._languageIdCodeMap = new Map<string, string>();
+
 		this._portalLanguageIdCodeMap = new Map<string, string>();
+
 		this._websiteLanguageIdToPortalLanguageMap = new Map<string, string>();
+
 		this._websiteIdToLanguage = new Map<string, string>();
+
 		this._urlParametersMap = new Map<string, string>();
+
 		this._vscodeWorkspaceState = new Map<string, IEntityInfo>();
+
 		this._entitiesFolderNameMap = new Map<string, string>();
+
 		this._defaultEntityType = "";
+
 		this._defaultEntityId = "";
+
 		this._dataverseAccessToken = "";
+
 		this._rootDirectory = vscode.Uri.parse("");
+
 		this._fileDataMap = new FileDataMap();
+
 		this._entityDataMap = new EntityDataMap();
+
 		this._entityForeignKeyDataMap = new EntityForeignKeyDataMap();
+
 		this._defaultFileUri = vscode.Uri.parse(``);
+
 		this._showMultifileInVSCode = false;
+
 		this._extensionActivationTime = new Date().getTime();
+
 		this._extensionUri = vscode.Uri.parse("");
+
 		this._isContextSet = false;
+
 		this._currentSchemaVersion = "";
+
 		this._websiteLanguageCode = "";
+
 		this._geoName = "";
+
 		this._geoLongName = "";
+
 		this._clusterLocation = "";
+
 		this._serviceEndpointCategory = ServiceEndpointCategory.NONE;
+
 		this._organizationId = "";
+
 		this._environmentId = "";
+
 		this._telemetry = new WebExtensionTelemetry();
+
 		this._npsEligibility = false;
+
 		this._userId = "";
+
 		this._formsProEligibilityId = "";
+
 		this._concurrencyHandler = new ConcurrencyHandler();
+
 		this._sharedWorkSpaceMap = new Map<string, string>();
+
 		this._containerId = "";
+
 		this._currentConnectionId = "";
+
 		this._connectedUsers = new UserDataMap();
+
 		this._quickPickProvider = new QuickPickProvider();
+
 		this._userCollaborationProvider = new UserCollaborationProvider();
+
 		this._graphClientService = new GraphClientService();
 	}
 
@@ -342,17 +488,21 @@ class WebExtensionContext implements IWebExtensionContext {
 		const schema = queryParamsMap.get(schemaKey.SCHEMA_VERSION) as string;
 		// Initialize context from URL params
 		this._currentSchemaVersion = schema;
+
 		this._defaultEntityType =
 			(entityName && entityName.toLowerCase()) ??
 			(queryParamsMap.get(Constants.queryParameters.ENTITY) as string) ??
 			"";
+
 		this._defaultEntityId =
 			entityId ??
 			(queryParamsMap.get(
 				Constants.queryParameters.ENTITY_ID,
 			) as string) ??
 			"";
+
 		this._urlParametersMap = queryParamsMap;
+
 		this._rootDirectory = vscode.Uri.parse(
 			`${Constants.PORTALS_URI_SCHEME}:/${
 				queryParamsMap.get(
@@ -361,6 +511,7 @@ class WebExtensionContext implements IWebExtensionContext {
 			}/`,
 			true,
 		);
+
 		this._extensionUri = extensionUri as vscode.Uri;
 
 		// Initialize multifile FF here
@@ -370,6 +521,7 @@ class WebExtensionContext implements IWebExtensionContext {
 
 		const isEnableMultifile =
 			String(enableMultifile).toLowerCase() === "true";
+
 		this._showMultifileInVSCode = isMultifileEnabled() && isEnableMultifile;
 
 		this.telemetry.sendInfoTelemetry(
@@ -379,17 +531,21 @@ class WebExtensionContext implements IWebExtensionContext {
 
 		// Initialize context from schema values
 		this._schemaEntitiesMap = getEntitiesSchemaMap(schema);
+
 		this._schemaDataSourcePropertiesMap =
 			getDataSourcePropertiesMap(schema);
+
 		this._entitiesFolderNameMap = getEntitiesFolderNameMap(
 			this.schemaEntitiesMap,
 		);
+
 		this._isContextSet = true;
 
 		// Initialize org details
 		this._organizationId =
 			(queryParamsMap.get(Constants.queryParameters.ORG_ID) as string) ??
 			"";
+
 		this._environmentId = getEnvironmentIdFromUrl();
 	}
 
@@ -397,8 +553,10 @@ class WebExtensionContext implements IWebExtensionContext {
 		try {
 			workspaceState.keys().forEach((key) => {
 				const entityInfo = workspaceState.get(key) as IEntityInfo;
+
 				this._vscodeWorkspaceState.set(key, entityInfo);
 			});
+
 			this.telemetry.sendInfoTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_SET_VSCODE_WORKSPACE_STATE_SUCCESS,
 				{ count: this._vscodeWorkspaceState.size.toString() },
@@ -434,6 +592,7 @@ class WebExtensionContext implements IWebExtensionContext {
 			dataverseOrgUrl,
 			schema,
 		);
+
 		await this.populateLanguageIdToCode(
 			this._dataverseAccessToken,
 			dataverseOrgUrl,
@@ -469,13 +628,18 @@ class WebExtensionContext implements IWebExtensionContext {
 		if (accessToken.length === 0) {
 			// re-set all properties to default values
 			this._dataverseAccessToken = "";
+
 			this._userId = "";
+
 			this._websiteIdToLanguage = new Map<string, string>();
+
 			this._websiteLanguageIdToPortalLanguageMap = new Map<
 				string,
 				string
 			>();
+
 			this._portalLanguageIdCodeMap = new Map<string, string>();
+
 			this._languageIdCodeMap = new Map<string, string>();
 
 			this.telemetry.sendErrorTelemetry(
@@ -487,6 +651,7 @@ class WebExtensionContext implements IWebExtensionContext {
 		}
 
 		this._dataverseAccessToken = accessToken;
+
 		this._userId = userId;
 
 		if (firstTimeAuth) {
@@ -580,6 +745,7 @@ class WebExtensionContext implements IWebExtensionContext {
 				dataverseOrgUrl,
 				languageEntityName,
 			);
+
 			this.telemetry.sendAPITelemetry(
 				requestUrl,
 				languageEntityName,
@@ -599,6 +765,7 @@ class WebExtensionContext implements IWebExtensionContext {
 			if (!response?.ok) {
 				throw new Error(JSON.stringify(response));
 			}
+
 			this.telemetry.sendAPISuccessTelemetry(
 				requestUrl,
 				languageEntityName,
@@ -608,7 +775,9 @@ class WebExtensionContext implements IWebExtensionContext {
 			);
 
 			const result = await response?.json();
+
 			this._languageIdCodeMap = getLcidCodeMap(result, schema);
+
 			this._portalLanguageIdCodeMap = getPortalLanguageIdToLcidMap(
 				result,
 				schema,
@@ -616,6 +785,7 @@ class WebExtensionContext implements IWebExtensionContext {
 		} catch (error) {
 			if ((error as Response)?.status > 0) {
 				const errorMsg = (error as Error)?.message;
+
 				this.telemetry.sendAPIFailureTelemetry(
 					requestUrl,
 					languageEntityName,
@@ -654,6 +824,7 @@ class WebExtensionContext implements IWebExtensionContext {
 				dataverseOrgUrl,
 				languageEntityName,
 			);
+
 			this.telemetry.sendAPITelemetry(
 				requestUrl,
 				languageEntityName,
@@ -673,6 +844,7 @@ class WebExtensionContext implements IWebExtensionContext {
 			if (!response?.ok) {
 				throw new Error(JSON.stringify(response));
 			}
+
 			this.telemetry.sendAPISuccessTelemetry(
 				requestUrl,
 				languageEntityName,
@@ -682,11 +854,13 @@ class WebExtensionContext implements IWebExtensionContext {
 			);
 
 			const result = await response?.json();
+
 			this._websiteLanguageIdToPortalLanguageMap =
 				getWebsiteLanguageIdToPortalLanguageIdMap(result, schema);
 		} catch (error) {
 			if ((error as Response)?.status > 0) {
 				const errorMsg = (error as Error)?.message;
+
 				this.telemetry.sendAPIFailureTelemetry(
 					requestUrl,
 					languageEntityName,
@@ -724,6 +898,7 @@ class WebExtensionContext implements IWebExtensionContext {
 				dataverseOrgUrl,
 				websiteEntityName,
 			);
+
 			this.telemetry.sendAPITelemetry(
 				requestUrl,
 				websiteEntityName,
@@ -743,6 +918,7 @@ class WebExtensionContext implements IWebExtensionContext {
 			if (!response?.ok) {
 				throw new Error(JSON.stringify(response));
 			}
+
 			this.telemetry.sendAPISuccessTelemetry(
 				requestUrl,
 				websiteEntityName,
@@ -752,10 +928,12 @@ class WebExtensionContext implements IWebExtensionContext {
 			);
 
 			const result = await response?.json();
+
 			this._websiteIdToLanguage = getWebsiteIdToLcidMap(result, schema);
 		} catch (error) {
 			if ((error as Response)?.status > 0) {
 				const errorMsg = (error as Error)?.message;
+
 				this.telemetry.sendAPIFailureTelemetry(
 					requestUrl,
 					websiteEntityName,
@@ -784,12 +962,14 @@ class WebExtensionContext implements IWebExtensionContext {
 					Constants.queryParameters.WEBSITE_ID,
 				) as string,
 			) ?? "";
+
 		this.telemetry.sendInfoTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_EDIT_LCID,
 			{ lcid: lcid ? lcid.toString() : "" },
 		);
 
 		this._websiteLanguageCode = this.languageIdCodeMap.get(lcid) as string;
+
 		this.telemetry.sendInfoTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_WEBSITE_LANGUAGE_CODE,
 			{ languageCode: this._websiteLanguageCode },
@@ -823,6 +1003,7 @@ class WebExtensionContext implements IWebExtensionContext {
 
 			return;
 		}
+
 		this._vscodeWorkspaceState.set(key, value);
 	}
 
@@ -945,6 +1126,7 @@ class WebExtensionContext implements IWebExtensionContext {
 				return;
 			} else {
 				const teamsChatLink = getTeamChatURL(mail);
+
 				vscode.env.openExternal(vscode.Uri.parse(teamsChatLink));
 			}
 		});
@@ -960,6 +1142,7 @@ class WebExtensionContext implements IWebExtensionContext {
 				return;
 			} else {
 				const mailToPath = getMailToPath(mail);
+
 				vscode.env.openExternal(vscode.Uri.parse(mailToPath));
 			}
 		});

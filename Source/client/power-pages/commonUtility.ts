@@ -11,9 +11,13 @@ import * as Constants from "./constants";
 
 export interface IFileProperties {
 	fileCompleteName?: string;
+
 	fileNameIndex?: number;
+
 	fileName?: string;
+
 	fileExtension: string;
+
 	fileFolderPath: string;
 }
 
@@ -36,7 +40,9 @@ export function getFileProperties(uriPath: string): IFileProperties {
 		fileNameIndex = uriPath.indexOf(fileCompleteName);
 
 		const fileNameTokens = fileCompleteName?.split(".");
+
 		fileName = fileNameTokens.shift();
+
 		fileExtension = fileNameTokens.join(".");
 	}
 
@@ -81,6 +87,7 @@ export function getDeletePathUris(
 			const ymlExtensionIndex = uriPath.indexOf(
 				Constants.WebFileYmlExtension,
 			);
+
 			ymlExtensionIndex === -1
 				? pathUris.push(
 						vscode.Uri.file(
@@ -244,21 +251,27 @@ export function getFieldsToUpdate(
 
 	if (fileEntityType === Constants.PowerPagesEntityType.WEBPAGES) {
 		fieldsToUpdate.push(Constants.DataverseFieldAdxTitle);
+
 		fieldsToUpdate.push(Constants.DataverseFieldAdxPartialUrl);
+
 		fieldsToUpdate.push(Constants.DataverseFieldAdxName);
 	} else if (fileEntityType === Constants.PowerPagesEntityType.WEBFILES) {
 		fieldsToUpdate.push(Constants.DataverseFieldAdxName);
+
 		fieldsToUpdate.push(Constants.DataverseFieldFilename);
+
 		fieldsToUpdate.push(Constants.DataverseFieldAdxPartialUrl);
 	} else if (
 		fileEntityType === Constants.PowerPagesEntityType.TABLE_PERMISSIONS
 	) {
 		fieldsToUpdate.push(Constants.DataverseFieldAdxEntityName);
+
 		fieldsToUpdate.push(Constants.DataverseFieldAdxEntityLogicalName);
 	} else if (
 		fileEntityType === Constants.PowerPagesEntityType.CONTENT_SNIPPETS
 	) {
 		fieldsToUpdate.push(Constants.DataverseFieldAdxDisplayName);
+
 		fieldsToUpdate.push(Constants.DataverseFieldAdxName);
 	} else {
 		fieldsToUpdate.push(Constants.DataverseFieldAdxName);
@@ -276,8 +289,10 @@ export function getExcludedFileGlobPattern(
 		fileNameArray.forEach(
 			(name, index) => (fileNameArray[index] = name.concat(".*")),
 		);
+
 		pattern = `**/{*.png,*.jpg,*.jpeg,*.gif,*.mp4,.portalconfig**,${fileNameArray.join(",")}}`;
 	}
+
 	return pattern;
 }
 

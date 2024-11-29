@@ -14,6 +14,7 @@ export class UserCollaborationProvider
 	private _onDidChangeTreeData: vscode.EventEmitter<
 		UserNode | undefined | void
 	> = new vscode.EventEmitter<UserNode | undefined | void>();
+
 	readonly onDidChangeTreeData: vscode.Event<UserNode | undefined | void> =
 		this._onDidChangeTreeData.event;
 
@@ -66,6 +67,7 @@ export class UserNode extends vscode.TreeItem {
 		super(label, collapsibleState);
 
 		this.tooltip = this.label;
+
 		this.iconPath = new vscode.ThemeIcon(Constants.THEME_ICON_ACCOUNT);
 	}
 

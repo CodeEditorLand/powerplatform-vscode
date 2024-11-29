@@ -7,6 +7,7 @@
 // has already been enqueued, or still waiting if the item has not yet arrived.
 export class BlockingQueue<T> {
 	private readonly promiseQueue: Promise<T>[] = [];
+
 	private readonly resolverQueue: ((t: T) => void)[] = [];
 
 	private addPromiseResolverPair() {
@@ -25,6 +26,7 @@ export class BlockingQueue<T> {
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const resolve = this.resolverQueue.shift()!;
+
 		resolve(t);
 	}
 

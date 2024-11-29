@@ -31,11 +31,17 @@ export const FileCreateEvent = "FileCreateEvent";
 
 interface ITelemetryData {
 	eventName: string;
+
 	numberOfFiles?: string;
+
 	fileEntityType?: string;
+
 	durationInMills?: number;
+
 	exception?: Error;
+
 	triggerPoint?: string;
+
 	methodName: string;
 }
 
@@ -75,12 +81,15 @@ export function sendTelemetryEvent(
 
 	if (telemetryData.exception) {
 		telemetryDataProperties.eventName = telemetryData.eventName;
+
 		telemetryDataProperties.errorMessage = telemetryData.exception?.message;
+
 		telemetry.sendTelemetryException(
 			telemetryData.exception,
 			telemetryDataProperties,
 			telemetryDataMeasurements,
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceError(
@@ -96,6 +105,7 @@ export function sendTelemetryEvent(
 			telemetryDataProperties,
 			telemetryDataMeasurements,
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceInfo(

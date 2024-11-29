@@ -97,10 +97,14 @@ export async function intelligenceAPIAuthentication(
 				[`${INTELLIGENCE_SCOPE_DEFAULT}`],
 				{ createIfNone: true },
 			);
+
 			firstTimeAuth = true;
 		}
+
 		accessToken = session?.accessToken ?? "";
+
 		user = session.account.label;
+
 		userId = getOIDFromToken(accessToken, telemetry);
 
 		if (!accessToken) {
@@ -121,6 +125,7 @@ export async function intelligenceAPIAuthentication(
 			),
 			vscode.l10n.t("There was a permissions problem with the server"),
 		);
+
 		sendTelemetryEvent(telemetry, {
 			eventName: CopilotLoginFailureEvent,
 			copilotSessionId: sessionID,
@@ -128,6 +133,7 @@ export async function intelligenceAPIAuthentication(
 			errorMsg: (error as Error).message,
 		});
 	}
+
 	return { accessToken, user, userId };
 }
 
@@ -162,6 +168,7 @@ export async function dataverseAuthentication(
 		}
 
 		accessToken = session?.accessToken ?? "";
+
 		userId = getOIDFromToken(accessToken, telemetry);
 
 		if (!accessToken) {
@@ -181,6 +188,7 @@ export async function dataverseAuthentication(
 			),
 			vscode.l10n.t("There was a permissions problem with the server"),
 		);
+
 		sendTelemetryEvent(telemetry, {
 			eventName: VSCODE_EXTENSION_DATAVERSE_AUTHENTICATION_FAILED,
 			errorMsg: (error as Error).message,
@@ -195,6 +203,7 @@ export async function npsAuthentication(
 	cesSurveyAuthorizationEndpoint: string,
 ): Promise<string> {
 	let accessToken = "";
+
 	sendTelemetryEvent(telemetry, {
 		eventName: VSCODE_EXTENSION_NPS_AUTHENTICATION_STARTED,
 	});
@@ -205,11 +214,13 @@ export async function npsAuthentication(
 			[cesSurveyAuthorizationEndpoint],
 			{ silent: true },
 		);
+
 		accessToken = session?.accessToken ?? "";
 
 		if (!accessToken) {
 			throw new Error(ERROR_CONSTANTS.NO_ACCESS_TOKEN);
 		}
+
 		sendTelemetryEvent(telemetry, {
 			eventName: VSCODE_EXTENSION_NPS_AUTHENTICATION_COMPLETED,
 		});
@@ -220,6 +231,7 @@ export async function npsAuthentication(
 			),
 			vscode.l10n.t("There was a permissions problem with the server"),
 		);
+
 		sendTelemetryEvent(telemetry, {
 			eventName: VSCODE_EXTENSION_NPS_AUTHENTICATION_FAILED,
 			errorMsg: (error as Error).message,
@@ -270,6 +282,7 @@ export async function graphClientAuthentication(
 			),
 			vscode.l10n.t("There was a permissions problem with the server"),
 		);
+
 		sendTelemetryEvent(telemetry, {
 			eventName: VSCODE_EXTENSION_GRAPH_CLIENT_AUTHENTICATION_FAILED,
 			errorMsg: (error as Error).message,
@@ -320,6 +333,7 @@ export async function bapServiceAuthentication(
 			),
 			vscode.l10n.t("There was a permissions problem with the server"),
 		);
+
 		sendTelemetryEvent(telemetry, {
 			eventName: VSCODE_EXTENSION_BAP_SERVICE_AUTHENTICATION_FAILED,
 			errorMsg: (error as Error).message,
@@ -340,6 +354,7 @@ export function getOIDFromToken(token: string, telemetry: ITelemetry) {
 			errorMsg: (error as Error).message,
 		});
 	}
+
 	return "";
 }
 
@@ -395,6 +410,7 @@ export async function powerPlatformAPIAuthentication(
 			),
 			vscode.l10n.t("There was a permissions problem with the server"),
 		);
+
 		sendTelemetryEvent(telemetry, {
 			eventName: VSCODE_EXTENSION_PPAPI_WEBSITES_AUTHENTICATION_FAILED,
 			errorMsg: (error as Error).message,

@@ -16,12 +16,15 @@ export class PortalWebView {
 	 * Track the currently panel. Only allow a single panel to exist at a time.
 	 */
 	public static currentPanel: PortalWebView | undefined;
+
 	public static currentDocument: string | undefined;
 
 	public static readonly viewType = "portalPreview";
 
 	private readonly _panel: vscode.WebviewPanel;
+
 	private _disposables: vscode.Disposable[] = [];
+
 	private _textEditor: vscode.TextEditor;
 
 	public static checkDocumentIsHTML(): boolean {
@@ -47,6 +50,7 @@ export class PortalWebView {
 		// If we already have a panel, show it.
 		if (PortalWebView.currentPanel) {
 			PortalWebView.currentPanel._update();
+
 			PortalWebView.currentPanel._panel.reveal(column);
 
 			return;
@@ -75,6 +79,7 @@ export class PortalWebView {
 
 	private constructor(panel: vscode.WebviewPanel) {
 		this._panel = panel;
+
 		this._textEditor = vscode.window.activeTextEditor as vscode.TextEditor;
 
 		// Set the webview's initial html content
@@ -117,7 +122,9 @@ export class PortalWebView {
 		PortalWebView.currentDocument = this._textEditor.document.fileName;
 
 		const webview = this._panel.webview;
+
 		this._panel.title = this.getFileName();
+
 		this._panel.webview.html = this.generateHTML(webview);
 	}
 
@@ -154,6 +161,7 @@ export class PortalWebView {
 			);
 
 			const bootstrap = `<link href="${url}" rel="stylesheet" />`;
+
 			html += bootstrap;
 			// Add theme.css
 			url = webview.asWebviewUri(
@@ -165,8 +173,10 @@ export class PortalWebView {
 			);
 
 			const theme = `<link href="${url}" rel="stylesheet" />`;
+
 			html += theme;
 		}
+
 		return html;
 	}
 
@@ -196,11 +206,13 @@ export class PortalWebView {
 			}
 
 			// update image referred as url('/Homehero.png');
+
 			html = html.replace(
 				/url\('(?:[^'\]*)*([^']+)'/g,
 				"url('" + BaseURL + "/$1'",
 			);
 		}
+
 		return html;
 	}
 
@@ -213,6 +225,7 @@ export class PortalWebView {
 				let i = 0;
 				!!vscode.workspace.workspaceFolders &&
 				i < vscode.workspace.workspaceFolders?.length;
+
 				i++
 			) {
 				const portalConfigFolderUrl = searchPortalConfigFolder(
@@ -229,6 +242,7 @@ export class PortalWebView {
 				}
 			}
 		}
+
 		return null;
 	}
 }

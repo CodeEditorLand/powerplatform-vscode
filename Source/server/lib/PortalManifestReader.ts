@@ -15,6 +15,7 @@ const manifest = "-manifest";
 
 export interface IManifestElement {
 	DisplayName: string;
+
 	RecordId: string;
 }
 
@@ -32,6 +33,7 @@ export function getMatchedManifestRecords(
 		) as URL | null; //https://github.com/Microsoft/TypeScript/issues/11498
 		if (portalConfigFolderUrl && keyForCompletion) {
 			const configFiles: string[] = fs.readdirSync(portalConfigFolderUrl);
+
 			configFiles.forEach((configFile) => {
 				if (configFile.includes(manifest)) {
 					// this is based on the assumption that there will be only one manifest file in portalconfig folder
@@ -47,6 +49,7 @@ export function getMatchedManifestRecords(
 
 					try {
 						const parsedManifestData = YAML.parse(manifestData);
+
 						matchedManifestRecords =
 							parsedManifestData[keyForCompletion];
 					} catch (exception) {
@@ -56,5 +59,6 @@ export function getMatchedManifestRecords(
 			});
 		}
 	}
+
 	return matchedManifestRecords;
 }

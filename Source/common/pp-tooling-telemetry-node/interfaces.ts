@@ -7,13 +7,17 @@
 
 export interface IAppTelemetryEnvironment {
 	readonly optOut?: boolean;
+
 	readonly developerMode?: boolean;
+
 	readonly dataBoundary?: string;
+
 	readonly automationAgent?: string;
 }
 
 export interface ITelemetryUserSettings {
 	readonly uniqueId: string;
+
 	readonly telemetryEnabled?: boolean;
 }
 

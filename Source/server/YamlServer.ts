@@ -45,12 +45,14 @@ let hasDiagnosticRelatedInformationCapability = false;
 
 connection.onInitialize((params: InitializeParams) => {
 	const capabilities = params.capabilities;
+
 	workspaceRootFolders = params.workspaceFolders;
 	// Does the client support the `workspace/configuration` request?
 	// If not, we fall back using global settings.
 	hasConfigurationCapability = !!(
 		capabilities.workspace && !!capabilities.workspace.configuration
 	);
+
 	hasWorkspaceFolderCapability = !!(
 		capabilities.workspace && !!capabilities.workspace.workspaceFolders
 	);
@@ -78,6 +80,7 @@ connection.onInitialize((params: InitializeParams) => {
 			},
 		};
 	}
+
 	return result;
 });
 
@@ -89,6 +92,7 @@ connection.onInitialized(() => {
 			undefined,
 		);
 	}
+
 	if (hasWorkspaceFolderCapability) {
 		connection.workspace.onDidChangeWorkspaceFolders(() => {
 			// connection.console.log('Workspace folder change event received.');
@@ -144,6 +148,7 @@ function getSuggestions(rowIndex: number, pathOfFileBeingEdited: string) {
 				keyForCompletion,
 				pathOfFileBeingEdited,
 			);
+
 		telemetryData.measurements.manifestParseTimeMs =
 			new Date().getTime() - timeStampBeforeParsingManifestFile;
 
@@ -154,6 +159,7 @@ function getSuggestions(rowIndex: number, pathOfFileBeingEdited: string) {
 					insertText: element.RecordId,
 					kind: CompletionItemKind.Value,
 				};
+
 				completionItems.push(item);
 			});
 		}
@@ -161,10 +167,13 @@ function getSuggestions(rowIndex: number, pathOfFileBeingEdited: string) {
 	// we send telemetry data only in case of success, otherwise the logs will be bloated with unnecessary data
 	if (completionItems.length > 0) {
 		telemetryData.properties.success = "true";
+
 		telemetryData.measurements.countOfAutoCompleteResults =
 			completionItems.length;
+
 		sendTelemetryEvent(connection, telemetryData);
 	}
+
 	return completionItems;
 }
 
@@ -180,6 +189,7 @@ function getKeyForCompletion(matches: RegExpMatchArray) {
 				portalAttributeKeyForCompletion.length - 2,
 			); // we remove the id
 	}
+
 	return portalAttributeKeyForCompletion;
 }
 

@@ -20,11 +20,14 @@ export const orgChangeErrorEvent = orgChangeErrorEventEmitter.event;
 
 export class OrgChangeNotifier {
 	private _pacWrapper: PacWrapper | undefined;
+
 	private _orgDetails: ActiveOrgOutput | undefined;
+
 	private static _orgChangeNotifierObj: OrgChangeNotifier | undefined;
 
 	private constructor(pacWrapper: PacWrapper) {
 		this._pacWrapper = pacWrapper;
+
 		this.activeOrgDetails();
 
 		if (this._pacWrapper) {
@@ -38,6 +41,7 @@ export class OrgChangeNotifier {
 				pacWrapper,
 			);
 		}
+
 		return OrgChangeNotifier._orgChangeNotifierObj;
 	}
 
@@ -46,8 +50,11 @@ export class OrgChangeNotifier {
 
 		if (watchPath) {
 			const watcher = vscode.workspace.createFileSystemWatcher(watchPath);
+
 			watcher.onDidChange(() => this.activeOrgDetails());
+
 			watcher.onDidCreate(() => this.activeOrgDetails());
+
 			watcher.onDidDelete(() => this.activeOrgDetails());
 		}
 	}
@@ -57,6 +64,7 @@ export class OrgChangeNotifier {
 
 		if (pacActiveOrg && pacActiveOrg.Status === SUCCESS) {
 			this._orgDetails = pacActiveOrg.Results;
+
 			orgChangeEventEmitter.fire(this._orgDetails);
 		} else {
 			orgChangeErrorEventEmitter.fire();

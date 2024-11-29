@@ -31,9 +31,13 @@ import {
 
 interface IPagetemplateInputState {
 	title: string;
+
 	step: number;
+
 	totalSteps: number;
+
 	type: string;
+
 	name: string;
 }
 
@@ -47,6 +51,7 @@ export const createPageTemplate = async (
 		if (!selectedWorkspaceFolder) {
 			return;
 		}
+
 		const portalDir = selectedWorkspaceFolder;
 
 		const portalContext = getPortalContext(portalDir);
@@ -83,6 +88,7 @@ export const createPageTemplate = async (
 		);
 
 		const command = `${yoGenPath} ${YoSubGenerator.PAGETEMPLATE} "${pageTemplateName}" "${webtemplateId}"`;
+
 		await createRecord(
 			Tables.PAGETEMPLATE,
 			command,
@@ -119,6 +125,7 @@ async function getPageTemplateInputs(
 
 	async function collectInputs() {
 		const state = {} as Partial<IPagetemplateInputState>;
+
 		await MultiStepInput.run((input) => inputName(input, state));
 
 		return state as IPagetemplateInputState;
@@ -152,6 +159,7 @@ async function getPageTemplateInputs(
 			items: webTemplates,
 			activeItem: typeof state.type !== "string" ? state.type : undefined,
 		});
+
 		state.type = pick.label;
 	}
 

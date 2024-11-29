@@ -64,6 +64,7 @@ export async function fileRenameValidation(
 				await vscode.workspace.fs.rename(newUri, oldUri, {
 					overwrite: true,
 				});
+
 				success = false;
 			}
 		}
@@ -74,6 +75,7 @@ export async function fileRenameValidation(
 			exception: e as Error,
 		});
 	}
+
 	return success;
 }
 
@@ -150,6 +152,7 @@ export async function updateEntityPathNames(
 						? `**/${entityFolderName}/${newFileProperties.fileName}.*.yml`
 						: `**/${entityFolderName}/${oldFileProperties.fileName.toLowerCase()}/**/*.yml`,
 				);
+
 				ymlFileInFolder.forEach((file) => {
 					updateEntityNameInYml(file.path, fileEntityType, telemetry);
 				});
@@ -191,6 +194,7 @@ export async function cleanupRelatedFiles(
 			fileEntityType,
 			fileProperties,
 		);
+
 		pathUris.forEach(async (pathUri) => {
 			await vscode.workspace.fs.delete(pathUri, {
 				recursive: true,
@@ -225,6 +229,7 @@ function updateEntityNameInYml(
 
 		// update data object
 		const fieldsToUpdate = getFieldsToUpdate(fileEntityType);
+
 		fieldsToUpdate.forEach((field) => {
 			if (field === DataverseFieldAdxPartialUrl) {
 				parsedFileContents[field] = fileNameProperties.fileName;
@@ -235,6 +240,7 @@ function updateEntityNameInYml(
 		});
 
 		const newFileContents = YAML.stringify(parsedFileContents);
+
 		fs.writeFileSync(uri.fsPath, newFileContents);
 	} catch (e) {
 		sendTelemetryEvent(telemetry, {

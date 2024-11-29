@@ -73,6 +73,7 @@ export class LaunchJsonConfigManager {
 					"renderFullScreen is false but tabName is not specified in launch.json",
 				);
 			}
+
 			controlLocation = {
 				controlName: controlName,
 				tabName,
@@ -84,12 +85,14 @@ export class LaunchJsonConfigManager {
 					"renderFullScreen is true but appId is not specified in launch.json or extension settings",
 				);
 			}
+
 			controlLocation = {
 				appId,
 				controlName: controlName,
 				renderFullScreen: true,
 			};
 		}
+
 		return controlLocation;
 	}
 }

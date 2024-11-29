@@ -111,6 +111,7 @@ export class BrowserManager implements Disposable {
 			debugConfig: JSON.stringify(this.debugConfig),
 			browserFlavor: ConfigurationManager.getBrowserFlavor(),
 		};
+
 		this.logger.sendTelemetryEvent("BrowserManager.launch", telemetryProps);
 
 		const browser = await this.getBrowser();
@@ -135,6 +136,7 @@ export class BrowserManager implements Disposable {
 		} else {
 			const message =
 				"Could not start browser. Please try again. Browser instance does not have any active pages.";
+
 			await ErrorReporter.report(
 				this.logger,
 				"BrowserManager.launch.noPages",
@@ -175,6 +177,7 @@ export class BrowserManager implements Disposable {
 			});
 
 			const version = await this.browserInstance.version();
+
 			this.logger.sendTelemetryEvent("BrowserManager.getBrowser", {
 				port: `${port}`,
 				processId: this.browserInstancePID,
@@ -231,6 +234,7 @@ export class BrowserManager implements Disposable {
 		 */
 		const disposeSession = async () => {
 			this.onBrowserClose && (await this.onBrowserClose());
+
 			this.disposeSessionInstances();
 		};
 
@@ -240,16 +244,19 @@ export class BrowserManager implements Disposable {
 
 		const onFileChangeHandler = async () => {
 			await this.bundleInterceptor?.reloadFileContents();
+
 			await this.controlLocator?.navigateToControl(page);
 		};
 
 		const onBundleLoaded = async () => {
 			this.onBrowserReady && (await this.onBrowserReady());
 		};
+
 		this.bundleWatcher.register(onFileChangeHandler);
 
 		try {
 			await this.bundleInterceptor?.register(page, onBundleLoaded);
+
 			await this.controlLocator?.navigateToControl(page);
 		} catch (error) {
 			await ErrorReporter.report(
@@ -258,6 +265,7 @@ export class BrowserManager implements Disposable {
 				error,
 				"Failed to start browser session.",
 			);
+
 			await disposeSession();
 		}
 	}
@@ -269,16 +277,23 @@ export class BrowserManager implements Disposable {
 		if (this.isDisposed) {
 			return;
 		}
+
 		const disposeAsync = async () => {
 			if (this.browserInstance) {
 				await this.browserInstance.close();
+
 				this.browserInstance = undefined;
 			}
 		};
+
 		this.onBrowserClose = undefined;
+
 		this.onBrowserReady = undefined;
+
 		this.disposeSessionInstances();
+
 		void disposeAsync();
+
 		this.isDisposed = true;
 	}
 
@@ -287,7 +302,9 @@ export class BrowserManager implements Disposable {
 	 */
 	private disposeSessionInstances() {
 		this.controlLocator.dispose();
+
 		this.bundleInterceptor.dispose();
+
 		this.bundleWatcher.dispose();
 	}
 }

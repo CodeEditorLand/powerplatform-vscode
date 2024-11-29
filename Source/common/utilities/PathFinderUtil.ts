@@ -28,7 +28,9 @@ export function getPortalConfigFolderUrl(
 ): URL | null {
 	for (
 		let i = 0;
+
 		workspaceRootFolders && i < workspaceRootFolders?.length;
+
 		i++
 	) {
 		const portalConfigFolderUrl = searchPortalConfigFolder(
@@ -40,6 +42,7 @@ export function getPortalConfigFolderUrl(
 			return portalConfigFolderUrl;
 		}
 	}
+
 	return null;
 }
 
@@ -58,6 +61,7 @@ export function searchPortalConfigFolder(
 	if (portalConfigIsSibling) {
 		return portalConfigIsSibling;
 	}
+
 	return searchPortalConfigFolder(rootFolder, getParentDirectory(file));
 }
 
@@ -93,5 +97,6 @@ function isSibling(file: string): URL | null {
 			}
 		}
 	}
+
 	return null;
 }

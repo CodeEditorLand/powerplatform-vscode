@@ -18,10 +18,15 @@ const inputDecorationType = vscode.window.createTextEditorDecorationType({
 // object for storing class range
 type ClassRange = {
 	Start: number;
+
 	End: number;
+
 	Offset: number;
+
 	MatchedClass: string;
+
 	ReplacedClass: string;
+
 	Message: string;
 };
 
@@ -44,6 +49,7 @@ export async function bootstrapDiff() {
 	const diffFileName = inputPath + "-diff.json";
 
 	let diffData = "";
+
 	await vscode.workspace
 		.openTextDocument(vscode.Uri.file(diffFileName))
 		.then((document) => {
@@ -51,6 +57,7 @@ export async function bootstrapDiff() {
 		});
 
 	matchedClasses = JSON.parse(diffData);
+
 	hihglightReplacedClasses(editor);
 
 	const websiteFolder = vscode.workspace.getWorkspaceFolder(
@@ -84,6 +91,7 @@ export async function bootstrapDiff() {
 		// Handle this case
 		return;
 	}
+
 	hihglightMatchedClasses(v3editor);
 }
 
@@ -101,18 +109,21 @@ function hihglightReplacedClasses(editor: vscode.TextEditor) {
 				l,
 				matchedClasses[l][i].Start + offset,
 			);
+
 			offset += matchedClasses[l][i].Offset;
 
 			const end = new vscode.Position(
 				l,
 				matchedClasses[l][i].End + offset,
 			);
+
 			hoverMessages.push({
 				hoverMessage: matchedClasses[l][i].Message,
 				range: new vscode.Range(start, end),
 			});
 		}
 	}
+
 	editor.setDecorations(outputDecorationType, hoverMessages);
 }
 
@@ -125,8 +136,10 @@ function hihglightMatchedClasses(editor: vscode.TextEditor) {
 			const start = new vscode.Position(l, matchedClasses[l][i].Start);
 
 			const end = new vscode.Position(l, matchedClasses[l][i].End);
+
 			matchedClassPositionRanges.push(new vscode.Range(start, end));
 		}
 	}
+
 	editor.setDecorations(inputDecorationType, matchedClassPositionRanges);
 }

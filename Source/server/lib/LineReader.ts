@@ -18,5 +18,6 @@ export function getEditedLineContent(
 			editedLine = lines[i];
 		}
 	}
+
 	return editedLine;
 }

@@ -38,6 +38,7 @@ export abstract class ECSFeaturesClient {
 			if (!response.ok) {
 				throw new Error("Request failed");
 			}
+
 			const result = await response.json();
 
 			// Initialize ECS config
@@ -48,6 +49,7 @@ export abstract class ECSFeaturesClient {
 				clientName: clientName,
 				configFlagCount: Object.keys(this._ecsConfig).length.toString(),
 			});
+
 			oneDSLoggerWrapper.getLogger().traceInfo(ECSConfigSuccessfulInit, {
 				clientName: clientName,
 				configFlagCount: Object.keys(this._ecsConfig).length.toString(),
@@ -58,6 +60,7 @@ export abstract class ECSFeaturesClient {
 			telemetry.sendTelemetryErrorEvent(ECSConfigFailedInit, {
 				error: message,
 			});
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceError(ECSConfigFailedInit, message, error as Error);

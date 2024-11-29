@@ -11,7 +11,9 @@ import { getAppDataPath } from "./appdata";
 
 interface IUserSettings {
 	readonly uniqueId: string;
+
 	readonly settingVersion: string;
+
 	readonly telemetryEnabled: boolean;
 }
 
@@ -36,6 +38,7 @@ export function readUserSettings(
 			"PowerAppsCli",
 		);
 	}
+
 	const userSettingFilePath = path.join(
 		applicationPath,
 		userSettingsFileName,
@@ -56,11 +59,13 @@ export function readUserSettings(
 			} catch {
 				// Ignore error on delete
 			}
+
 			writeUserSettings(settings, applicationPath);
 		}
 	} else {
 		writeUserSettings(settings, applicationPath);
 	}
+
 	return settings;
 }
 
@@ -72,6 +77,7 @@ function writeUserSettings(
 
 	try {
 		fs.ensureDirSync(applicationPath);
+
 		fs.writeFileSync(
 			path.join(applicationPath, userSettingsFileName),
 			JSON.stringify(userSettings),

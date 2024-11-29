@@ -15,7 +15,9 @@ import { RegisterPanels } from "./PacActivityBarUI";
 
 export class PacTerminal implements vscode.Disposable {
 	private readonly _context: vscode.ExtensionContext;
+
 	private readonly _cmdDisposables: vscode.Disposable[] = [];
+
 	private readonly _pacWrapper: PacWrapper;
 
 	public dispose(): void {
@@ -32,6 +34,7 @@ export class PacTerminal implements vscode.Disposable {
 		const pacContext = new PacWrapperContext(context, telemetry);
 
 		const interop = new PacInterop(pacContext, cliPath);
+
 		this._pacWrapper = new PacWrapper(pacContext, interop);
 
 		// https://code.visualstudio.com/api/references/vscode-api#EnvironmentVariableCollection
@@ -119,6 +122,7 @@ export class PacTerminal implements vscode.Disposable {
 		this._cmdDisposables.push(
 			...RegisterPanels(this._pacWrapper, context, telemetry),
 		);
+
 		this._cmdDisposables.push(RegisterUriHandler(this._pacWrapper));
 	}
 
@@ -138,6 +142,7 @@ export class PacTerminal implements vscode.Disposable {
 		const terminal = vscode.window.activeTerminal
 			? (vscode.window.activeTerminal as vscode.Terminal)
 			: vscode.window.createTerminal();
+
 		terminal.show();
 
 		return terminal;

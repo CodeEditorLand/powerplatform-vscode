@@ -109,14 +109,23 @@ declare const IS_DESKTOP: string | undefined;
 //TODO: Check if it can be converted to singleton
 export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 	public static readonly viewType = "powerpages.copilot";
+
 	private _view?: vscode.WebviewView;
+
 	private readonly _pacWrapper?: PacWrapper;
+
 	private _extensionContext: vscode.ExtensionContext;
+
 	private readonly _disposables: vscode.Disposable[] = [];
+
 	private loginButtonRendered = false;
+
 	private telemetry: ITelemetry;
+
 	private aibEndpoint: string | null = null;
+
 	private geoName: string | null = null;
+
 	private crossGeoDataMovementEnabledPPACFlag = false;
 
 	constructor(
@@ -127,8 +136,11 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 		orgInfo?: IOrgInfo,
 	) {
 		this.telemetry = telemetry;
+
 		this._extensionContext = _context;
+
 		sessionID = uuidv4();
+
 		this._pacWrapper = pacWrapper;
 
 		this._disposables.push(
@@ -142,9 +154,11 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							orgId: orgID,
 							userId: userID,
 						});
+
 						this.sendMessageToWebview({
 							type: "clearConversation",
 						});
+
 						sessionID = uuidv4();
 					}
 				},
@@ -160,6 +174,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 				if (!editor) {
 					return;
 				}
+
 				const selectedCode = getSelectedCode(editor);
 
 				const selectedCodeLineRange = getSelectedCodeLineRange(editor);
@@ -172,10 +187,12 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 					return;
 				}
+
 				const withinTokenLimit = isWithinTokenLimit(selectedCode, 1000);
 
 				if (commandType === EXPLAIN_CODE) {
 					const tokenSize = encode(selectedCode).length;
+
 					sendTelemetryEvent(this.telemetry, {
 						eventName: CopilotExplainCodeSize,
 						copilotSessionId: sessionID,
@@ -192,6 +209,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						return;
 					}
 				}
+
 				this.sendMessageToWebview({
 					type: commandType,
 					value: {
@@ -222,12 +240,15 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							orgId: orgID,
 							userId: userID,
 						});
+
 						this.show();
+
 						handleSelectionChange(EXPLAIN_CODE);
 					},
 				),
 			);
 		}
+
 		this._disposables.push(
 			orgChangeEvent((orgDetails: ActiveOrgOutput) =>
 				this.handleOrgChangeSuccess(orgDetails),
@@ -244,9 +265,13 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 		if (orgInfo) {
 			orgID = orgInfo.orgId;
+
 			environmentName = orgInfo.environmentName;
+
 			activeOrgUrl = orgInfo.activeOrgUrl;
+
 			tenantId = orgInfo.tenantId;
+
 			environmentId = orgInfo.environmentId;
 		}
 	}
@@ -279,7 +304,9 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 		webviewView.title =
 			vscode.l10n.t(COPILOT_IN_POWERPAGES) +
 			(IS_DESKTOP ? "" : " [PREVIEW]");
+
 		webviewView.description = vscode.l10n.t("PREVIEW");
+
 		webviewView.webview.options = {
 			// Allow scripts in the webview
 			enableScripts: true,
@@ -392,6 +419,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							orgId: orgID,
 							userId: userID,
 						});
+
 						this.sendMessageToWebview({ type: "Unavailable" });
 
 						return;
@@ -403,7 +431,9 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						orgId: orgID,
 						userId: userID,
 					});
+
 					this.sendMessageToWebview({ type: "env" });
+
 					await this.checkAuthentication();
 
 					if (orgID && userName) {
@@ -411,6 +441,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							type: "isLoggedIn",
 							value: true,
 						});
+
 						this.sendMessageToWebview({
 							type: "userName",
 							value: userName,
@@ -420,17 +451,21 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							type: "isLoggedIn",
 							value: false,
 						});
+
 						this.loginButtonRendered = true;
 					}
+
 					this.sendMessageToWebview({ type: "welcomeScreen" });
 
 					break;
 				}
+
 				case "login": {
 					this.handleLogin();
 
 					break;
 				}
+
 				case "newUserPrompt": {
 					sendTelemetryEvent(this.telemetry, {
 						eventName: CopilotUserPromptedEvent,
@@ -455,7 +490,9 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 									type: "apiResponse",
 									value: AuthProfileNotFound,
 								});
+
 								this.handleOrgChange();
+
 								this.sendMessageToWebview({
 									type: "enableInput",
 								});
@@ -463,12 +500,14 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 					break;
 				}
+
 				case "insertCode": {
 					const escapedSnippet = escapeDollarSign(data.value);
 
 					vscode.window.activeTextEditor?.insertSnippet(
 						new vscode.SnippetString(`${escapedSnippet}`),
 					);
+
 					sendTelemetryEvent(this.telemetry, {
 						eventName: CopilotInsertCodeToEditorEvent,
 						copilotSessionId: sessionID,
@@ -478,11 +517,14 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 					break;
 				}
+
 				case "copyCodeToClipboard": {
 					vscode.env.clipboard.writeText(data.value);
+
 					vscode.window.showInformationMessage(
 						vscode.l10n.t("Copied to clipboard!"),
 					);
+
 					sendTelemetryEvent(this.telemetry, {
 						eventName: CopilotCopyCodeToClipboardEvent,
 						copilotSessionId: sessionID,
@@ -492,11 +534,13 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 					break;
 				}
+
 				case "clearChat": {
 					sessionID = uuidv4();
 
 					break;
 				}
+
 				case "userFeedback": {
 					const feedbackValue = data.value.feedbackValue;
 
@@ -510,6 +554,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							userId: userID,
 							subScenario: String(messageScenario),
 						});
+
 						CESUserFeedback(
 							this._extensionContext,
 							sessionID,
@@ -528,6 +573,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							userId: userID,
 							subScenario: String(messageScenario),
 						});
+
 						CESUserFeedback(
 							this._extensionContext,
 							sessionID,
@@ -539,8 +585,10 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							tenantId,
 						);
 					}
+
 					break;
 				}
+
 				case "walkthrough": {
 					sendTelemetryEvent(this.telemetry, {
 						eventName: CopilotWalkthroughEvent,
@@ -548,10 +596,12 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 						orgId: orgID,
 						userId: userID,
 					});
+
 					openWalkthrough(this._extensionUri);
 
 					break;
 				}
+
 				case "codeLineCount": {
 					sendTelemetryEvent(this.telemetry, {
 						eventName: CopilotCodeLineCountEvent,
@@ -563,6 +613,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 					break;
 				}
+
 				case "openGitHubCopilotLink": {
 					//Open the GitHub Copilot Chat with @powerpages if GitHub Copilot Chat is installed
 					sendTelemetryEvent(this.telemetry, {
@@ -581,6 +632,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							orgId: orgID,
 							userId: userID,
 						});
+
 						vscode.commands.executeCommand(
 							"workbench.action.chat.open",
 							PowerPagesParticipantPrompt,
@@ -592,6 +644,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							orgId: orgID,
 							userId: userID,
 						});
+
 						vscode.env.openExternal(
 							vscode.Uri.parse(PowerPagesParticipantDocLink),
 						);
@@ -634,11 +687,13 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 				if (!this.loginButtonRendered) {
 					this.sendMessageToWebview({ type: "welcomeScreen" });
+
 					this.loginButtonRendered = true; // Set the flag to indicate that the login button has been rendered
 				}
 
 				return;
 			}
+
 			const pacAuthCreateOutput = await showProgressWithNotification(
 				AUTH_CREATE_MESSAGE,
 				async () => {
@@ -647,6 +702,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 					);
 				},
 			);
+
 			pacAuthCreateOutput && pacAuthCreateOutput.Status === SUCCESS
 				? intelligenceAPIAuthentication(
 						this.telemetry,
@@ -673,10 +729,13 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 
 		if (session) {
 			intelligenceApiToken = session.accessToken;
+
 			userName = getUserName(session.account.label);
+
 			userID = getOIDFromToken(session.accessToken, this.telemetry);
 		} else {
 			intelligenceApiToken = "";
+
 			userName = "";
 		}
 	}
@@ -689,7 +748,9 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 		return intelligenceAPIAuthentication(telemetry, sessionID, orgID)
 			.then(async ({ accessToken, user, userId }) => {
 				intelligenceApiToken = accessToken;
+
 				userName = getUserName(user);
+
 				userID = userId;
 
 				this.sendMessageToWebview({
@@ -731,6 +792,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							telemetry,
 							sessionID,
 						);
+
 						componentInfo = formColumns;
 					} else {
 						const entityColumns = await getEntityColumns(
@@ -740,9 +802,11 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 							telemetry,
 							sessionID,
 						);
+
 						componentInfo = entityColumns;
 					}
 				}
+
 				const apiRequestParams: IApiRequestParams = {
 					userPrompt: [
 						{
@@ -770,6 +834,7 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 					type: "apiResponse",
 					value: apiResponse,
 				});
+
 				this.sendMessageToWebview({ type: "enableInput" });
 			});
 	}
@@ -780,8 +845,11 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 		}
 
 		orgID = activeOrg.OrgId;
+
 		environmentName = activeOrg.FriendlyName;
+
 		activeOrgUrl = activeOrg.OrgUrl;
+
 		environmentId = activeOrg.EnvironmentId;
 
 		sessionID = uuidv4(); // Generate a new session ID on org change
@@ -798,8 +866,11 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 				sessionID,
 				environmentId,
 			);
+
 		this.aibEndpoint = intelligenceAPIEndpointInfo.intelligenceEndpoint;
+
 		this.geoName = intelligenceAPIEndpointInfo.geoName;
+
 		this.crossGeoDataMovementEnabledPPACFlag =
 			intelligenceAPIEndpointInfo.crossGeoDataMovementEnabledPPACFlag;
 
@@ -831,11 +902,15 @@ export class PowerPagesCopilot implements vscode.WebviewViewProvider {
 	) {
 		if (accessToken && user) {
 			intelligenceApiToken = accessToken;
+
 			userName = getUserName(user);
+
 			userID = userId;
 
 			this.sendMessageToWebview({ type: "isLoggedIn", value: true });
+
 			this.sendMessageToWebview({ type: "userName", value: userName });
+
 			this.sendMessageToWebview({ type: "welcomeScreen" });
 		}
 	}

@@ -21,9 +21,11 @@ export class PowerPagesNavigationProvider
 	private _onDidChangeTreeData: vscode.EventEmitter<
 		PowerPagesNode | undefined | void
 	> = new vscode.EventEmitter<PowerPagesNode | undefined | void>();
+
 	readonly onDidChangeTreeData: vscode.Event<
 		PowerPagesNode | undefined | void
 	> = this._onDidChangeTreeData.event;
+
 	private isWebsitePreviewURLValid: Promise<boolean> =
 		validateWebsitePreviewURL();
 
@@ -73,6 +75,7 @@ export class PowerPagesNavigationProvider
 			nodes.push(backToStudio);
 		} else {
 			nodes.push(previewPowerPage);
+
 			nodes.push(backToStudio);
 		}
 
@@ -125,7 +128,9 @@ export class PowerPagesNavigationProvider
 			httpMethod.DELETE,
 			this.previewPowerPageSite.name,
 		);
+
 		requestSentAtTime = new Date().getTime();
+
 		WebExtensionContext.dataverseAuthentication();
 
 		await vscode.window.withProgress(
@@ -174,6 +179,7 @@ export class PowerPagesNavigationProvider
 		);
 
 		vscode.env.openExternal(vscode.Uri.parse(websitePreviewUrl));
+
 		WebExtensionContext.telemetry.sendInfoTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_PREVIEW_SITE_TRIGGERED,
 		);
@@ -215,7 +221,9 @@ export class PowerPagesNode extends vscode.TreeItem {
 		super(label, vscode.TreeItemCollapsibleState.None);
 
 		this.tooltip = this.label;
+
 		this.command = command;
+
 		this.iconPath = this.getIconPath(svgFileName);
 	}
 

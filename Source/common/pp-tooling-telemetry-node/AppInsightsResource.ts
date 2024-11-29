@@ -24,6 +24,7 @@ export class AppInsightsResource {
 			throw new Error(
 				"Connection string must start with InstrumentationKey=...",
 			);
+
 		this.instrumentationKey = firstParameter.split("=", 2)[1];
 	}
 }

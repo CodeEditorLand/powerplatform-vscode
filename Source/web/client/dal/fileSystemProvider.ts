@@ -47,38 +47,56 @@ import { saveData } from "./remoteSaveProvider";
 
 export class File implements vscode.FileStat {
 	type: vscode.FileType;
+
 	ctime: number;
+
 	mtime: number;
+
 	size: number;
 
 	name: string;
+
 	data: Uint8Array;
 
 	constructor(name: string) {
 		this.type = vscode.FileType.File;
+
 		this.ctime = Date.now();
+
 		this.mtime = Date.now();
+
 		this.size = 0;
+
 		this.name = name;
+
 		this.data = new Uint8Array();
 	}
 }
 
 export class Directory implements vscode.FileStat {
 	type: vscode.FileType;
+
 	ctime: number;
+
 	mtime: number;
+
 	size: number;
 
 	name: string;
+
 	entries: Map<string, File | Directory>;
 
 	constructor(name: string) {
 		this.type = vscode.FileType.Directory;
+
 		this.ctime = Date.now();
+
 		this.mtime = Date.now();
+
 		this.size = 0;
+
 		this.name = name;
+
 		this.entries = new Map();
 	}
 }
@@ -109,8 +127,11 @@ export class PortalsFS implements vscode.FileSystemProvider {
 					getFileEntityEtag(uri.fsPath) !== entityEtagValue
 				) {
 					updateDiffViewTriggered(uri.fsPath, true);
+
 					updateFileEntityEtag(uri.fsPath, entityEtagValue);
+
 					await this.updateMtime(uri, latestContent);
+
 					WebExtensionContext.telemetry.sendInfoTelemetry(
 						webExtensionTelemetryEventNames.WEB_EXTENSION_DIFF_VIEW_TRIGGERED,
 					);
@@ -131,6 +152,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 			WebExtensionContext.telemetry.sendInfoTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_FETCH_DIRECTORY_TRIGGERED,
 			);
+
 			await this._loadFromDataverseToVFS();
 
 			return result;
@@ -143,6 +165,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 				result.push([name, child.type]);
 			}
 		}
+
 		return result;
 	}
 
@@ -155,6 +178,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		if ((!data && isValidFilePath(uri.fsPath)) || isLazyLoadedWebFile) {
 			await this._loadFileFromDataverseToVFS(uri);
+
 			data = await this._lookup(uri, true);
 		}
 
@@ -174,6 +198,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 						fileData?.attributePath,
 						Buffer.from(fileContent).toString(),
 					);
+
 					updateFileDirtyChanges(uri.fsPath, false);
 				}
 			}
@@ -210,7 +235,9 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		if (!entry) {
 			entry = new File(basename);
+
 			parent.entries.set(basename, entry);
+
 			this._fireSoon({ type: vscode.FileChangeType.Created, uri });
 		}
 
@@ -243,13 +270,16 @@ export class PortalsFS implements vscode.FileSystemProvider {
 					WebExtensionContext.telemetry.sendInfoTelemetry(
 						webExtensionTelemetryEventNames.WEB_EXTENSION_SAVE_FILE_TRIGGERED,
 					);
+
 					await this._saveFileToDataverseFromVFS(uri);
 				},
 			);
 		}
 
 		entry.mtime = Date.now();
+
 		entry.size = content.byteLength;
+
 		entry.data = content;
 
 		this._fireSoon({ type: vscode.FileChangeType.Changed, uri });
@@ -268,9 +298,13 @@ export class PortalsFS implements vscode.FileSystemProvider {
 			const parent = await this._lookupAsDirectory(dirname, false);
 
 			const entry = new Directory(basename);
+
 			parent.entries.set(entry.name, entry);
+
 			parent.mtime = Date.now();
+
 			parent.size += 1;
+
 			this._fireSoon(
 				{ type: vscode.FileChangeType.Changed, uri: dirname },
 				{ type: vscode.FileChangeType.Created, uri },
@@ -312,8 +346,11 @@ export class PortalsFS implements vscode.FileSystemProvider {
 		}
 
 		entry.mtime = entry.mtime + 1;
+
 		entry.data = new TextEncoder().encode(latestContent);
+
 		entry.size = entry.size + 1;
+
 		this._fireSoon({ type: vscode.FileChangeType.Changed, uri });
 	}
 
@@ -359,6 +396,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 			if (type === vscode.FileType.Directory) {
 				const dirFiles = await this.iterateDirectory(entryUri);
+
 				files.push(...dirFiles);
 			} else if (type === vscode.FileType.File) {
 				files.push(entryUri);
@@ -456,8 +494,11 @@ export class PortalsFS implements vscode.FileSystemProvider {
 						pattern,
 						index,
 					);
+
 					match.ranges.push(range);
+
 					match.matches.push(range);
+
 					matches.push(match);
 				}
 			} else {
@@ -481,10 +522,13 @@ export class PortalsFS implements vscode.FileSystemProvider {
 								i,
 								index + m.length,
 							);
+
 							match.ranges.push(range);
+
 							match.matches.push(
 								new vscode.Range(i, index, i, index + m.length),
 							);
+
 							matches.push(match);
 						});
 					}
@@ -511,6 +555,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		// Record end time for search
 		const endTime = Date.now();
+
 		WebExtensionContext.telemetry.sendInfoTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_SEARCH_TEXT,
 			{
@@ -524,10 +569,12 @@ export class PortalsFS implements vscode.FileSystemProvider {
 	// --- lookup
 
 	private async _lookup(uri: vscode.Uri, silent: false): Promise<Entry>;
+
 	private async _lookup(
 		uri: vscode.Uri,
 		silent: boolean,
 	): Promise<Entry | undefined>;
+
 	private async _lookup(
 		uri: vscode.Uri,
 		silent: boolean,
@@ -557,6 +604,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 			entry = child;
 		}
+
 		return entry;
 	}
 
@@ -595,7 +643,9 @@ export class PortalsFS implements vscode.FileSystemProvider {
 	// --- manage file events
 
 	private _emitter = new vscode.EventEmitter<vscode.FileChangeEvent[]>();
+
 	private _bufferedEvents: vscode.FileChangeEvent[] = [];
+
 	private _fireSoonHandle?: NodeJS.Timeout;
 
 	readonly onDidChangeFile: vscode.Event<vscode.FileChangeEvent[]> =
@@ -617,6 +667,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		this._fireSoonHandle = setTimeout(() => {
 			this._emitter.fire(this._bufferedEvents);
+
 			this._bufferedEvents.length = 0;
 		}, 5);
 	}
@@ -635,12 +686,14 @@ export class PortalsFS implements vscode.FileSystemProvider {
 		WebExtensionContext.telemetry.sendInfoTelemetry(
 			webExtensionTelemetryEventNames.WEB_EXTENSION_CREATE_ROOT_FOLDER,
 		);
+
 		await this.createDirectory(
 			vscode.Uri.parse(
 				`${PORTALS_URI_SCHEME}:/${portalFolderName}/`,
 				true,
 			),
 		);
+
 		vscode.workspace.updateWorkspaceFolders(
 			vscode.workspace.workspaceFolders
 				? vscode.workspace.workspaceFolders.length
@@ -672,6 +725,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 				);
 
 				const filePathInPortalFS = `${PORTALS_URI_SCHEME}:/${portalFolderName}/${subUri}/`;
+
 				await this.createDirectory(
 					vscode.Uri.parse(filePathInPortalFS, true),
 				);
@@ -686,6 +740,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 	// --- Dataverse calls
 	private async _loadFromDataverseToVFS() {
 		await WebExtensionContext.authenticateAndUpdateDataverseProperties();
+
 		await this.createFileSystem(
 			WebExtensionContext.urlParametersMap.get(
 				queryParameters.WEBSITE_NAME,
@@ -753,6 +808,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		if (entityId && entityName && fileName) {
 			await WebExtensionContext.dataverseAuthentication();
+
 			await this.createFileSystem(
 				WebExtensionContext.urlParametersMap.get(
 					queryParameters.WEBSITE_NAME,
@@ -777,6 +833,7 @@ export class PortalsFS implements vscode.FileSystemProvider {
 
 		// Update fileDataMap with the latest changes
 		updateFileDirtyChanges(uri.fsPath, false);
+
 		updateDiffViewTriggered(uri.fsPath, false);
 
 		// Update the etag of the file after saving

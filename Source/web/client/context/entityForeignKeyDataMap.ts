@@ -16,7 +16,9 @@ export class EntityForeignKeyDataMap {
 	public setEntityForeignKey(rootWebPageId: string, entityId: string) {
 		const existingEntity =
 			this.entityForeignKeyMap.get(rootWebPageId) ?? new Set<string>();
+
 		existingEntity.add(entityId);
+
 		this.entityForeignKeyMap.set(rootWebPageId, existingEntity);
 	}
 }

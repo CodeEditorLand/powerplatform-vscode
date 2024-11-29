@@ -15,6 +15,7 @@ module.exports = class DataverseTokenProvider implements ITokenProvider {
 		fetchAccessToken: () => Promise<string>,
 	) {
 		this.cachedAccessToken = accessToken;
+
 		this.fetchAccessToken = fetchAccessToken;
 	}
 
@@ -26,6 +27,7 @@ module.exports = class DataverseTokenProvider implements ITokenProvider {
 		if (refresh) {
 			this.cachedAccessToken = await this.fetchAccessToken();
 		}
+
 		return {
 			jwt: this.cachedAccessToken,
 		};
@@ -39,6 +41,7 @@ module.exports = class DataverseTokenProvider implements ITokenProvider {
 		if (refresh) {
 			this.cachedAccessToken = await this.fetchAccessToken();
 		}
+
 		return {
 			jwt: this.cachedAccessToken,
 		};

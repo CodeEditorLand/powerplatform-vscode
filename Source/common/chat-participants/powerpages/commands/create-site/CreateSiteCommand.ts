@@ -55,6 +55,7 @@ export class CreateSiteCommand implements Command {
 			};
 		} catch (error) {
 			stream.markdown(FAILED_TO_CREATE_SITE);
+
 			telemetry.sendTelemetryEvent(
 				VSCODE_EXTENSION_CREATE_SITE_COMMAND_FAILED,
 				{
@@ -65,6 +66,7 @@ export class CreateSiteCommand implements Command {
 					error: error as string,
 				},
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceError(

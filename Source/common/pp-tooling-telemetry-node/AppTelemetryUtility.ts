@@ -27,6 +27,7 @@ export function composeAutomationAgentString(
 			`productName '${productName}' is invalid; only the following characters are allowed: letters, numbers, and the symbols '.', '+', '_', '-'.`,
 		);
 	}
+
 	if (!isSupportedAgentProductVersion(productVersion)) {
 		throw new Error(
 			`productVersion '${productVersion}' is invalid; it should be a valid System.Version or SemVer (v2).`,
@@ -68,11 +69,14 @@ export function isSupportedAgentProductVersion(
 export function tryParseAutomationAgentStringProductNameVersion(agent: string):
 	| {
 			success: true;
+
 			firstProductName: string;
+
 			firstProductVersion: string;
 	  }
 	| {
 			success: false;
+
 			invalidReason: string;
 	  } {
 	if (!agent) throw new Error("agent must be specified.");
@@ -163,6 +167,7 @@ export function parseBooleanEnvironmentVariable(
 		if (value === "1" || value.toUpperCase() === "TRUE") {
 			return true;
 		}
+
 		if (value === "0" || value.toUpperCase() === "FALSE") {
 			return false;
 		}

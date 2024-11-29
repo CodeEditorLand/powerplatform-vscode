@@ -135,6 +135,7 @@ export async function sendApiRequest(params: IApiRequestParams) {
 						) {
 							const responseMessage =
 								additionalData.properties.response;
+
 							responseMessage.push(
 								additionalData.suggestions.subCategory ?? "",
 							);
@@ -146,6 +147,7 @@ export async function sendApiRequest(params: IApiRequestParams) {
 					const errorMessage = jsonResponse.error.messages[0]; //Error from AIB with status code 200
 					return [{ displayText: errorMessage, code: "" }];
 				}
+
 				throw new Error("Invalid response format");
 			} catch (error) {
 				sendTelemetryEvent(telemetry, {
@@ -169,6 +171,7 @@ export async function sendApiRequest(params: IApiRequestParams) {
 					errorResponse.error && errorResponse.error.messages[0];
 
 				const responseError = new Error(errorMessage);
+
 				sendTelemetryEvent(telemetry, {
 					eventName: CopilotResponseFailureEventWithMessage,
 					copilotSessionId: sessionID,

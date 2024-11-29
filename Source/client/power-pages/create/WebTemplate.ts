@@ -35,6 +35,7 @@ export const createWebTemplate = (
 		if (!selectedWorkspaceFolder) {
 			return;
 		}
+
 		vscode.window
 			.showInputBox({
 				placeHolder: vscode.l10n.t(
@@ -92,6 +93,7 @@ function validateTemplateName(
 	if (!name) {
 		return vscode.l10n.t("Please enter a name for the web template.");
 	}
+
 	const file = formatFileName(name);
 
 	const folder = formatFolderName(name);

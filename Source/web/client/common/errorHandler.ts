@@ -19,6 +19,7 @@ export function removeEncodingFromParameters(
 	const schemaFileName = decodeURI(
 		queryParamsMap.get(schemaKey.SCHEMA_VERSION) as string,
 	);
+
 	queryParamsMap.set(schemaKey.SCHEMA_VERSION, schemaFileName);
 
 	const websiteName = decodeURI(
@@ -28,6 +29,7 @@ export function removeEncodingFromParameters(
 	const portalFolderName = websiteName
 		? websiteName
 		: PORTALS_FOLDER_NAME_DEFAULT;
+
 	queryParamsMap.set(queryParameters.WEBSITE_NAME, portalFolderName);
 }
 
@@ -89,6 +91,7 @@ export function checkMandatoryQueryParameters(
 					checkMandatoryQueryParameters.name,
 					`orgURL:${orgURL ? orgURL : ``}, dataSource:${dataSource}, schemaName:${schemaName} ,websiteId:${websiteId}`,
 				);
+
 				showErrorDialog(
 					vscode.l10n.t("There was a problem opening the workspace"),
 					vscode.l10n.t(
@@ -99,6 +102,7 @@ export function checkMandatoryQueryParameters(
 				return false;
 			}
 		}
+
 		default:
 			showErrorDialog(
 				vscode.l10n.t("There was a problem opening the workspace"),
@@ -140,6 +144,7 @@ export function checkMandatoryMultifileParameters(
 					checkMandatoryMultifileParameters.name,
 					`enableMultifile:${enableMultifile}, websiteId:${websiteId}`,
 				);
+
 				showErrorDialog(
 					vscode.l10n.t("There was a problem opening the workspace"),
 					vscode.l10n.t(
@@ -150,6 +155,7 @@ export function checkMandatoryMultifileParameters(
 				return false;
 			}
 		}
+
 		default:
 			showErrorDialog(
 				vscode.l10n.t("There was a problem opening the workspace"),

@@ -5,31 +5,40 @@
 
 export interface IUserData {
 	containerId: string;
+
 	userName: string;
+
 	userId: string;
 }
 
 export interface IConnectionData {
 	connectionId: string;
+
 	entityId: string;
 }
 
 export class UserData implements IUserData {
 	_containerId: string;
+
 	_userName: string;
+
 	_userId: string;
+
 	_connectionData: IConnectionData[];
 
 	// Getters
 	public get containerId(): string {
 		return this._containerId;
 	}
+
 	public get userName(): string {
 		return this._userName;
 	}
+
 	public get userId(): string {
 		return this._userId;
 	}
+
 	public get connectionData(): IConnectionData[] {
 		return this._connectionData;
 	}
@@ -46,8 +55,11 @@ export class UserData implements IUserData {
 		connectionData: IConnectionData[],
 	) {
 		this._containerId = containerId;
+
 		this._userName = userName;
+
 		this._userId = userId;
+
 		this._connectionData = connectionData;
 	}
 }
@@ -87,6 +99,7 @@ export class UserDataMap {
 		});
 
 		const userData = this.usersMap.get(userId) as UserData;
+
 		userData.setConnectionData(newConnectionData);
 
 		// If the user has no more connection data, remove the user from the map

@@ -41,8 +41,11 @@ const QUOTES_REGEX = /['"]/g;
 
 export interface ILiquidAutoCompleteRule {
 	name: string;
+
 	isValid: (liquidToken: TagToken | OutputToken) => boolean;
+
 	priority: number;
+
 	apply: (
 		liquidToken: TagToken | OutputToken,
 		ctx: ILiquidRuleEngineContext,
@@ -105,6 +108,7 @@ const portalObjectBaseRule = (
 			...getSuggestionsForEntity(entityName, ctx, identifier.content),
 		);
 	}
+
 	return suggestions;
 };
 
@@ -191,6 +195,7 @@ const rootObjectRule: ILiquidAutoCompleteRule = {
 				}),
 			);
 		}
+
 		return suggestions;
 	},
 };
@@ -230,6 +235,7 @@ const rootObjectAttributesRule: ILiquidAutoCompleteRule = {
 				),
 			);
 		}
+
 		return suggestions;
 	},
 };
@@ -246,6 +252,7 @@ const entityFormTagRule: ILiquidAutoCompleteRule = {
 		const tokenizer = new Tokenizer((liquidToken as TagToken).args);
 
 		const hashes = tokenizer.readHashes();
+
 		hashes.forEach((hash) => {
 			const hashName = hash.name.getText();
 
@@ -262,6 +269,7 @@ const entityFormTagRule: ILiquidAutoCompleteRule = {
 
 				return;
 			}
+
 			const hashValue = hash.value?.getText();
 
 			if (
@@ -297,6 +305,7 @@ const entityListTagRule: ILiquidAutoCompleteRule = {
 		const tokenizer = new Tokenizer((liquidToken as TagToken).args);
 
 		const hashes = tokenizer.readHashes();
+
 		hashes.forEach((hash) => {
 			const hashName = hash.name.getText();
 
@@ -313,6 +322,7 @@ const entityListTagRule: ILiquidAutoCompleteRule = {
 
 				return;
 			}
+
 			const hashValue = hash.value?.getText();
 
 			if (
@@ -348,6 +358,7 @@ const webFormTagRule: ILiquidAutoCompleteRule = {
 		const tokenizer = new Tokenizer((liquidToken as TagToken).args);
 
 		const hashes = tokenizer.readHashes();
+
 		hashes.forEach((hash) => {
 			const hashName = hash.name.getText();
 
@@ -364,6 +375,7 @@ const webFormTagRule: ILiquidAutoCompleteRule = {
 
 				return;
 			}
+
 			const hashValue = hash.value?.getText();
 
 			if (
@@ -413,7 +425,9 @@ const includeTagRule: ILiquidAutoCompleteRule = {
 
 			return suggestions;
 		}
+
 		const hashes = tokenizer.readHashes();
+
 		hashes.forEach((hash) => {
 			const hashName = hash.name.getText().toLowerCase();
 
@@ -478,6 +492,7 @@ const editableTagRule: ILiquidAutoCompleteRule = {
 				} as CompletionItem;
 			});
 		}
+
 		const value = tokenizer.readValue();
 
 		const editableAttribute = value?.getText() || "";
@@ -507,7 +522,9 @@ const editableTagRule: ILiquidAutoCompleteRule = {
 				} as CompletionItem;
 			});
 		}
+
 		const hashes = tokenizer.readHashes();
+
 		hashes.forEach((hash) => {
 			const hashName = hash.name.getText();
 
@@ -541,12 +558,15 @@ const allFiltersRule: ILiquidAutoCompleteRule = {
 
 		if (liquidToken.kind === TokenKind.Output) {
 			const tk = new Tokenizer(liquidToken.content);
+
 			tk.readExpression();
+
 			filters = tk.readFilters();
 		} else {
 			const tk = new Tokenizer(
 				liquidToken.content.substring(liquidToken.content.indexOf("|")),
 			);
+
 			filters = tk.readFilters();
 		}
 

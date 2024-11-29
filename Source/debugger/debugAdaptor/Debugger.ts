@@ -40,9 +40,13 @@ const DEFAULT_DEBUGGING_DISPOSE_TIMEOUT = 4000;
  */
 export class Debugger implements Disposable, DebugAdapter {
 	private readonly debugConfig: IPcfLaunchConfig;
+
 	private edgeDebugSession?: DebugSession;
+
 	private startDebuggingDisposable?: Disposable;
+
 	private debugSessionTerminatedDisposable?: Disposable;
+
 	public isDisposed = false;
 
 	/**
@@ -84,9 +88,11 @@ export class Debugger implements Disposable, DebugAdapter {
 		private readonly debuggingDisposeTimeout: number = DEFAULT_DEBUGGING_DISPOSE_TIMEOUT,
 	) {
 		this.debugConfig = parentSession.configuration as IPcfLaunchConfig;
+
 		this.browserManager.registerOnBrowserClose(async () => {
 			this.stopDebugging();
 		});
+
 		this.browserManager.registerOnBrowserReady(async () => {
 			this.attachEdgeDebugger();
 		});
@@ -195,6 +201,7 @@ export class Debugger implements Disposable, DebugAdapter {
 				"Exception starting debug session",
 				false,
 			);
+
 			success = false;
 		}
 
@@ -228,6 +235,7 @@ export class Debugger implements Disposable, DebugAdapter {
 
 		if (retryCount > 0) {
 			await sleep(this.debuggingRetryDelay);
+
 			await this.attachEdgeDebugger(retryCount - 1);
 		} else {
 			void ErrorReporter.report(
@@ -256,6 +264,7 @@ export class Debugger implements Disposable, DebugAdapter {
 		}
 
 		this.edgeDebugSession = edgeDebugSession;
+
 		this.debugSessionTerminatedDisposable =
 			debug.onDidTerminateDebugSession(
 				(session) => void this.onDebugSessionStopped(session),
@@ -279,6 +288,7 @@ export class Debugger implements Disposable, DebugAdapter {
 			// remove the onDebugStopped callback to prevent closing the browser
 			// when the debug session is stopped
 			await debug.stopDebugging(this.edgeDebugSession);
+
 			await debug.stopDebugging(this.parentSession);
 		}
 
@@ -297,6 +307,7 @@ export class Debugger implements Disposable, DebugAdapter {
 		if (this.isRunning) {
 			return;
 		}
+
 		void this.logger.sendTelemetryEvent(
 			"debugger.onDebugSessionStopped.stopped",
 			{
@@ -317,11 +328,13 @@ export class Debugger implements Disposable, DebugAdapter {
 
 		if (this.startDebuggingDisposable) {
 			this.startDebuggingDisposable.dispose();
+
 			this.startDebuggingDisposable = undefined;
 		}
 
 		if (this.debugSessionTerminatedDisposable) {
 			this.debugSessionTerminatedDisposable.dispose();
+
 			this.debugSessionTerminatedDisposable = undefined;
 		}
 
@@ -330,6 +343,7 @@ export class Debugger implements Disposable, DebugAdapter {
 		}
 
 		this.edgeDebugSession = undefined;
+
 		this.isDisposed = true;
 	}
 }

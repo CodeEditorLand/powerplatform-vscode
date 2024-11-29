@@ -29,6 +29,7 @@ import WebExtensionContext from "../WebExtensionContext";
 
 interface ISaveCallParameters {
 	requestInit: RequestInit;
+
 	requestUrl: string;
 }
 
@@ -157,6 +158,7 @@ async function getRequestBody(
 		if (mimeType) {
 			data[MIMETYPE] = mimeType;
 		}
+
 		return JSON.stringify(data);
 	}
 
@@ -186,6 +188,7 @@ async function saveDataToDataverse(
 				saveDataToDataverse.name,
 				fileExtensionType,
 			);
+
 			WebExtensionContext.telemetry.sendInfoTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_DATAVERSE_SAVE_FILE_TRIGGERED,
 			);

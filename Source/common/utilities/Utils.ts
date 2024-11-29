@@ -51,8 +51,11 @@ export function getSelectedCode(editor: vscode.TextEditor): string {
 	if (!editor) {
 		return "";
 	}
+
 	const selection = editor.selection;
+
 	const text = editor.document.getText(selection);
+
 	return text.trim(); //handles empty selection
 }
 
@@ -63,6 +66,7 @@ export function getSelectedCode(editor: vscode.TextEditor): string {
  */
 export function getSelectedCodeLineRange(editor: vscode.TextEditor): {
 	start: number;
+
 	end: number;
 } {
 	if (!editor) {
@@ -72,6 +76,7 @@ export function getSelectedCodeLineRange(editor: vscode.TextEditor): {
 	const selection = editor.selection;
 
 	const startLine = selection.start.line;
+
 	const endLine = selection.end.line;
 
 	return { start: startLine, end: endLine };
@@ -82,29 +87,36 @@ export async function getOrgID(): Promise<string> {
 	const orgID = await vscode.window.showInputBox({
 		placeHolder: vscode.l10n.t("Enter Organization ID"),
 	});
+
 	if (!orgID) {
 		throw new Error("Organization ID is required");
 	}
+
 	return Promise.resolve(orgID);
 }
 
 export function getNonce() {
 	let text = "";
+
 	const possible =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
 	for (let i = 0; i < 32; i++) {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
+
 	return text;
 }
 
 export function getUserName(user: string) {
 	const parts = user.split(" - ");
+
 	return parts[0];
 }
 
 export function getLastThreePartsOfFileName(string: string): string[] {
 	const parts: string[] = string.split(".");
+
 	if (parts.length >= 3) {
 		return parts.slice(-3);
 	} else {
@@ -159,6 +171,7 @@ export async function showProgressWithNotification<T>(
 
 export function getExtensionVersion(): string {
 	const extension = vscode.extensions.getExtension(EXTENSION_ID);
+
 	return extension ? extension.packageJSON.version : "";
 }
 
@@ -176,6 +189,7 @@ export function openWalkthrough(extensionUri: vscode.Uri) {
 		"walkthrough",
 		"Copilot-In-PowerPages.md",
 	);
+
 	vscode.commands.executeCommand("markdown.showPreview", walkthroughUri);
 }
 
@@ -183,6 +197,7 @@ export function isCustomTelemetryEnabled(): boolean {
 	const isCustomTelemetryEnabled = vscode.workspace
 		.getConfiguration(SETTINGS_EXPERIMENTAL_STORE_NAME)
 		.get(CUSTOM_TELEMETRY_FOR_POWER_PAGES_SETTING_NAME);
+
 	return isCustomTelemetryEnabled as boolean;
 }
 
@@ -227,7 +242,9 @@ export function getActiveEditorContent(): IActiveFileData {
 
 	if (selectedCode.length > 0) {
 		activeFileContent = selectedCode;
+
 		startLine = selectedCodeLineRange.start;
+
 		endLine = selectedCodeLineRange.end;
 	}
 	/**
@@ -269,6 +286,7 @@ export function checkCopilotAvailability(
 			copilotSessionId: sessionID,
 			orgId: orgID,
 		});
+
 		return false;
 	} else if (
 		getDisabledOrgList()?.includes(orgID) ||
@@ -280,6 +298,7 @@ export function checkCopilotAvailability(
 			copilotSessionId: sessionID,
 			orgId: orgID,
 		});
+
 		return false;
 	} else {
 		return true;
@@ -288,14 +307,19 @@ export function checkCopilotAvailability(
 
 export function getVisibleCode(editor: vscode.TextEditor): {
 	code: string;
+
 	startLine: number;
+
 	endLine: number;
 } {
 	const visibleRanges = editor.visibleRanges;
+
 	const visibleCode = visibleRanges
 		.map((range) => editor.document.getText(range))
 		.join("\n");
+
 	const firstVisibleRange = visibleRanges[0];
+
 	return {
 		code: visibleCode,
 		startLine: firstVisibleRange.start.line,
@@ -309,6 +333,7 @@ async function getFileContent(
 ): Promise<{ customFileContent: string; customFileName: string }> {
 	try {
 		const activeFileFolderPath = getFolderPathFromUri(activeFileUri);
+
 		const activeFileName = getFileNameFromUri(activeFileUri);
 
 		const activeFileNameParts = activeFileName.split(".");
@@ -325,6 +350,7 @@ async function getFileContent(
 
 		// Read the content of the custom file
 		const diskRead = await import("fs");
+
 		const customFileContent = diskRead.readFileSync(customFilePath, "utf8");
 
 		return { customFileContent, customFileName };
@@ -341,14 +367,17 @@ async function getFileContentByType(
 ): Promise<{ customFileContent: string; customFileName: string }> {
 	try {
 		const extension = componentTypeSchema[componentType]?.[fileType];
+
 		if (!extension) {
 			throw new Error(
 				`File type ${fileType} not found for component type ${componentType}`,
 			);
 		}
+
 		return await getFileContent(activeFileUri, extension);
 	} catch (error) {
 		const message = (error as Error)?.message;
+
 		throw new Error(message);
 	}
 }
@@ -363,6 +392,7 @@ export async function fetchRelatedFiles(
 ): Promise<IRelatedFiles[]> {
 	try {
 		const relatedFileTypes = relatedFilesSchema[componentType]?.[fieldType];
+
 		if (!relatedFileTypes) {
 			return [];
 		}
@@ -374,6 +404,7 @@ export async function fetchRelatedFiles(
 					componentType,
 					fileType,
 				);
+
 				return {
 					fileType,
 					fileContent: fileContentResult.customFileContent,
@@ -385,10 +416,12 @@ export async function fetchRelatedFiles(
 		return files;
 	} catch (error) {
 		const message = (error as Error)?.message;
+
 		telemetry.sendTelemetryErrorEvent(
 			VSCODE_EXTENSION_COPILOT_CONTEXT_RELATED_FILES_FETCH_FAILED,
 			{ error: message, sessionId: sessionId },
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceError(
@@ -398,6 +431,7 @@ export async function fetchRelatedFiles(
 				{ sessionId: sessionId },
 				{},
 			);
+
 		return [];
 	}
 }
@@ -441,9 +475,12 @@ export async function getEnvList(
 	endpointStamp: ServiceEndpointCategory,
 ): Promise<{ envId: string; envDisplayName: string }[]> {
 	const envInfo: { envId: string; envDisplayName: string }[] = [];
+
 	try {
 		const bapAuthToken = await bapServiceAuthentication(telemetry, true);
+
 		const bapEndpoint = getBAPEndpoint(endpointStamp, telemetry);
+
 		const envListEndpoint = `${bapEndpoint}${BAP_ENVIRONMENT_LIST_URL.replace("{apiVersion}", BAP_API_VERSION)}`;
 
 		const envListResponse = await fetch(envListEndpoint, {
@@ -462,9 +499,11 @@ export async function getEnvList(
 					envDisplayName: env.properties.displayName,
 				});
 			});
+
 			sendTelemetryEvent(telemetry, {
 				eventName: VSCODE_EXTENSION_GET_ENV_LIST_SUCCESS,
 			});
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo(VSCODE_EXTENSION_GET_ENV_LIST_SUCCESS);
@@ -473,6 +512,7 @@ export async function getEnvList(
 				eventName: VSCODE_EXTENSION_GET_ENV_LIST_FAILED,
 				errorMsg: envListResponse.statusText,
 			});
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceError(
@@ -486,6 +526,7 @@ export async function getEnvList(
 			eventName: VSCODE_EXTENSION_GET_ENV_LIST_FAILED,
 			errorMsg: (error as Error).message,
 		});
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceError(
@@ -494,6 +535,7 @@ export async function getEnvList(
 				error as Error,
 			);
 	}
+
 	return envInfo;
 }
 
@@ -506,12 +548,17 @@ export function getBAPEndpoint(
 	switch (serviceEndpointStamp) {
 		case ServiceEndpointCategory.TEST:
 			bapEndpoint = "https://test.api.bap.microsoft.com";
+
 			break;
+
 		case ServiceEndpointCategory.PREPROD:
 			bapEndpoint = "https://preprod.api.bap.microsoft.com";
+
 			break;
+
 		case ServiceEndpointCategory.PROD:
 			bapEndpoint = "https://api.bap.microsoft.com";
+
 			break;
 		// All below endpoints are not supported yet
 		case ServiceEndpointCategory.DOD:
@@ -523,12 +570,14 @@ export function getBAPEndpoint(
 				eventName: VSCODE_EXTENSION_GET_BAP_ENDPOINT_UNSUPPORTED_REGION,
 				data: serviceEndpointStamp,
 			});
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo(
 					VSCODE_EXTENSION_GET_BAP_ENDPOINT_UNSUPPORTED_REGION,
 					{ data: serviceEndpointStamp },
 				);
+
 			break;
 	}
 

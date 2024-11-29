@@ -25,21 +25,29 @@ import {
 
 export interface IPacWrapperContext {
 	readonly globalStorageLocalPath: string;
+
 	readonly telemetry: ITelemetry;
+
 	readonly automationAgent: string;
+
 	IsTelemetryEnabled(): boolean;
+
 	GetCloudSetting(): string;
 }
 
 export interface IPacInterop {
 	executeCommand(args: PacArguments): Promise<string>;
+
 	exit(): void;
 }
 
 export class PacInterop implements IPacInterop {
 	private _proc: ChildProcessWithoutNullStreams | undefined;
+
 	private outputQueue = new BlockingQueue<string>();
+
 	private tempWorkingDirectory: string;
+
 	private pacExecutablePath: string;
 
 	public constructor(
@@ -49,7 +57,9 @@ export class PacInterop implements IPacInterop {
 		// Set the Working Directory to a random temp folder, as we do not want
 		// accidental writes by PAC being placed where they may interfere with things
 		this.tempWorkingDirectory = path.join(os.tmpdir(), v4());
+
 		fs.ensureDirSync(this.tempWorkingDirectory);
+
 		this.pacExecutablePath = path.join(
 			cliPath,
 			PacInterop.getPacExecutableName(),
@@ -79,6 +89,7 @@ export class PacInterop implements IPacInterop {
 			this.context.telemetry.sendTelemetryEvent(
 				"InternalPacProcessStarting",
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo("InternalPacProcessStarting");
@@ -107,15 +118,18 @@ export class PacInterop implements IPacInterop {
 			const lineReader = readline.createInterface({
 				input: this._proc.stdout,
 			});
+
 			lineReader.on("line", (line: string) => {
 				this.outputQueue.enqueue(line);
 			});
 
 			// Grab the first output, which will be the PAC Version info
 			await this.outputQueue.dequeue();
+
 			this.context.telemetry.sendTelemetryEvent(
 				"InternalPacProcessStarted",
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo("InternalPacProcessStarted");

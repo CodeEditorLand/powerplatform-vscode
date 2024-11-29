@@ -48,6 +48,7 @@ export async function CESUserFeedback(
 	const nonce = getNonce();
 
 	const webview = feedbackPanel.webview;
+
 	feedbackPanel.webview.html = getWebviewContent(
 		feedbackCssUri,
 		feedbackJsUri,
@@ -99,6 +100,7 @@ export async function CESUserFeedback(
 							"Dislike something? Tell us more.",
 						),
 					};
+
 					feedbackPanel?.webview.postMessage({
 						type: "copilotStrings",
 						value: copilotStrings,
@@ -106,6 +108,7 @@ export async function CESUserFeedback(
 
 					break;
 				}
+
 				case "feedback":
 					await handleFeedbackSubmission(
 						message.text,
@@ -116,6 +119,7 @@ export async function CESUserFeedback(
 						thumbType,
 						sessionId,
 					);
+
 					feedbackPanel?.dispose();
 
 					break;
@@ -234,6 +238,7 @@ async function handleFeedbackSubmission(
 			const responseJson = await response.json();
 
 			const feedbackId = responseJson.FeedbackId;
+
 			sendTelemetryEvent(telemetry, {
 				eventName: CopilotUserFeedbackSuccessEvent,
 				feedbackType: thumbType,
@@ -243,6 +248,7 @@ async function handleFeedbackSubmission(
 		} else {
 			// Error sending feedback
 			const feedBackError = new Error(response.statusText);
+
 			sendTelemetryEvent(telemetry, {
 				eventName: CopilotUserFeedbackFailureEvent,
 				feedbackType: thumbType,

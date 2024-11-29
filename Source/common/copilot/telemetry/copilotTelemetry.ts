@@ -23,53 +23,68 @@ export function sendTelemetryEvent(
 	telemetryDataProperties.copilotSessionId = telemetryData.copilotSessionId
 		? telemetryData.copilotSessionId
 		: "";
+
 	telemetryDataProperties.orgId = telemetryData.orgId
 		? telemetryData.orgId
 		: "";
+
 	telemetryDataProperties.FeedbackId = telemetryData.FeedbackId
 		? telemetryData.FeedbackId
 		: "";
+
 	telemetryDataProperties.aibEndpoint = telemetryData.aibEndpoint
 		? telemetryData.aibEndpoint
 		: "";
+
 	telemetryDataProperties.codeLineCount = telemetryData.codeLineCount
 		? telemetryData.codeLineCount
 		: "";
+
 	telemetryDataProperties.geoName = telemetryData.geoName
 		? telemetryData.geoName
 		: "";
+
 	telemetryDataProperties.feedbackType = telemetryData.feedbackType
 		? telemetryData.feedbackType
 		: "";
+
 	telemetryDataProperties.FeedbackId = telemetryData.FeedbackId
 		? telemetryData.FeedbackId
 		: "";
+
 	telemetryDataProperties.dataverseEntity = telemetryData.dataverseEntity
 		? telemetryData.dataverseEntity
 		: "";
+
 	telemetryDataProperties.responseStatus = telemetryData.responseStatus
 		? telemetryData.responseStatus
 		: "";
+
 	telemetryDataProperties.tokenSize = telemetryData.tokenSize
 		? telemetryData.tokenSize
 		: "";
+
 	telemetryDataProperties.isSuggestedPrompt = telemetryData.isSuggestedPrompt
 		? telemetryData.isSuggestedPrompt
 		: "";
+
 	telemetryDataProperties.subScenario = telemetryData.subScenario
 		? telemetryData.subScenario
 		: "";
+
 	telemetryDataProperties.userId = telemetryData.userId
 		? telemetryData.userId
 		: "";
 
 	if (telemetryData.error) {
 		telemetryDataProperties.eventName = telemetryData.eventName;
+
 		telemetry.sendTelemetryException(
 			telemetryData.error,
 			telemetryDataProperties,
 			telemetryDataMeasurements,
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceError(
@@ -85,6 +100,7 @@ export function sendTelemetryEvent(
 			telemetryDataProperties,
 			telemetryDataMeasurements,
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceInfo(

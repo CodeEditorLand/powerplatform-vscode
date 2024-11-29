@@ -66,6 +66,7 @@ export function getPageTemplate(context: Context): IPageTemplates {
 
 	// Create a map of page template names to their corresponding values
 	const pageTemplateMap = new Map<string, string>();
+
 	pageTemplates.forEach((template) => {
 		pageTemplateMap.set(template.name, template.value);
 	});
@@ -98,16 +99,20 @@ export function getParentPagePaths(portalContext: Context): IParentPagePaths {
 		if (!page.adx_name || !webpageid) {
 			continue;
 		}
+
 		let path = page.adx_name;
+
 		webpageNames.push(path);
 
 		// If the page is a home page, add it to the paths array
 		if (!page.adx_parentpageid && page.adx_partialurl === "/") {
 			paths.push(path);
+
 			pathsMap.set(path, webpageid);
 
 			continue;
 		}
+
 		let prevPage = null;
 
 		if (pages.has(page.adx_parentpageid)) {
@@ -119,17 +124,22 @@ export function getParentPagePaths(portalContext: Context): IParentPagePaths {
 				if (prevPage === page) {
 					break;
 				}
+
 				prevPage = page;
+
 				page = pages.get(page.adx_parentpageid);
+
 				path = `${page.adx_name}/${path}`;
 			}
 			// to check for duplicates
 			if (paths.indexOf(path) === -1) {
 				paths.push(path);
+
 				pathsMap.set(path, webpageid);
 			}
 		}
 	}
+
 	paths.sort();
 
 	return { paths, pathsMap, webpageNames };
@@ -145,6 +155,7 @@ export async function getWebTemplates(
 	const webTemplateNames = webTemplates.map((template) => template.name);
 
 	const webTemplateMap = new Map<string, string>();
+
 	webTemplates.forEach((template) => {
 		webTemplateMap.set(template.name, template.value);
 	});
@@ -186,6 +197,7 @@ export async function createRecord(
 	telemetry: ITelemetry,
 ) {
 	const startTime = performance.now();
+
 	await vscode.window.withProgress(
 		{
 			location: vscode.ProgressLocation.Notification,
@@ -204,6 +216,7 @@ export async function createRecord(
 
 					try {
 						await vscode.window.showTextDocument(uri);
+
 						vscode.window.showInformationMessage(
 							vscode.l10n.t({
 								message: "{0} created!",
@@ -213,11 +226,13 @@ export async function createRecord(
 								],
 							}),
 						);
+
 						resolve();
 					} catch (error) {
 						reject(error);
 					}
 				});
+
 				exec(execCommand, { cwd: portalDirectory }, (error) => {
 					if (error) {
 						vscode.window.showErrorMessage(
@@ -229,6 +244,7 @@ export async function createRecord(
 								],
 							}),
 						);
+
 						sendTelemetryEvent(telemetry, {
 							methodName: createRecord.name,
 							eventName: FileCreateEvent,
@@ -236,6 +252,7 @@ export async function createRecord(
 							durationInMills: performance.now() - startTime,
 							exception: error as Error,
 						});
+
 						reject(error);
 					} else {
 						sendTelemetryEvent(telemetry, {
@@ -244,6 +261,7 @@ export async function createRecord(
 							fileEntityType: entityType,
 							durationInMills: performance.now() - startTime,
 						});
+
 						progress.report({ increment: 100 });
 					}
 				});
@@ -271,6 +289,7 @@ export async function getSelectedWorkspaceFolder(
 	switch (true) {
 		case Boolean(uri):
 			filePath = uri.fsPath;
+
 			selectedWorkspaceFolder = isWebsiteYML(filePath);
 
 			break;
@@ -334,8 +353,10 @@ export function isWebsiteYML(directory: string): string {
 		if (existsSync(websiteYMLPath)) {
 			return directory;
 		}
+
 		directory = path.dirname(directory);
 	}
+
 	vscode.window.showErrorMessage(NOT_A_PORTAL_DIRECTORY);
 
 	throw new Error("");
@@ -343,7 +364,9 @@ export function isWebsiteYML(directory: string): string {
 
 export function logErrorAndNotifyUser(errorMessage: string) {
 	const outputChannel = vscode.window.createOutputChannel("Powerplatfrom");
+
 	outputChannel.appendLine(`Error: ${errorMessage}`);
+
 	vscode.window
 		.showErrorMessage(ERROR_MESSAGE, SHOW_OUTPUT_PANEL)
 		.then((selection) => {

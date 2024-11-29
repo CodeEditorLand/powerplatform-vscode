@@ -13,11 +13,13 @@ export class AppInsightsResourceProvider {
 		...additionalResources: AppInsightsResource[]
 	) {
 		this._allResources = new Map<string, AppInsightsResource>();
+
 		additionalResources.forEach((r) => {
 			if (!r.dataBoundary)
 				throw new Error(
 					"One or more of the additionalResources are missing a value for the dataBoundary.",
 				);
+
 			this._allResources.set(r.dataBoundary, r);
 		});
 
@@ -42,6 +44,7 @@ export class AppInsightsResourceProvider {
 				return match;
 			}
 		}
+
 		return this.defaultResource;
 	}
 }

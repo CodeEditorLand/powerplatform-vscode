@@ -12,6 +12,7 @@ export class BrowserArgsBuilder {
 	private defaultArgs: string[];
 
 	public static readonly debuggingPortArg = "--remote-debugging-port";
+
 	public static readonly userDataDirArg = "--user-data-dir";
 
 	/**
@@ -39,6 +40,7 @@ export class BrowserArgsBuilder {
 			ConfigurationManager.getBrowserArgs();
 
 		let defaultArgs = this.defaultArgs;
+
 		userDefinedBrowserArgs = this.removeRemoteDebuggingPort(
 			userDefinedBrowserArgs,
 		);
@@ -47,6 +49,7 @@ export class BrowserArgsBuilder {
 			defaultArgs.unshift(
 				`${BrowserArgsBuilder.userDataDirArg}=${this.userDataDir}`,
 			);
+
 			userDefinedBrowserArgs = this.removeUserDataDir(
 				userDefinedBrowserArgs,
 			);

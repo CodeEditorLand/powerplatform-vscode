@@ -20,13 +20,21 @@ import { ITelemetry } from "../../common/OneDSLoggerTelemetry/telemetry/ITelemet
 // allow for DI without direct reference to vscode's d.ts file: that definintions file is being generated at VS Code runtime
 export interface ICliAcquisitionContext {
 	readonly extensionPath: string;
+
 	readonly globalStorageLocalPath: string;
+
 	readonly telemetry: ITelemetry;
+
 	showInformationMessage(message: string, ...items: string[]): void;
+
 	showErrorMessage(message: string, ...items: string[]): void;
+
 	showCliPreparingMessage(version: string): void;
+
 	showCliReadyMessage(): void;
+
 	showCliInstallFailedError(err: string): void;
+
 	locDotnetNotInstalledOrInsufficient(): string;
 }
 
@@ -36,9 +44,13 @@ export interface IDisposable {
 
 export class CliAcquisition implements IDisposable {
 	private readonly _context: ICliAcquisitionContext;
+
 	private readonly _cliPath: string;
+
 	private readonly _cliVersion: string;
+
 	private readonly _nupkgsFolder: string;
+
 	private readonly _installedTrackerFile: string;
 
 	public get cliVersion(): string {
@@ -53,14 +65,17 @@ export class CliAcquisition implements IDisposable {
 
 	public constructor(context: ICliAcquisitionContext, cliVersion?: string) {
 		this._context = context;
+
 		this._nupkgsFolder = path.join(
 			this._context.extensionPath,
 			"dist",
 			"pac",
 		);
+
 		this._cliVersion = cliVersion || this.getLatestNupkgVersion();
 		// https://code.visualstudio.com/api/extension-capabilities/common-capabilities#data-storage
 		this._cliPath = path.resolve(context.globalStorageLocalPath, "pac");
+
 		this._installedTrackerFile = path.resolve(
 			context.globalStorageLocalPath,
 			"installTracker.json",
@@ -96,7 +111,9 @@ export class CliAcquisition implements IDisposable {
 
 		// nupkg has not been installed yet:
 		this._context.showCliPreparingMessage(this.cliVersion);
+
 		await this.killProcessesInUse(this._cliPath);
+
 		fs.emptyDirSync(this._cliPath);
 
 		if (useDotnetTool) {
@@ -106,7 +123,9 @@ export class CliAcquisition implements IDisposable {
 				if (!commandExists.sync("dotnet")) {
 					const error =
 						this._context.locDotnetNotInstalledOrInsufficient();
+
 					this._context.showCliInstallFailedError(error);
+
 					reject(error);
 
 					return;
@@ -133,6 +152,7 @@ export class CliAcquisition implements IDisposable {
 						"PacInstallError",
 						{ "stdout": install.stdout, "stderr": install.stderr },
 					);
+
 					oneDSLoggerWrapper.getLogger().traceError(
 						"PacInstallError",
 						"PacInstallError",
@@ -156,19 +176,24 @@ export class CliAcquisition implements IDisposable {
 						: install.stderr;
 
 					this._context.showCliInstallFailedError(errorMessage);
+
 					reject(errorMessage);
 				} else {
 					this._context.telemetry.sendTelemetryEvent(
 						"PacCliInstalled",
 						{ cliVersion: this.cliVersion },
 					);
+
 					oneDSLoggerWrapper
 						.getLogger()
 						.traceInfo("PacCliInstalled", {
 							cliVersion: this.cliVersion,
 						});
+
 					this._context.showCliReadyMessage();
+
 					this.setInstalledVersion(this._cliVersion);
+
 					resolve(pacExeDirectory);
 				}
 			});
@@ -187,21 +212,26 @@ export class CliAcquisition implements IDisposable {
 							"PacCliInstalled",
 							{ cliVersion: this.cliVersion },
 						);
+
 						oneDSLoggerWrapper
 							.getLogger()
 							.traceInfo("PacCliInstalled", {
 								cliVersion: this.cliVersion,
 							});
+
 						this._context.showCliReadyMessage();
 
 						if (os.platform() !== "win32") {
 							fs.chmodSync(this.cliExePath, 0o755);
 						}
+
 						this.setInstalledVersion(this._cliVersion);
+
 						resolve(pacExeDirectory);
 					})
 					.on("error", (err: unknown) => {
 						this._context.showCliInstallFailedError(String(err));
+
 						reject(err);
 					});
 			});
@@ -214,11 +244,13 @@ export class CliAcquisition implements IDisposable {
 		if (!installedVersion) {
 			return false;
 		}
+
 		return installedVersion === this._cliVersion;
 	}
 
 	async killProcessesInUse(pacInstallPath: string): Promise<void> {
 		const list = await this.findPacProcesses(pacInstallPath);
+
 		list.forEach((info) => process.kill(info.pid));
 	}
 
@@ -292,6 +324,7 @@ export class CliAcquisition implements IDisposable {
 				`Corrupt .vsix? Did not find any *.nupkg files under: ${this._nupkgsFolder}`,
 			);
 		}
+
 		return versions[0];
 	}
 
@@ -319,6 +352,7 @@ export class CliAcquisition implements IDisposable {
 		const trackerInfo = {
 			pac: version,
 		};
+
 		fs.writeFileSync(
 			this._installedTrackerFile,
 			JSON.stringify(trackerInfo),
@@ -330,6 +364,7 @@ export class CliAcquisition implements IDisposable {
 		if (!fs.existsSync(this._installedTrackerFile)) {
 			return undefined;
 		}
+
 		try {
 			const trackerInfo = JSON.parse(
 				fs.readFileSync(this._installedTrackerFile, "utf-8"),

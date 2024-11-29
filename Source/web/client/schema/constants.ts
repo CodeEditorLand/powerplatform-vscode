@@ -40,6 +40,7 @@ export enum schemaMetaDataKey {
 
 export interface SchemaEntityMetadata {
 	logicalEntityName?: string;
+
 	logicalFormName?: string;
 }
 

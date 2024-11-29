@@ -41,6 +41,7 @@ export class FileDataMap {
 			isContentLoaded,
 			entityMetadata,
 		);
+
 		this.fileMap.set(vscode.Uri.parse(fileUri).fsPath, fileData);
 	}
 
@@ -52,6 +53,7 @@ export class FileDataMap {
 
 			return;
 		}
+
 		throw Error("File does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 
@@ -66,6 +68,7 @@ export class FileDataMap {
 
 			return;
 		}
+
 		throw Error("File does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 
@@ -77,6 +80,7 @@ export class FileDataMap {
 
 			return;
 		}
+
 		throw Error("File does not exist in the map"); // TODO - Revisit errors and dialog experience here
 	}
 }

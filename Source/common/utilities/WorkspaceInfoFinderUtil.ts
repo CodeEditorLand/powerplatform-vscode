@@ -49,5 +49,6 @@ export function getPortalsOrgURLs(
 			exception: exception as Error,
 		});
 	}
+
 	return output;
 }

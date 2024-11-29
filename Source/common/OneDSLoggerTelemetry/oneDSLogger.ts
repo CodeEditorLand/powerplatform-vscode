@@ -29,15 +29,19 @@ import { webExtensionTelemetryEventNames } from "./web/client/webExtensionTeleme
 
 interface IInstrumentationSettings {
 	endpointURL: string;
+
 	instrumentationKey: string;
 }
 
 export class OneDSLogger implements ITelemetryLogger {
 	private readonly appInsightsCore: AppInsightsCore;
+
 	private readonly postChannel: PostChannel;
 
 	private static userInfo: IUserInfo = { oid: "", tid: "", puid: "" };
+
 	private static contextInfo: IContextInfo;
+
 	private static userRegion: string = "";
 
 	private readonly regexPatternsToRedact = [
@@ -59,9 +63,11 @@ export class OneDSLogger implements ITelemetryLogger {
 				headers: payload.headers,
 				credentials: "include",
 			};
+
 			fetch(payload.urlString, requestInit)
 				.then((response) => {
 					const headerMap: Record<string, string> = {};
+
 					response.headers.forEach((value: string, name: string) => {
 						headerMap[name] = value;
 					});
@@ -79,6 +85,7 @@ export class OneDSLogger implements ITelemetryLogger {
 									"Error inside telemetry request body:",
 									error,
 								);
+
 								oncomplete(response.status, headerMap, "");
 							});
 					} else {
@@ -95,6 +102,7 @@ export class OneDSLogger implements ITelemetryLogger {
 
 	public constructor(geo?: string, geoLongName?: string) {
 		this.appInsightsCore = new AppInsightsCore();
+
 		this.postChannel = new PostChannel();
 
 		const channelConfig: IChannelConfiguration = {
@@ -124,6 +132,7 @@ export class OneDSLogger implements ITelemetryLogger {
 		if ((coreConfig.instrumentationKey ?? "") !== "") {
 			this.appInsightsCore.initialize(coreConfig, []);
 		}
+
 		this.intitializeContextInfo();
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		this.appInsightsCore.addTelemetryInitializer(
@@ -181,6 +190,7 @@ export class OneDSLogger implements ITelemetryLogger {
 
 				break;
 		}
+
 		switch (buildRegion) {
 			case "tie":
 			case "test":
@@ -260,6 +270,7 @@ export class OneDSLogger implements ITelemetryLogger {
 
 						break;
 				}
+
 				break;
 
 			case "ex":
@@ -267,6 +278,7 @@ export class OneDSLogger implements ITelemetryLogger {
 			default:
 				break;
 		}
+
 		return instrumentationSettings;
 	}
 
@@ -331,6 +343,7 @@ export class OneDSLogger implements ITelemetryLogger {
 				measurement: JSON.stringify(measurement!),
 			},
 		};
+
 		this.appInsightsCore.track(event);
 	}
 
@@ -352,6 +365,7 @@ export class OneDSLogger implements ITelemetryLogger {
 				}),
 			},
 		};
+
 		this.appInsightsCore.track(event);
 	}
 
@@ -363,28 +377,48 @@ export class OneDSLogger implements ITelemetryLogger {
 				envelope.data = envelope.data || {}; // create data nested object if doesn't exist already'
 
 				envelope.data.clientSessionId = vscode.env.sessionId;
+
 				envelope.data.vscodeSurface = getExtensionType();
+
 				envelope.data.vscodeExtensionName = EXTENSION_ID;
+
 				envelope.data.vscodeExtensionVersion = getExtensionVersion();
+
 				envelope.data.vscodeVersion = vscode.version;
+
 				envelope.data.domain = vscode.env.appHost;
+
 				envelope.data.measurements = envelope.data.measurement;
 				// Adding below attributes so they get populated in Geneva.
 				// TODO: It needs implementation for populating the actual value
 				envelope.data.eventSubType = "";
+
 				envelope.data.scenarioId = "";
+
 				envelope.data.eventModifier = "";
+
 				envelope.data.country = "";
+
 				envelope.data.userLocale = "";
+
 				envelope.data.userDataBoundary = "";
+
 				envelope.data.appLocale = "";
+
 				envelope.data.userLocale = "";
+
 				envelope.data.webBrowser = "";
+
 				envelope.data.browserVersion = "";
+
 				envelope.data.browserLanguage = "";
+
 				envelope.data.screenResolution = "";
+
 				envelope.data.osName = "";
+
 				envelope.data.osVersion = "";
+
 				envelope.data.timestamp = new Date();
 
 				if (getExtensionType() == "Web") {
@@ -392,11 +426,17 @@ export class OneDSLogger implements ITelemetryLogger {
 				} else {
 					this.populateVscodeDesktopAttributes(envelope);
 				}
+
 				envelope.data.tenantId = OneDSLogger.userInfo?.tid;
+
 				envelope.data.principalObjectId = OneDSLogger.userInfo?.oid;
+
 				envelope.data.puid = OneDSLogger.userInfo?.puid;
+
 				envelope.data.context = JSON.stringify(OneDSLogger.contextInfo);
+
 				envelope.data.userRegion = OneDSLogger.userRegion;
+
 				envelope.data.orgGeo = OneDSLogger.contextInfo.orgGeo;
 				// At the end of event enrichment, redact the sensitive data for all the applicable fields
 				//  envelope = this.redactSensitiveDataFromEvent(envelope);
@@ -409,6 +449,7 @@ export class OneDSLogger implements ITelemetryLogger {
 					"Caught exception processing the telemetry event: " +
 						envelope.name,
 				);
+
 				console.warn(exception.message);
 
 				this.traceExceptionInEventProcessing();
@@ -425,23 +466,36 @@ export class OneDSLogger implements ITelemetryLogger {
 			webExtensionTelemetryEventNames.WEB_EXTENSION_INIT_QUERY_PARAMETERS
 		) {
 			const eventInfo = JSON.parse(envelope.data.eventInfo);
+
 			OneDSLogger.userInfo.tid = eventInfo.tenantId ?? "";
+
 			OneDSLogger.userRegion = eventInfo.geo
 				? (geoMappingsToAzureRegion[eventInfo.geo.toLowerCase()]
 						.geoName ?? eventInfo.geo)
 				: "";
+
 			OneDSLogger.contextInfo.orgId = eventInfo.orgId ?? "";
+
 			OneDSLogger.contextInfo.portalId = eventInfo.portalId ?? "";
+
 			OneDSLogger.contextInfo.websiteId = eventInfo.websiteId ?? "";
+
 			OneDSLogger.contextInfo.dataSource = eventInfo.dataSource ?? "";
+
 			OneDSLogger.contextInfo.schema = eventInfo.schema ?? "";
+
 			OneDSLogger.contextInfo.correlationId =
 				eventInfo.referrerSessionId ?? "";
+
 			OneDSLogger.contextInfo.referrer = eventInfo.referrer ?? "";
+
 			OneDSLogger.contextInfo.envId = eventInfo.envId ?? "";
+
 			OneDSLogger.contextInfo.referrerSource =
 				eventInfo.referrerSource ?? "";
+
 			OneDSLogger.contextInfo.orgGeo = eventInfo.orgGeo ?? "";
+
 			OneDSLogger.contextInfo.sku = eventInfo.sku ?? "";
 		}
 
@@ -453,6 +507,7 @@ export class OneDSLogger implements ITelemetryLogger {
 				envelope.data.eventInfo,
 			).userId;
 		}
+
 		if (
 			envelope.data.eventName ==
 			webExtensionTelemetryEventNames.WEB_EXTENSION_ORG_GEO
@@ -472,12 +527,15 @@ export class OneDSLogger implements ITelemetryLogger {
 			OneDSLogger.contextInfo.orgId = JSON.parse(
 				envelope.data.eventInfo,
 			).OrgId;
+
 			OneDSLogger.contextInfo.envId = JSON.parse(
 				envelope.data.eventInfo,
 			).EnvironmentId;
+
 			OneDSLogger.contextInfo.orgGeo = JSON.parse(
 				envelope.data.eventInfo,
 			).orgGeo;
+
 			OneDSLogger.userInfo.oid = JSON.parse(
 				envelope.data.eventInfo,
 			).AadId;
@@ -513,8 +571,10 @@ export class OneDSLogger implements ITelemetryLogger {
 				"Caught exception while processing telemetry data for redaction (if any): " +
 					value,
 			);
+
 			console.warn(exception.message);
 		}
+
 		return value;
 	}
 
@@ -538,6 +598,7 @@ export class OneDSLogger implements ITelemetryLogger {
 				}
 			});
 		}
+
 		return value;
 	}
 

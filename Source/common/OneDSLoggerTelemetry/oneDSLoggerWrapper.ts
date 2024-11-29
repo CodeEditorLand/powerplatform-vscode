@@ -12,6 +12,7 @@ import { OneDSLogger } from "./oneDSLogger";
 
 export class oneDSLoggerWrapper {
 	private static instance: oneDSLoggerWrapper;
+
 	private static oneDSLoggerIntance: OneDSLogger;
 
 	private constructor(geo?: string, geoLongName?: string) {
@@ -37,6 +38,7 @@ export class oneDSLoggerWrapper {
 	) {
 		try {
 			if (!isCustomTelemetryEnabled()) return;
+
 			oneDSLoggerWrapper.oneDSLoggerIntance.traceInfo(
 				eventName,
 				eventInfo,
@@ -55,6 +57,7 @@ export class oneDSLoggerWrapper {
 	) {
 		try {
 			if (!isCustomTelemetryEnabled()) return;
+
 			oneDSLoggerWrapper.oneDSLoggerIntance.traceWarning(
 				eventName,
 				eventInfo,
@@ -75,6 +78,7 @@ export class oneDSLoggerWrapper {
 	) {
 		try {
 			if (!isCustomTelemetryEnabled()) return;
+
 			oneDSLoggerWrapper.oneDSLoggerIntance.traceError(
 				eventName,
 				errorMessage,
@@ -86,6 +90,7 @@ export class oneDSLoggerWrapper {
 			console.warn(
 				"Caught exception processing the telemetry event: " + exception,
 			);
+
 			console.warn(exception);
 		}
 	}
@@ -98,6 +103,7 @@ export class oneDSLoggerWrapper {
 	) {
 		try {
 			if (!isCustomTelemetryEnabled()) return;
+
 			oneDSLoggerWrapper.oneDSLoggerIntance.featureUsage(
 				featureName,
 				eventName,

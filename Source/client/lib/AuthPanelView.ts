@@ -14,10 +14,13 @@ export class AuthTreeView
 	implements vscode.TreeDataProvider<AuthProfileTreeItem>, vscode.Disposable
 {
 	private readonly _disposables: vscode.Disposable[] = [];
+
 	private _refreshTimeout?: NodeJS.Timeout;
+
 	private _onDidChangeTreeData: vscode.EventEmitter<
 		AuthProfileTreeItem | undefined | void
 	> = new vscode.EventEmitter<AuthProfileTreeItem | undefined | void>();
+
 	public readonly onDidChangeTreeData: vscode.Event<
 		AuthProfileTreeItem | undefined | void
 	> = this._onDidChangeTreeData.event;
@@ -30,6 +33,7 @@ export class AuthTreeView
 
 		if (watchPath) {
 			const watcher = vscode.workspace.createFileSystemWatcher(watchPath);
+
 			this._disposables.push(
 				watcher,
 				watcher.onDidChange(() => this.delayRefresh()),
@@ -59,8 +63,10 @@ export class AuthTreeView
 	refresh(): void {
 		if (this._refreshTimeout) {
 			clearTimeout(this._refreshTimeout);
+
 			this._refreshTimeout = undefined;
 		}
+
 		this._onDidChangeTreeData.fire();
 	}
 
@@ -118,6 +124,7 @@ export class AuthTreeView
 
 					if (confirmResult && confirmResult === confirm) {
 						await pacWrapper.authClear();
+
 						this.delayRefresh();
 					}
 				},
@@ -126,6 +133,7 @@ export class AuthTreeView
 				"pacCLI.authPanel.newAuthProfile",
 				async () => {
 					await pacWrapper.authCreateNewAuthProfile();
+
 					this.delayRefresh();
 				},
 			),
@@ -133,6 +141,7 @@ export class AuthTreeView
 				"pacCLI.authPanel.selectAuthProfile",
 				async (item: AuthProfileTreeItem) => {
 					await pacWrapper.authSelectByIndex(item.model.Index);
+
 					this.delayRefresh();
 				},
 			),
@@ -160,6 +169,7 @@ export class AuthTreeView
 
 					if (confirmResult && confirmResult === confirm) {
 						await pacWrapper.authDeleteByIndex(item.model.Index);
+
 						this.delayRefresh();
 					}
 				},
@@ -185,6 +195,7 @@ export class AuthTreeView
 							item.model.Index,
 							authProfileName,
 						);
+
 						this.delayRefresh();
 					}
 				},
@@ -217,13 +228,16 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 			AuthProfileTreeItem.createLabel(model),
 			vscode.TreeItemCollapsibleState.None,
 		);
+
 		this.contextValue = model.Kind;
+
 		this.tooltip = AuthProfileTreeItem.createTooltip(model);
 
 		if (model.IsActive) {
 			this.iconPath = new vscode.ThemeIcon("star-full");
 		}
 	}
+
 	private static createLabel(profile: AuthProfileListing): string {
 		if (profile.Name) {
 			return `${profile.Kind}: ${profile.Name}`;
@@ -233,6 +247,7 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 			return `${profile.Kind}: ${profile.ActiveOrganization?.Item2 ?? profile.UserDisplayName}`;
 		}
 	}
+
 	private static createTooltip(profile: AuthProfileListing): string {
 		const tooltip = [
 			vscode.l10n.t({
@@ -255,6 +270,7 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 				}),
 			);
 		}
+
 		if (
 			(profile.Kind === "DATAVERSE" || profile.Kind === "UNIVERSAL") &&
 			profile.ActiveOrganization
@@ -269,6 +285,7 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 				}),
 			);
 		}
+
 		tooltip.push(
 			vscode.l10n.t({
 				message: "User: {0}",
@@ -290,6 +307,7 @@ class AuthProfileTreeItem extends vscode.TreeItem {
 				}),
 			);
 		}
+
 		return tooltip.join("\n");
 	}
 }

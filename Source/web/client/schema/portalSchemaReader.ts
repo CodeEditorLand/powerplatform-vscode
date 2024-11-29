@@ -23,8 +23,10 @@ export function getEntitiesSchemaMap(
 				entitiesDetailsMap.set(key, value as string);
 			}
 		}
+
 		entitiesMap.set(entity._vscodeentityname, entitiesDetailsMap);
 	}
+
 	return entitiesMap;
 }
 
@@ -39,6 +41,7 @@ export function getDataSourcePropertiesMap(
 	for (const [key, value] of Object.entries(dataSourceProperties)) {
 		dataSourcePropertiesMap.set(key, value);
 	}
+
 	return dataSourcePropertiesMap;
 }
 

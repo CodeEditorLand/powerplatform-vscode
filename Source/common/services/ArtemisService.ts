@@ -45,8 +45,10 @@ export class ArtemisService {
 				crossGeoDataMovementEnabledPPACFlag: false,
 			};
 		}
+
 		const { geoName, environment, clusterNumber } =
 			artemisResponse.response as unknown as IArtemisAPIOrgResponse;
+
 		sendTelemetryEvent(telemetry, {
 			eventName: CopilotArtemisSuccessEvent,
 			copilotSessionId: sessionID,
@@ -131,6 +133,7 @@ export class ArtemisService {
 					if (!response.ok) {
 						throw new Error("Request failed");
 					}
+
 					return {
 						stamp: endpointDetail.stamp,
 						response:

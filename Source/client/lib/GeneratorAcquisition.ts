@@ -29,10 +29,15 @@ export interface IDisposable {
 // This class is responsible for ensuring that the yeoman-generator and the yo command is available for the extension to perform CRUD operations on PowerPages records.
 export class GeneratorAcquisition implements IDisposable {
 	private readonly _context: ICliAcquisitionContext;
+
 	private readonly _ppagesGlobalPath: string;
+
 	private readonly _installedPackageJson: string;
+
 	private readonly _generatorVersion: string;
+
 	private readonly _yoVersion: string = "4.3.1";
+
 	private readonly _tgzFolder: string;
 
 	public get generatorVersion(): string {
@@ -40,6 +45,7 @@ export class GeneratorAcquisition implements IDisposable {
 			`${PORTAL_YEOMAN_GENERATOR_PACKAGE_TARBALL_NAME}*.tgz`,
 			{ cwd: this._tgzFolder },
 		);
+
 		if (tgzPackage.length > 0) {
 			return `file:${path.join(this._tgzFolder, tgzPackage[0])}`;
 		} else {
@@ -72,19 +78,23 @@ export class GeneratorAcquisition implements IDisposable {
 
 	public constructor(context: ICliAcquisitionContext) {
 		this._context = context;
+
 		this._ppagesGlobalPath = path.resolve(
 			context.globalStorageLocalPath,
 			"powerpages",
 		);
+
 		this._installedPackageJson = path.resolve(
 			this._ppagesGlobalPath,
 			"package.json",
 		);
+
 		this._tgzFolder = path.join(
 			this._context.extensionPath,
 			"dist",
 			"powerpages",
 		);
+
 		this._generatorVersion = __GENERATOR_PACKAGE_VERSION__ || "1.0.0";
 	}
 
@@ -119,6 +129,7 @@ export class GeneratorAcquisition implements IDisposable {
 
 				return null;
 			}
+
 			this._context.showInformationMessage(
 				vscode.l10n.t({
 					message: "Installing Power Pages generator(v{0})...",
@@ -152,6 +163,7 @@ export class GeneratorAcquisition implements IDisposable {
 					{},
 					[String(child.error)],
 				);
+
 				oneDSLoggerWrapper.getLogger().traceError(
 					"PowerPagesGeneratorInstallComplete",
 					String(child.error),
@@ -177,11 +189,13 @@ export class GeneratorAcquisition implements IDisposable {
 					"PowerPagesGeneratorInstallComplete",
 					{ cliVersion: this._generatorVersion },
 				);
+
 				oneDSLoggerWrapper
 					.getLogger()
 					.traceInfo("PowerPagesGeneratorInstallComplete", {
 						cliVersion: this._generatorVersion,
 					});
+
 				this._context.showInformationMessage(
 					vscode.l10n.t(
 						"The Power Pages generator is ready for use in your VS Code extension!",
@@ -189,6 +203,7 @@ export class GeneratorAcquisition implements IDisposable {
 				);
 			}
 		}
+
 		return this.yoCommandPath;
 	}
 
@@ -196,6 +211,7 @@ export class GeneratorAcquisition implements IDisposable {
 		if (!fs.existsSync(this._installedPackageJson)) {
 			return undefined;
 		}
+
 		try {
 			const packageJson = JSON.parse(
 				fs.readFileSync(this._installedPackageJson, "utf-8"),

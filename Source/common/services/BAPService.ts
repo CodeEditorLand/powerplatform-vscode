@@ -44,12 +44,14 @@ export class BAPService {
 
 			if (response.ok) {
 				const data = await response.json();
+
 				sendTelemetryEvent(telemetry, {
 					eventName:
 						VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_COMPLETED,
 					data: data.properties.copilotPolicies
 						?.crossGeoCopilotDataMovementEnabled,
 				});
+
 				return data.properties.copilotPolicies
 					?.crossGeoCopilotDataMovementEnabled;
 			}

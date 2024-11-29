@@ -14,18 +14,23 @@ export class PacWrapperContext implements IPacWrapperContext {
 		private readonly _context: vscode.ExtensionContext,
 		private readonly _telemetry: ITelemetry,
 	) {}
+
 	public get globalStorageLocalPath(): string {
 		return this._context.globalStorageUri.fsPath;
 	}
+
 	public get telemetry(): ITelemetry {
 		return this._telemetry;
 	}
+
 	public get automationAgent(): string {
 		return buildAgentString(this._context);
 	}
+
 	public IsTelemetryEnabled(): boolean {
 		return vscode.env.isTelemetryEnabled;
 	}
+
 	public GetCloudSetting(): string {
 		const config = vscode.workspace.getConfiguration("powerPlatform");
 

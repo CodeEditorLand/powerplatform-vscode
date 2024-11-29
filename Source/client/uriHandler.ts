@@ -56,6 +56,7 @@ class UriHandler implements vscode.UriHandler {
 			});
 
 			terminal.show();
+
 			terminal.sendText("pac pcf init");
 
 			// Open new workspace folder, if destination was not in existing workspace

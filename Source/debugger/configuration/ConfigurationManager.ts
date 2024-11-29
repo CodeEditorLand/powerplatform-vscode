@@ -55,6 +55,7 @@ export class ConfigurationManager {
 			selectedLaunchConfig,
 			userConfig,
 		);
+
 		LaunchJsonConfigManager.validateLaunchJson(mergedConfig);
 
 		return mergedConfig;

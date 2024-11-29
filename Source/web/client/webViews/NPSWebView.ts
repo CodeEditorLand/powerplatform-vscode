@@ -19,6 +19,7 @@ export class NPSWebView {
 		webViewPanel: vscode.WebviewPanel,
 	) {
 		this._webviewPanel = webViewPanel;
+
 		this._webviewPanel.webview.html = this._getHtml();
 	}
 
@@ -56,6 +57,7 @@ export class NPSWebView {
 
 			const formsProEligibilityId =
 				WebExtensionContext.formsProEligibilityId;
+
 			WebExtensionContext.telemetry.sendInfoTelemetry(
 				webExtensionTelemetryEventNames.WEB_EXTENSION_RENDER_NPS,
 			);
@@ -117,5 +119,6 @@ function getNonce() {
 	for (let i = 0; i < 64; i++) {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
+
 	return text;
 }

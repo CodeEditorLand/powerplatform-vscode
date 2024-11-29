@@ -66,6 +66,7 @@ export class WebExtensionTelemetry {
 			telemetryData.eventName,
 			telemetryData.properties,
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceInfo(telemetryData.eventName, telemetryData.properties);
@@ -109,6 +110,7 @@ export class WebExtensionTelemetry {
 			telemetryData.properties.entity = queryParamsMap.get(
 				queryParameters.ENTITY,
 			);
+
 			telemetryData.properties.entityId = queryParamsMap.get(
 				queryParameters.ENTITY_ID,
 			);
@@ -118,6 +120,7 @@ export class WebExtensionTelemetry {
 			telemetryData.eventName,
 			telemetryData.properties,
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceInfo(telemetryData.eventName, telemetryData.properties);
@@ -135,13 +138,18 @@ export class WebExtensionTelemetry {
 				methodName: methodName,
 			},
 		};
+
 		if (error) {
 			telemetryData.properties.errorMessage = errorMessage;
+
 			telemetryData.properties.errorName = error.name;
+
 			telemetryData.properties.stack = error.stack;
 		}
+
 		if (errorMessage || error) {
 			const error: Error = new Error(errorMessage);
+
 			this._telemetry?.sendTelemetryException(
 				error,
 				telemetryData.properties,
@@ -177,6 +185,7 @@ export class WebExtensionTelemetry {
 		properties?: Record<string, string>,
 	) {
 		this._telemetry?.sendTelemetryEvent(eventName, properties);
+
 		oneDSLoggerWrapper.getLogger().traceInfo(eventName, properties);
 	}
 
@@ -216,13 +225,16 @@ export class WebExtensionTelemetry {
 				durationInMillis: duration ? duration : 0,
 			},
 		};
+
 		if (errorMessage) {
 			const error: Error = new Error(errorMessage);
+
 			this._telemetry?.sendTelemetryException(
 				error,
 				{ ...telemetryData.properties, eventName: eventName },
 				telemetryData.measurements,
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceError(
@@ -238,6 +250,7 @@ export class WebExtensionTelemetry {
 				telemetryData.properties,
 				telemetryData.measurements,
 			);
+
 			oneDSLoggerWrapper
 				.getLogger()
 				.traceInfo(
@@ -308,11 +321,13 @@ export class WebExtensionTelemetry {
 				durationInMillis: duration ? duration : 0,
 			},
 		};
+
 		this._telemetry?.sendTelemetryEvent(
 			telemetryData.eventName,
 			undefined,
 			telemetryData.measurements,
 		);
+
 		oneDSLoggerWrapper
 			.getLogger()
 			.traceInfo(
