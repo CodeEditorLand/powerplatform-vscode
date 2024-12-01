@@ -13,8 +13,8 @@ generated code and use it when customizing your site.
 
 ## Prerequisites
 
-Review the [`terms`](HTTPS://go.microsoft.com/fwlink/?linkid=2189520) and
-[`Responsible AI FAQ`](HTTPS://go.microsoft.com/fwlink/?linkid=2240145) documents
+Review the [`terms`](https://go.microsoft.com/fwlink/?linkid=2189520) and
+[`Responsible AI FAQ`](https://go.microsoft.com/fwlink/?linkid=2240145) documents
 to understand usage and limitations of Copilot. Check the following requirements
 to start using Copilot in Power Pages:
 
@@ -59,7 +59,7 @@ Note
 ![`Demo File Screen`](./images/contextpowerpages.svg)
 
 To know more, see
-[`Copilot in Power Pages documentation`](HTTPS://go.microsoft.com/fwlink/?linkid=2206366).
+[`Copilot in Power Pages documentation`](https://go.microsoft.com/fwlink/?linkid=2206366).
 
 ## How to use Explain in Copilot to understand code
 
