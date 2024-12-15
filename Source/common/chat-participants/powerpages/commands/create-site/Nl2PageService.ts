@@ -98,21 +98,19 @@ export async function getNL2PageData(
 				{ error: (error as Error)?.message, pageType },
 			);
 
-			oneDSLoggerWrapper
-				.getLogger()
-				.traceError(
-					VSCODE_EXTENSION_NL2PAGE_REQUEST_FAILED,
-					error as string,
-					error as Error,
-					{
-						sessionId: sessionId,
-						orgId: orgId,
-						envId: envId,
-						userId: userId,
-						pageType: pageType,
-					},
-					{},
-				);
+			oneDSLoggerWrapper.getLogger().traceError(
+				VSCODE_EXTENSION_NL2PAGE_REQUEST_FAILED,
+				error as string,
+				error as Error,
+				{
+					sessionId: sessionId,
+					orgId: orgId,
+					envId: envId,
+					userId: userId,
+					pageType: pageType,
+				},
+				{},
+			);
 
 			return null;
 		}

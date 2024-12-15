@@ -225,7 +225,6 @@ export class PortalWebView {
 				let i = 0;
 				!!vscode.workspace.workspaceFolders &&
 				i < vscode.workspace.workspaceFolders?.length;
-
 				i++
 			) {
 				const portalConfigFolderUrl = searchPortalConfigFolder(

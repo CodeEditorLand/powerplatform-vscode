@@ -14,9 +14,7 @@ import {
 import { PacWrapper } from "../pac/PacWrapper";
 
 export class EnvAndSolutionTreeView
-	implements
-		vscode.TreeDataProvider<EnvOrSolutionTreeItem>,
-		vscode.Disposable
+	implements vscode.TreeDataProvider<EnvOrSolutionTreeItem>, vscode.Disposable
 {
 	private readonly _disposables: vscode.Disposable[] = [];
 

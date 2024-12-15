@@ -28,9 +28,7 @@ export function getPortalConfigFolderUrl(
 ): URL | null {
 	for (
 		let i = 0;
-
 		workspaceRootFolders && i < workspaceRootFolders?.length;
-
 		i++
 	) {
 		const portalConfigFolderUrl = searchPortalConfigFolder(

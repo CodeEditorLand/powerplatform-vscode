@@ -130,9 +130,7 @@ export function getLcidCodeMap(result: any, schema: string) {
 			) {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const lcid = result.value[counter].lcid
@@ -146,9 +144,7 @@ export function getLcidCodeMap(result: any, schema: string) {
 			} else {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const adx_lcid = result.value[counter].adx_lcid
@@ -179,9 +175,7 @@ export function getPortalLanguageIdToLcidMap(result: any, schema: string) {
 			) {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const powerpagesitelanguageid = result.value[counter]
@@ -199,9 +193,7 @@ export function getPortalLanguageIdToLcidMap(result: any, schema: string) {
 			} else {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const adx_portallanguageid = result.value[counter]
@@ -236,9 +228,7 @@ export function getWebsiteIdToLcidMap(result: any, schema: string) {
 			) {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const powerpagesiteid = result.value[counter]
@@ -254,9 +244,7 @@ export function getWebsiteIdToLcidMap(result: any, schema: string) {
 			} else {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const adx_websiteId = result.value[counter].adx_websiteid
@@ -289,9 +277,7 @@ export function getWebsiteLanguageIdToPortalLanguageIdMap(
 			) {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const powerpagesitelanguageid = result.value[counter]
@@ -307,9 +293,7 @@ export function getWebsiteLanguageIdToPortalLanguageIdMap(
 			} else {
 				for (
 					let counter = 0;
-
 					counter < result.value.length;
-
 					counter++
 				) {
 					const adx_portalLanguageId_value = result.value[counter]
