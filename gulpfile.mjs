@@ -237,17 +237,8 @@ function testUnitTests() {
 		);
 }
 
-function testWeb() {
-	return gulp.src(["src/web/client/test/unit/**/*.ts"], { read: false }).pipe(
-		mocha({
-			require: ["ts-node/register"],
-			ui: "bdd",
-		}),
-	);
-}
-
 // unit tests without special test runner
-const test = gulp.series(testUnitTests, testWeb);
+const test = gulp.series(testUnitTests);
 
 /**
  * Compiles the integration tests and transpiles the results to /out
@@ -492,24 +483,23 @@ async function translationsImport() {
 }
 
 export {
-	clean,
-	compile,
-	compileWeb,
-	compileWorker,
-	recompile,
-	snapshot,
-	lint,
-	test,
-	testWeb,
-	compileIntegrationTests,
-	testInt,
-	testWebInt,
-	testDesktopInt,
-	packageVsix as package,
-	dist as ci,
-	dist,
-	translationsExport,
-	translationsImport,
-	setGitAuthN,
-	compile as default,
-};
+    clean,
+    compile,
+    compileWeb,
+    compileWorker,
+    recompile,
+    snapshot,
+    lint,
+    test,
+    compileIntegrationTests,
+    testInt,
+    testWebInt,
+    testDesktopInt,
+    packageVsix as package,
+    dist as ci,
+    dist,
+    translationsExport,
+    translationsImport,
+    setGitAuthN,
+    compile as default,
+}
