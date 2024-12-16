@@ -6,63 +6,40 @@
 import { ServiceEndpointCategory, WebsiteApplicationType } from "./Constants";
 
 export interface IArtemisServiceEndpointInformation {
-	stamp: ServiceEndpointCategory;
-
-	endpoint: string;
+    stamp: ServiceEndpointCategory;
+    endpoint: string;
 }
 
 export interface IArtemisServiceResponse {
-	stamp: ServiceEndpointCategory;
-
-	response: IArtemisAPIOrgResponse;
+    stamp: ServiceEndpointCategory;
+    response: IArtemisAPIOrgResponse;
 }
 
 export interface IArtemisAPIOrgResponse {
-	geoName: string;
-
-	environment: string;
-
-	clusterNumber: string;
-
-	geoLongName: string;
-
-	clusterCategory: string;
-
-	clusterName: string;
-
-	clusterType: string;
-}
-
-export interface IArtemisServiceResponse {
-	stamp: ServiceEndpointCategory;
-
-	response: IArtemisAPIOrgResponse;
+    geoName: string,
+    environment: string,
+    clusterNumber: string,
+    geoLongName: string,
+    clusterCategory: string,
+    clusterName: string,
+    clusterType: string,
 }
 
 export interface IIntelligenceAPIEndpointInformation {
-	intelligenceEndpoint: string | null;
-
-	geoName: string | null;
-
-	crossGeoDataMovementEnabledPPACFlag: boolean;
+    intelligenceEndpoint: string | null,
+    geoName: string | null,
+    crossGeoDataMovementEnabledPPACFlag: boolean,
+    endpointStamp?: ServiceEndpointCategory,
 }
 
 export interface IWebsiteDetails {
-	websiteUrl: string;
-
-	dataverseInstanceUrl: string;
-
-	dataverseOrganizationId: string;
-
-	environmentId: string;
-
-	id: string;
-
-	siteVisibility: string;
-
-	tenantId: string;
-
-	websiteRecordId: string;
-
-	type: WebsiteApplicationType;
+    websiteUrl: string;
+    dataverseInstanceUrl: string;
+    dataverseOrganizationId: string;
+    environmentId: string;
+    id: string;
+    siteVisibility: string;
+    tenantId: string;
+    websiteRecordId: string;
+    type: WebsiteApplicationType;
 }
