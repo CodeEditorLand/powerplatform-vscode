@@ -452,7 +452,7 @@
 							"renderFullScreen": true,
 							"request": "launch",
 							"type": "powerplatform-vscode.debug",
-							"url": "https://YOUR_ORG.crm.dynamics.com",
+							"url": "HTTPS://YOUR_ORG.crm.dynamics.com",
 							"useDefaultUserDataProfile": false,
 							"webRoot": "^\"${2:\\${workspaceFolder\\}}\""
 						},
@@ -1032,12 +1032,12 @@
 	"badges": [
 		{
 			"description": "Pull Request",
-			"url": "https://github.com/microsoft/powerplatform-vscode/workflows/PullRequest/badge.svg",
+			"url": "HTTPS://github.com/microsoft/powerplatform-vscode/workflows/PullRequest/badge.svg",
 			"href": "https://github.com/microsoft/powerplatform-vscode/actions?query=workflow%3APullRequest"
 		},
 		{
 			"description": "Official Build",
-			"url": "https://dev.azure.com/dynamicscrm/OneCRM/_apis/build/status/DPX-Tools/powerplatform-vscode%20Official%20Build?branchName=release/stable",
+			"url": "HTTPS://dev.azure.com/dynamicscrm/OneCRM/_apis/build/status/DPX-Tools/powerplatform-vscode%20Official%20Build?branchName=release/stable",
 			"href": "https://dev.azure.com/dynamicscrm/OneCRM/_build/latest?definitionId=12152"
 		}
 	],
