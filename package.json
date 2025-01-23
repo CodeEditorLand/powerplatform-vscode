@@ -1011,7 +1011,7 @@
 		"@types/debug": "4.1.12",
 		"@types/fs-extra": "11.0.4",
 		"@types/glob": "8.1.0",
-		"@types/node": "22.10.9",
+		"@types/node": "22.10.10",
 		"@types/node-fetch": "2.6.12",
 		"@types/puppeteer-core": "7.0.4",
 		"@types/recursive-readdir": "2.2.4",
