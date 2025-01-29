@@ -44,9 +44,10 @@ import { EXTENSION_ID, SUCCESS } from "../common/constants";
 import { AadIdKey, EnvIdKey, TenantIdKey } from "../common/OneDSLoggerTelemetry/telemetryConstants";
 import { PowerPagesAppName, PowerPagesClientName } from "../common/ecs-features/constants";
 import { ECSFeaturesClient } from "../common/ecs-features/ecsFeatureClient";
-import { getECSOrgLocationValue } from "../common/utilities/Utils";
+import { getECSOrgLocationValue, getWorkspaceFolders } from "../common/utilities/Utils";
 import { CliAcquisitionContext } from "./lib/CliAcquisitionContext";
-import { PreviewSite, SITE_PREVIEW_COMMAND_ID } from "./runtime-site-preview/PreviewSite";
+import { PreviewSite, SITE_PREVIEW_COMMAND_ID } from "./power-pages/preview-site/PreviewSite";
+import { ActionsHubTreeDataProvider } from "./power-pages/actions-hub/ActionsHubTreeDataProvider";
 
 let client: LanguageClient;
 let _context: vscode.ExtensionContext;
@@ -190,13 +191,8 @@ export async function activate(
 
     let copilotNotificationShown = false;
 
-    const workspaceFolders =
-        vscode.workspace.workspaceFolders?.map(
-            (fl) => ({ ...fl, uri: fl.uri.fsPath } as WorkspaceFolder)
-        ) || [];
+    const workspaceFolders = getWorkspaceFolders();
 
-
-    let websiteURL: string | undefined = "";
     const isSiteRuntimePreviewEnabled = PreviewSite.isSiteRuntimePreviewEnabled();
 
     vscode.commands.executeCommand("setContext", "microsoft.powerplatform.pages.siteRuntimePreviewEnabled", isSiteRuntimePreviewEnabled);
@@ -257,7 +253,7 @@ export async function activate(
             }
 
             if (artemisResponse !== null && isSiteRuntimePreviewEnabled) {
-                websiteURL = await PreviewSite.getWebSiteURL(workspaceFolders, artemisResponse?.stamp, orgDetails.EnvironmentId, _telemetry);
+                await PreviewSite.loadSiteUrl(workspaceFolders, artemisResponse?.stamp, orgDetails.EnvironmentId, _telemetry);
             }
 
         })
@@ -282,22 +278,24 @@ export async function activate(
 
     _telemetry.sendTelemetryEvent("EnableSiteRuntimePreview", {
         isEnabled: isSiteRuntimePreviewEnabled.toString(),
-        websiteURL: websiteURL
+        websiteURL: PreviewSite.getSiteUrl() || "undefined"
     });
     oneDSLoggerWrapper.getLogger().traceInfo("EnableSiteRuntimePreview", {
         isEnabled: isSiteRuntimePreviewEnabled.toString(),
-        websiteURL: websiteURL
+        websiteURL: PreviewSite.getSiteUrl() || "undefined"
     });
 
     _context.subscriptions.push(
         vscode.commands.registerCommand(
             SITE_PREVIEW_COMMAND_ID,
-            async () => await PreviewSite.handlePreviewRequest(isSiteRuntimePreviewEnabled, websiteURL, _telemetry)
+            async () => await PreviewSite.handlePreviewRequest(isSiteRuntimePreviewEnabled, _telemetry, pacTerminal)
         )
     );
 
     const workspaceFolderWatcher = vscode.workspace.onDidChangeWorkspaceFolders(handleWorkspaceFolderChange);
     _context.subscriptions.push(workspaceFolderWatcher);
+
+    initializeActionsHub(context);
 
     if (shouldEnableDebugger()) {
         activateDebugger(context, _telemetry);
@@ -305,6 +303,17 @@ export async function activate(
 
     _telemetry.sendTelemetryEvent("activated");
     oneDSLoggerWrapper.getLogger().traceInfo("activated");
+}
+
+function initializeActionsHub(context: vscode.ExtensionContext) {
+    //TODO: Initialize this based on ECS feature flag
+    const actionsHubEnabled = false;
+
+    vscode.commands.executeCommand("setContext", "microsoft.powerplatform.pages.actionsHubEnabled", actionsHubEnabled);
+
+    if (actionsHubEnabled) {
+        ActionsHubTreeDataProvider.initialize(context, _telemetry);
+    }
 }
 
 export async function deactivate(): Promise<void> {

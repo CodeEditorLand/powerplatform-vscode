@@ -7,7 +7,6 @@
   "You are editing a live, public site ": "You are editing a live, public site ",
   "Preview site": "Preview site",
   "Open in Power Pages studio": "Open in Power Pages studio",
-  "Preview site URL is not available": "Preview site URL is not available",
   "Preview site URL is not valid": "Preview site URL is not valid",
   "Opening preview site...": "Opening preview site...",
   "Power Pages studio URL is not available": "Power Pages studio URL is not available",
@@ -33,7 +32,6 @@
   },
   "Enter the environment URL": "Enter the environment URL",
   "Active auth profile is not found or has expired. To create a new auth profile, enter the environment URL.": "Active auth profile is not found or has expired. To create a new auth profile, enter the environment URL.",
-  "Website not found in the environment. Please check the credentials and root folder path.": "Website not found in the environment. Please check the credentials and root folder path.",
   "Selection is empty.": "Selection is empty.",
   "PREVIEW": "PREVIEW",
   "Explain the following code snippet:": "Explain the following code snippet:",
@@ -65,8 +63,10 @@
   "Try @powerpages with GitHub Copilot": "Try @powerpages with GitHub Copilot",
   "Get GitHub Copilot to try @powerpages": "Get GitHub Copilot to try @powerpages",
   "Let Copilot help you code": "Let Copilot help you code",
-  "Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you. ": "Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you. ",
+  "Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you.": "Whether it’s HTML, CSS, JS, or Liquid code, just describe what you need and let AI build it for you.",
   "Continue with Copilot for Power Pages": "Continue with Copilot for Power Pages",
+  "Arrow icon": "Arrow icon",
+  "Copilot illustration": "Copilot illustration",
   "Do not show again": "Do not show again",
   "Like something? Tell us more.": "Like something? Tell us more.",
   "Dislike something? Tell us more.": "Dislike something? Tell us more.",
@@ -93,13 +93,6 @@
       "Do not translate 'PCF' as it is a product name."
     ]
   },
-  "The extension Microsoft Edge Tools is required to run this command. Do you want to install it now?": "The extension Microsoft Edge Tools is required to run this command. Do you want to install it now?",
-  "Install": "Install",
-  "Cancel": "Cancel",
-  "Site runtime preview feature is not enabled.": "Site runtime preview feature is not enabled.",
-  "No workspace folder opened. Please open a site folder to preview.": "No workspace folder opened. Please open a site folder to preview.",
-  "Website URL not found.": "Website URL not found.",
-  "Opening site preview...": "Opening site preview...",
   "File might be referenced by name {0} here./{0} represents the name of the file": {
     "message": "File might be referenced by name {0} here.",
     "comment": [
@@ -107,6 +100,29 @@
     ]
   },
   "Some references might be broken. Please check diagnostics for details.": "Some references might be broken. Please check diagnostics for details.",
+  "Cancel": "Cancel",
+  "Install": "Install",
+  "The extension 'Microsoft Edge Tools' is required to run this command. Do you want to install it now?/Do not translate 'Microsoft Edge Tools' ": {
+    "message": "The extension 'Microsoft Edge Tools' is required to run this command. Do you want to install it now?",
+    "comment": [
+      "Do not translate 'Microsoft Edge Tools' "
+    ]
+  },
+  "Opening site preview...": "Opening site preview...",
+  "The preview shown is for published changes.": "The preview shown is for published changes.",
+  "Site runtime preview feature is not enabled.": "Site runtime preview feature is not enabled.",
+  "No workspace folder opened. Please open a site folder to preview.": "No workspace folder opened. Please open a site folder to preview.",
+  "Initializing site preview. Please try again after few seconds.": "Initializing site preview. Please try again after few seconds.",
+  "Website not found in the environment. Please check the credentials and login with correct account.": "Website not found in the environment. Please check the credentials and login with correct account.",
+  "Initializing site preview": "Initializing site preview",
+  "Getting organization details...": "Getting organization details...",
+  "Getting region information...": "Getting region information...",
+  "Failed to get website endpoint. Please try again later": "Failed to get website endpoint. Please try again later",
+  "Getting website endpoint...": "Getting website endpoint...",
+  "Failed to get organization details. Please try again later": "Failed to get organization details. Please try again later",
+  "Clearing cache...": "Clearing cache...",
+  "Authenticating...": "Authenticating...",
+  "Unable to clear cache": "Unable to clear cache",
   "Enter the name of the web template": "Enter the name of the web template",
   "Please enter a name for the web template.": "Please enter a name for the web template.",
   "A webtemplate with the same name already exists. Please enter a different name.": "A webtemplate with the same name already exists. Please enter a different name.",
@@ -161,6 +177,10 @@
       "{0} will be replaced by the error message."
     ]
   },
+  "Other Sites": "Other Sites",
+  "Active Sites": "Active Sites",
+  "Inactive Sites": "Inactive Sites",
+  "No sites found": "No sites found",
   "PAC Telemetry enabled": "PAC Telemetry enabled",
   "Failed to enable PAC telemetry.": "Failed to enable PAC telemetry.",
   "PAC Telemetry disabled": "PAC Telemetry disabled",
