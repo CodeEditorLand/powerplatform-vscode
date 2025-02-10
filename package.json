@@ -23,6 +23,7 @@
 		"translations-import": "node node_modules/gulp/bin/gulp.js translationsImport",
 		"watch-web": "webpack --watch"
 	},
+	"l10n": "./l10n",
 	"contributes": {
 		"chatParticipants": [
 			{
@@ -999,13 +1000,13 @@
 		"cockatiel": "^3.2.1",
 		"command-exists": "^1.2.9",
 		"find-process": "^1.4.10",
-		"fluid-framework": "^2.20.0",
+		"fluid-framework": "^2.21.0",
 		"glob": "^11.0.1",
 		"gpt-tokenizer": "^2.8.1",
 		"https-browserify": "^1.0.0",
-		"liquidjs": "^10.20.2",
+		"liquidjs": "^10.20.3",
 		"n-readlines": "^1.0.1",
-		"puppeteer-core": "^24.1.1",
+		"puppeteer-core": "^24.2.0",
 		"recursive-readdir": "^2.2.3",
 		"stream-http": "^3.2.0",
 		"tty-browserify": "^0.0.1",
@@ -1020,7 +1021,7 @@
 		"@types/debug": "^4.1.12",
 		"@types/fs-extra": "^11.0.4",
 		"@types/glob": "^8.1.0",
-		"@types/node": "^22.13.0",
+		"@types/node": "^22.13.1",
 		"@types/node-fetch": "^2.6.12",
 		"@types/puppeteer-core": "^7.0.4",
 		"@types/recursive-readdir": "^2.2.4",
@@ -1081,7 +1082,6 @@
 	"extensionKind": [
 		"workspace"
 	],
-	"l10n": "./l10n",
 	"__metadata": {
 		"id": "b8680bb6-eaa9-481a-ae0b-83574fa58620",
 		"isPreReleaseVersion": false,
