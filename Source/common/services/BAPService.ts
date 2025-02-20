@@ -3,85 +3,43 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
+import { bapServiceAuthentication, getCommonHeaders } from "./AuthenticationProvider";
+import { VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_COMPLETED, VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_FAILED } from "./TelemetryConstants";
+import { ServiceEndpointCategory, BAP_API_VERSION, BAP_SERVICE_COPILOT_CROSS_GEO_FLAG_RELATIVE_URL, BAP_SERVICE_ENDPOINT } from "./Constants";
 import { sendTelemetryEvent } from "../copilot/telemetry/copilotTelemetry";
-import { ITelemetry } from "../OneDSLoggerTelemetry/telemetry/ITelemetry";
 import { getBAPEndpoint } from "../utilities/Utils";
-import {
-	bapServiceAuthentication,
-	getCommonHeaders,
-} from "./AuthenticationProvider";
-import {
-	BAP_API_VERSION,
-	BAP_SERVICE_COPILOT_CROSS_GEO_FLAG_RELATIVE_URL,
-	BAP_SERVICE_ENDPOINT,
-	ServiceEndpointCategory,
-} from "./Constants";
-import {
-	VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_COMPLETED,
-	VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_FAILED,
-} from "./TelemetryConstants";
 
 export class BAPService {
-	public static async getCrossGeoCopilotDataMovementEnabledFlag(
-		serviceEndpointStamp: ServiceEndpointCategory,
-		telemetry: ITelemetry,
-		environmentId: string,
-	): Promise<boolean> {
-		try {
-			const accessToken = await bapServiceAuthentication(telemetry, true);
+    public static async getCrossGeoCopilotDataMovementEnabledFlag(serviceEndpointStamp: ServiceEndpointCategory, environmentId: string): Promise<boolean> {
 
-			const response = await fetch(
-				await BAPService.getBAPCopilotCrossGeoFlagEndpoint(
-					serviceEndpointStamp,
-					telemetry,
-					environmentId,
-				),
-				{
-					method: "GET",
-					headers: getCommonHeaders(accessToken),
-				},
-			);
+        try {
+            const accessToken = await bapServiceAuthentication(true);
 
-			if (response.ok) {
-				const data = await response.json();
+            const response = await fetch(await BAPService.getBAPCopilotCrossGeoFlagEndpoint(serviceEndpointStamp, environmentId), {
+                method: 'GET',
+                headers: getCommonHeaders(accessToken)
+            });
 
-				sendTelemetryEvent(telemetry, {
-					eventName:
-						VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_COMPLETED,
-					data: data.properties.copilotPolicies
-						?.crossGeoCopilotDataMovementEnabled,
-				});
+            if (response.ok) {
+                const data = await response.json();
+                sendTelemetryEvent({ eventName: VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_COMPLETED, data: data.properties.copilotPolicies?.crossGeoCopilotDataMovementEnabled });
+                return data.properties.copilotPolicies?.crossGeoCopilotDataMovementEnabled;
+            }
 
-				return data.properties.copilotPolicies
-					?.crossGeoCopilotDataMovementEnabled;
-			}
-		} catch (error) {
-			sendTelemetryEvent(telemetry, {
-				eventName:
-					VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_FAILED,
-				errorMsg: (error as Error).message,
-			});
-		}
+        } catch (error) {
+            sendTelemetryEvent({ eventName: VSCODE_EXTENSION_GET_CROSS_GEO_DATA_MOVEMENT_ENABLED_FLAG_FAILED, errorMsg: (error as Error).message });
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	static async getBAPCopilotCrossGeoFlagEndpoint(
-		serviceEndpointStamp: ServiceEndpointCategory,
-		telemetry: ITelemetry,
-		environmentId: string,
-	): Promise<string> {
-		const bapEndpoint = await getBAPEndpoint(
-			serviceEndpointStamp,
-			telemetry,
-		);
+    static async getBAPCopilotCrossGeoFlagEndpoint(serviceEndpointStamp: ServiceEndpointCategory, environmentId: string): Promise<string> {
 
-		return (
-			BAP_SERVICE_ENDPOINT.replace("{rootURL}", bapEndpoint) +
-			BAP_SERVICE_COPILOT_CROSS_GEO_FLAG_RELATIVE_URL.replace(
-				"{environmentID}",
-				environmentId,
-			).replace("{apiVersion}", BAP_API_VERSION)
-		);
-	}
+        const bapEndpoint = await getBAPEndpoint(serviceEndpointStamp);
+
+        return BAP_SERVICE_ENDPOINT.replace('{rootURL}', bapEndpoint) +
+            BAP_SERVICE_COPILOT_CROSS_GEO_FLAG_RELATIVE_URL.replace('{environmentID}', environmentId).replace('{apiVersion}', BAP_API_VERSION);
+    }
+
 }
+

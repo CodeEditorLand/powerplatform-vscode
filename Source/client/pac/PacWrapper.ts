@@ -3,315 +3,192 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import * as os from "os";
 import * as path from "path";
 import * as readline from "readline";
 import * as fs from "fs-extra";
-import { v4 } from "uuid";
-
-import { oneDSLoggerWrapper } from "../../common/OneDSLoggerTelemetry/oneDSLoggerWrapper";
-import { ITelemetry } from "../../common/OneDSLoggerTelemetry/telemetry/ITelemetry";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import { BlockingQueue } from "../../common/utilities/BlockingQueue";
-import {
-	PacAdminListOutput,
-	PacAuthListOutput,
-	PacAuthWhoOutput,
-	PacOrgListOutput,
-	PacOrgWhoOutput,
-	PacOutput,
-	PacSolutionListOutput,
-} from "./PacTypes";
+import { PacOutput, PacAdminListOutput, PacAuthListOutput, PacSolutionListOutput, PacOrgListOutput, PacOrgWhoOutput, PacAuthWhoOutput } from "./PacTypes";
+import { v4 } from "uuid";
+import { oneDSLoggerWrapper } from "../../common/OneDSLoggerTelemetry/oneDSLoggerWrapper";
 
 export interface IPacWrapperContext {
-	readonly globalStorageLocalPath: string;
-
-	readonly telemetry: ITelemetry;
-
-	readonly automationAgent: string;
-
-	IsTelemetryEnabled(): boolean;
-
-	GetCloudSetting(): string;
+    readonly globalStorageLocalPath: string;
+    readonly automationAgent: string;
+    IsTelemetryEnabled(): boolean;
+    GetCloudSetting(): string;
 }
 
 export interface IPacInterop {
-	executeCommand(args: PacArguments): Promise<string>;
-
-	exit(): void;
+    executeCommand(args: PacArguments): Promise<string>;
+    exit(): void;
 }
 
 export class PacInterop implements IPacInterop {
-	private _proc: ChildProcessWithoutNullStreams | undefined;
+    private _proc: ChildProcessWithoutNullStreams | undefined;
+    private outputQueue = new BlockingQueue<string>();
+    private tempWorkingDirectory: string;
+    private pacExecutablePath: string;
 
-	private outputQueue = new BlockingQueue<string>();
+    public constructor(private readonly context: IPacWrapperContext, cliPath: string) {
+        // Set the Working Directory to a random temp folder, as we do not want
+        // accidental writes by PAC being placed where they may interfere with things
+        this.tempWorkingDirectory = path.join(os.tmpdir(), v4());
+        fs.ensureDirSync(this.tempWorkingDirectory);
+        this.pacExecutablePath = path.join(cliPath, PacInterop.getPacExecutableName());
+    }
 
-	private tempWorkingDirectory: string;
+    private static getPacExecutableName(): string {
+        const platformName = os.platform();
+        switch (platformName) {
+            case 'win32':
+                return 'pac.exe';
+            case 'darwin':
+            case 'linux':
+                return 'pac';
+            default:
+                throw new Error(`Unsupported OS platform for pac CLI: ${platformName}`);
+        }
+    }
 
-	private pacExecutablePath: string;
+    private async proc(): Promise<ChildProcessWithoutNullStreams> {
+        if (!(this._proc)) {
+            oneDSLoggerWrapper.getLogger().traceInfo('InternalPacProcessStarting');
 
-	public constructor(
-		private readonly context: IPacWrapperContext,
-		cliPath: string,
-	) {
-		// Set the Working Directory to a random temp folder, as we do not want
-		// accidental writes by PAC being placed where they may interfere with things
-		this.tempWorkingDirectory = path.join(os.tmpdir(), v4());
+            const env: NodeJS.ProcessEnv = { ...process.env, 'PP_TOOLS_AUTOMATION_AGENT': this.context.automationAgent };
 
-		fs.ensureDirSync(this.tempWorkingDirectory);
+            // If the VS Code telemetry is disabled, disable telemetry on the PAC backing the Extension's UI
+            if (!this.context.IsTelemetryEnabled()) {
+                env['PP_TOOLS_TELEMETRY_OPTOUT'] = 'true';
+            }
 
-		this.pacExecutablePath = path.join(
-			cliPath,
-			PacInterop.getPacExecutableName(),
-		);
-	}
+            // Compatability for users on M1 Macs with .NET 6.0 installed - permit pac and pacTelemetryUpload
+            // to roll up to 6.0 if 5.0 is not found on the system.
+            if (os.platform() === 'darwin' && os.version().includes('ARM64')) {
+                env['DOTNET_ROLL_FORWARD'] = 'Major';
+            }
 
-	private static getPacExecutableName(): string {
-		const platformName = os.platform();
+            this._proc = spawn(this.pacExecutablePath, ["--non-interactive"], {
+                cwd: this.tempWorkingDirectory,
+                env: env
+            });
 
-		switch (platformName) {
-			case "win32":
-				return "pac.exe";
+            const lineReader = readline.createInterface({ input: this._proc.stdout });
+            lineReader.on('line', (line: string) => { this.outputQueue.enqueue(line); });
 
-			case "darwin":
-			case "linux":
-				return "pac";
+            // Grab the first output, which will be the PAC Version info
+            await this.outputQueue.dequeue();
+            oneDSLoggerWrapper.getLogger().traceInfo('InternalPacProcessStarted');
+        }
 
-			default:
-				throw new Error(
-					`Unsupported OS platform for pac CLI: ${platformName}`,
-				);
-		}
-	}
+        return this._proc;
+    }
 
-	private async proc(): Promise<ChildProcessWithoutNullStreams> {
-		if (!this._proc) {
-			this.context.telemetry.sendTelemetryEvent(
-				"InternalPacProcessStarting",
-			);
+    public async executeCommand(args: PacArguments): Promise<string> {
+        const command = JSON.stringify(args) + "\n";
+        (await this.proc()).stdin.write(command);
 
-			oneDSLoggerWrapper
-				.getLogger()
-				.traceInfo("InternalPacProcessStarting");
+        const result = await this.outputQueue.dequeue();
+        return result;
+    }
 
-			const env: NodeJS.ProcessEnv = {
-				...process.env,
-				"PP_TOOLS_AUTOMATION_AGENT": this.context.automationAgent,
-			};
-
-			// If the VS Code telemetry is disabled, disable telemetry on the PAC backing the Extension's UI
-			if (!this.context.IsTelemetryEnabled()) {
-				env["PP_TOOLS_TELEMETRY_OPTOUT"] = "true";
-			}
-
-			// Compatability for users on M1 Macs with .NET 6.0 installed - permit pac and pacTelemetryUpload
-			// to roll up to 6.0 if 5.0 is not found on the system.
-			if (os.platform() === "darwin" && os.version().includes("ARM64")) {
-				env["DOTNET_ROLL_FORWARD"] = "Major";
-			}
-
-			this._proc = spawn(this.pacExecutablePath, ["--non-interactive"], {
-				cwd: this.tempWorkingDirectory,
-				env: env,
-			});
-
-			const lineReader = readline.createInterface({
-				input: this._proc.stdout,
-			});
-
-			lineReader.on("line", (line: string) => {
-				this.outputQueue.enqueue(line);
-			});
-
-			// Grab the first output, which will be the PAC Version info
-			await this.outputQueue.dequeue();
-
-			this.context.telemetry.sendTelemetryEvent(
-				"InternalPacProcessStarted",
-			);
-
-			oneDSLoggerWrapper
-				.getLogger()
-				.traceInfo("InternalPacProcessStarted");
-		}
-
-		return this._proc;
-	}
-
-	public async executeCommand(args: PacArguments): Promise<string> {
-		const command = JSON.stringify(args) + "\n";
-		(await this.proc()).stdin.write(command);
-
-		const result = await this.outputQueue.dequeue();
-
-		return result;
-	}
-
-	public async exit(): Promise<void> {
-		(await this.proc()).stdin.write(
-			JSON.stringify(new PacArguments("exit")),
-		);
-	}
+    public async exit(): Promise<void> {
+        (await this.proc()).stdin.write(JSON.stringify(new PacArguments("exit")));
+    }
 }
 
 export class PacWrapper {
-	public constructor(
-		private readonly context: IPacWrapperContext,
-		private readonly pacInterop: IPacInterop,
-	) {}
+    public constructor(private readonly context: IPacWrapperContext, private readonly pacInterop: IPacInterop) {
+    }
 
-	private async executeCommandAndParseResults<T>(
-		args: PacArguments,
-	): Promise<T> {
-		const result = await this.pacInterop.executeCommand(args);
+    private async executeCommandAndParseResults<T>(args: PacArguments): Promise<T> {
+        const result = await this.pacInterop.executeCommand(args);
+        const parsed: T = JSON.parse(result);
+        return parsed;
+    }
 
-		const parsed: T = JSON.parse(result);
+    public async authClear(): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("auth", "clear"));
+    }
 
-		return parsed;
-	}
+    public async authList(): Promise<PacAuthListOutput> {
+        return this.executeCommandAndParseResults<PacAuthListOutput>(new PacArguments("auth", "list"));
+    }
 
-	public async authClear(): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments("auth", "clear"),
-		);
-	}
+    public async authCreateNewAuthProfile(): Promise<PacAuthListOutput> {
+        return this.executeCommandAndParseResults<PacAuthListOutput>(
+            new PacArguments("auth", "create", "--cloud", this.context.GetCloudSetting()));
+    }
 
-	public async authList(): Promise<PacAuthListOutput> {
-		return this.executeCommandAndParseResults<PacAuthListOutput>(
-			new PacArguments("auth", "list"),
-		);
-	}
+    public async authCreateNewAuthProfileForOrg(orgUrl: string): Promise<PacAuthListOutput> {
+        return this.executeCommandAndParseResults<PacAuthListOutput>(
+            new PacArguments("auth", "create", "--url", orgUrl));
+    }
 
-	public async authCreateNewAuthProfile(): Promise<PacAuthListOutput> {
-		return this.executeCommandAndParseResults<PacAuthListOutput>(
-			new PacArguments(
-				"auth",
-				"create",
-				"--cloud",
-				this.context.GetCloudSetting(),
-			),
-		);
-	}
+    public async authSelectByIndex(index: number): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("auth", "select", "--index", index.toString()))
+    }
 
-	public async authCreateNewAuthProfileForOrg(
-		orgUrl: string,
-	): Promise<PacAuthListOutput> {
-		return this.executeCommandAndParseResults<PacAuthListOutput>(
-			new PacArguments("auth", "create", "--url", orgUrl),
-		);
-	}
+    public async authDeleteByIndex(index: number): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("auth", "delete", "--index", index.toString()))
+    }
 
-	public async authSelectByIndex(index: number): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments("auth", "select", "--index", index.toString()),
-		);
-	}
+    public async authNameByIndex(index: number, name: string): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("auth", "name", "--index", index.toString(), "--name", name))
+    }
 
-	public async authDeleteByIndex(index: number): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments("auth", "delete", "--index", index.toString()),
-		);
-	}
+    // currently not called from anywhere
+    public async adminEnvironmentList(): Promise<PacAdminListOutput> {
+        return this.executeCommandAndParseResults<PacAdminListOutput>(new PacArguments("admin", "list"));
+    }
 
-	public async authNameByIndex(
-		index: number,
-		name: string,
-	): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments(
-				"auth",
-				"name",
-				"--index",
-				index.toString(),
-				"--name",
-				name,
-			),
-		);
-	}
+    // currently not called from anywhere
+    public async solutionList(): Promise<PacSolutionListOutput> {
+        return this.executeCommandAndParseResults<PacSolutionListOutput>(new PacArguments("solution", "list"));
+    }
 
-	// currently not called from anywhere
-	public async adminEnvironmentList(): Promise<PacAdminListOutput> {
-		return this.executeCommandAndParseResults<PacAdminListOutput>(
-			new PacArguments("admin", "list"),
-		);
-	}
+    public async solutionListFromEnvironment(environmentUrl: string): Promise<PacSolutionListOutput> {
+        return this.executeCommandAndParseResults<PacSolutionListOutput>(new PacArguments("solution", "list", "--environment", environmentUrl));
+    }
 
-	// currently not called from anywhere
-	public async solutionList(): Promise<PacSolutionListOutput> {
-		return this.executeCommandAndParseResults<PacSolutionListOutput>(
-			new PacArguments("solution", "list"),
-		);
-	}
+    public async orgSelect(orgUrl: string): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("org", "select", "--environment", orgUrl));
+    }
 
-	public async solutionListFromEnvironment(
-		environmentUrl: string,
-	): Promise<PacSolutionListOutput> {
-		return this.executeCommandAndParseResults<PacSolutionListOutput>(
-			new PacArguments(
-				"solution",
-				"list",
-				"--environment",
-				environmentUrl,
-			),
-		);
-	}
+    public async orgList(): Promise<PacOrgListOutput> {
+        return this.executeCommandAndParseResults<PacOrgListOutput>(new PacArguments("org", "list"));
+    }
 
-	public async orgSelect(orgUrl: string): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments("org", "select", "--environment", orgUrl),
-		);
-	}
+    public async activeOrg(): Promise<PacOrgWhoOutput> {
+        return this.executeCommandAndParseResults<PacOrgWhoOutput>(new PacArguments("org", "who"));
+    }
 
-	public async orgList(): Promise<PacOrgListOutput> {
-		return this.executeCommandAndParseResults<PacOrgListOutput>(
-			new PacArguments("org", "list"),
-		);
-	}
+    public async activeAuth(): Promise <PacAuthWhoOutput> {
+        return this.executeCommandAndParseResults<PacAuthWhoOutput>(new PacArguments("auth", "who"));
+    }
 
-	public async activeOrg(): Promise<PacOrgWhoOutput> {
-		return this.executeCommandAndParseResults<PacOrgWhoOutput>(
-			new PacArguments("org", "who"),
-		);
-	}
+    public async pcfInit(outputDirectory: string): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("pcf", "init", "--outputDirectory", outputDirectory));
+    }
 
-	public async activeAuth(): Promise<PacAuthWhoOutput> {
-		return this.executeCommandAndParseResults<PacAuthWhoOutput>(
-			new PacArguments("auth", "who"),
-		);
-	}
+    public async enableTelemetry(): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("telemetry", "enable"));
+    }
 
-	public async pcfInit(outputDirectory: string): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments(
-				"pcf",
-				"init",
-				"--outputDirectory",
-				outputDirectory,
-			),
-		);
-	}
+    public async disableTelemetry(): Promise<PacOutput> {
+        return this.executeCommandAndParseResults<PacOutput>(new PacArguments("telemetry", "disable"));
+    }
 
-	public async enableTelemetry(): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments("telemetry", "enable"),
-		);
-	}
-
-	public async disableTelemetry(): Promise<PacOutput> {
-		return this.executeCommandAndParseResults<PacOutput>(
-			new PacArguments("telemetry", "disable"),
-		);
-	}
-
-	public exit(): void {
-		this.pacInterop.exit();
-	}
+    public exit(): void {
+        this.pacInterop.exit();
+    }
 }
 
 export class PacArguments {
-	public Arguments: string[];
+    public Arguments: string[];
 
-	constructor(...args: string[]) {
-		this.Arguments = args;
-	}
+    constructor(...args: string[]) {
+        this.Arguments = args;
+    }
 }
