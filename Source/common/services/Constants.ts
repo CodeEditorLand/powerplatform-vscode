@@ -53,3 +53,8 @@ export enum WebsiteApplicationType {
 	Production = "Production",
 	Trial = "Trial",
 }
+
+export enum WebsiteDataModel {
+    Enhanced = "Enhanced",
+    Standard = "Standard",
+}

@@ -62,17 +62,6 @@ async function clean() {
 	return fs.emptyDir(distdir);
 }
 
-function setTelemetryTarget() {
-	const telemetryConfigurationSource = isOfficialBuild
-		? "src/common/telemetry/telemetryConfigurationProd.ts"
-		: "src/common/telemetry/telemetryConfigurationDev.ts";
-
-	return gulp
-		.src(telemetryConfigurationSource)
-		.pipe(rename("telemetryConfiguration.ts"))
-		.pipe(gulp.dest(path.join("src", "common", "telemetry-generated")));
-}
-
 function setBuildRegion() {
 	const buildRegion = isOfficialBuild
 		? "src/common/telemetry/buildRegionProd.ts"
@@ -244,13 +233,17 @@ const test = gulp.series(testUnitTests);
  * Compiles the integration tests and transpiles the results to /out
  */
 function compileIntegrationTests() {
-	const tsProject = gulpTs.createProject("tsconfig.json", {
-		// to test puppeteer we need "dom".
-		// since "dom" overlaps with "webworker" we need to overwrite the lib property.
-		// This is a known ts issue (bot being able to have both webworker and dom): https://github.com/microsoft/TypeScript/issues/20595
-		lib: ["es2019", "dom", "dom.iterable"],
-	});
-	return gulp.src(["src/**/*.ts"]).pipe(tsProject()).pipe(gulp.dest("out"));
+    const tsProject = gulpTs.createProject("tsconfig.json", {
+        // to test puppeteer we need "dom".
+        // since "dom" overlaps with "webworker" we need to overwrite the lib property.
+        // This is a known ts issue (bot being able to have both webworker and dom): https://github.com/microsoft/TypeScript/issues/20595
+        lib: ["es2019", "dom", "dom.iterable", "es2020"],
+    });
+    return gulp.src(["src/**/*.ts"]).pipe(tsProject()).pipe(gulp.dest("out"));
+}
+
+function copyTestNugetPackages() {
+    return gulp.src(["src/**/*.nupkg"]).pipe(gulp.dest("out"));
 }
 
 /**
@@ -278,13 +271,10 @@ const testWebInt = gulp.series(testWebIntegration);
 /**
  * Tests the power-pages integration tests after transpiling the source files to /out
  */
-const testDesktopIntegration = gulp.series(
-	compileIntegrationTests,
-	async () => {
-		const testRunner = require("./out/client/test/runTest");
-		await testRunner.main();
-	},
-);
+const testDesktopIntegration = gulp.series(copyTestNugetPackages, compileIntegrationTests, async () => {
+    const testRunner = require("./out/client/test/runTest");
+    await testRunner.main();
+});
 
 // tests that require vscode-electron (which requires a display or xvfb)
 const testDesktopInt = gulp.series(testDesktopIntegration);
@@ -395,28 +385,15 @@ async function snapshot() {
 const cliVersion = '1.39.3';
 
 const recompile = gulp.series(
-	clean,
-	async () =>
-		nugetInstall(
-			feedName,
-			"Microsoft.PowerApps.CLI",
-			cliVersion,
-			path.resolve(distdir, "pac"),
-		),
-	async () =>
-		nugetInstall(
-			feedName,
-			"Microsoft.PowerApps.CLI.Tool",
-			cliVersion,
-			path.resolve(distdir, "pac"),
-		),
-	translationsExport,
-	translationsImport,
-	setTelemetryTarget,
-	setBuildRegion,
-	compile,
-	compileWeb,
-	compileWorker,
+    clean,
+    async () => nugetInstall(feedName, 'Microsoft.PowerApps.CLI', cliVersion, path.resolve(distdir, 'pac')),
+    async () => nugetInstall(feedName, 'Microsoft.PowerApps.CLI.Tool', cliVersion, path.resolve(distdir, 'pac')),
+    translationsExport,
+    translationsImport,
+    setBuildRegion,
+    compile,
+    compileWeb,
+    compileWorker,
 );
 
 const dist = gulp.series(recompile, packageVsix, lint, test);

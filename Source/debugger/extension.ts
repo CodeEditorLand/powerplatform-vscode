@@ -6,6 +6,9 @@
 import TelemetryReporter from "@vscode/extension-telemetry";
 import * as vscode from "vscode";
 
+import { LaunchDebugProvider } from "./configuration";
+import { DebugAdaptorFactory } from "./debugAdaptor";
+
 import { EXTENSION_NAME } from "../common/constants";
 import { LaunchDebugProvider } from "./configuration";
 import { UserSettingsConfigManager } from "./configuration/UserSettingsConfigManager";
@@ -16,21 +19,20 @@ import { DebugAdaptorFactory } from "./debugAdaptor";
  * @param context The extension context.
  */
 export function activateDebugger(
-	context: vscode.ExtensionContext,
-	telemetry: TelemetryReporter,
+    context: vscode.ExtensionContext
 ): void {
-	// Register the launch provider
-	vscode.debug.registerDebugConfigurationProvider(
-		`${EXTENSION_NAME}.debug`,
-		new LaunchDebugProvider(telemetry),
-	);
+    // Register the launch provider
+    vscode.debug.registerDebugConfigurationProvider(
+        `${EXTENSION_NAME}.debug`,
+        new LaunchDebugProvider()
+    );
 
-	context.subscriptions.push(
-		vscode.debug.registerDebugAdapterDescriptorFactory(
-			`${EXTENSION_NAME}.debug`,
-			new DebugAdaptorFactory(telemetry),
-		),
-	);
+    context.subscriptions.push(
+        vscode.debug.registerDebugAdapterDescriptorFactory(
+            `${EXTENSION_NAME}.debug`,
+            new DebugAdaptorFactory()
+        )
+    );
 }
 
 /**
