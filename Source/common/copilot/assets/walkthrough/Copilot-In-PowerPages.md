@@ -14,16 +14,16 @@ generated code and use it when customizing your site.
 ## Prerequisites
 
 Review the [`terms`](https://go.microsoft.com/fwlink/?linkid=2189520) and
-[`Responsible AI FAQ`](https://go.microsoft.com/fwlink/?linkid=2240145) documents
-to understand usage and limitations of Copilot. Check the following requirements
-to start using Copilot in Power Pages:
+[`Responsible AI FAQ`](https://go.microsoft.com/fwlink/?linkid=2240145)
+documents to understand usage and limitations of Copilot. Check the following
+requirements to start using Copilot in Power Pages:
 
--   Ensure you have installed the latest Power Platform Tools extension.
--   Open site root folder in Visual Studio Code.
+- Ensure you have installed the latest Power Platform Tools extension.
+- Open site root folder in Visual Studio Code.
 
     ![`Demo Site Screen`](./images/websiteselection.svg)
 
--   Login to Power Pages Copilot with your Dataverse Environment credentials.
+- Login to Power Pages Copilot with your Dataverse Environment credentials.
 
 ## How to use Copilot to generate code
 
@@ -44,17 +44,16 @@ frameworks like bootstrap and jQuery.
 
 Examples
 
--   `Write code for Web API to fetch active contacts`
--   `Write code in JavaScript to make sure that submitted value for phone number field is in valid format`
+- `Write code for Web API to fetch active contacts`
+- `Write code in JavaScript to make sure that submitted value for phone number field is in valid format`
 
 Note
 
--   Copilot generated code might not have the correct names for tables or
-    columns, so it’s recommended to verify these details before using the code.
--   To generate more accurate code, it is recommended that you open the file
-    where you want to use the code. For example, open a web template for web API
-    or open custom JavaScript file for forms where you want to add field
-    validation.
+- Copilot generated code might not have the correct names for tables or columns,
+  so it’s recommended to verify these details before using the code.
+- To generate more accurate code, it is recommended that you open the file where
+  you want to use the code. For example, open a web template for web API or open
+  custom JavaScript file for forms where you want to add field validation.
 
 ![`Demo File Screen`](./images/contextpowerpages.svg)
 

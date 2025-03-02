@@ -31,24 +31,23 @@ To join our office hours click this meeting link:
 
 **To call in (audio only)**
 
--   +1 323-849-4874,,379639014# United States, Los Angeles
--   Phone Conference ID: 379 639 014#
+- +1 323-849-4874,,379639014# United States, Los Angeles
+- Phone Conference ID: 379 639 014#
 
 To keep topics organized, please submit what you'd like us to cover here:
 [`HTTPS://aka.ms/ProDevOfficeHours`](https://aka.ms/ProDevOfficeHours)
 
 **Why should you attend?**
 
--   You have a difficult accessibility question.
--   You need help getting a your challenge resolved.
--   You want to learn more about Power Platform Developer Tools!
+- You have a difficult accessibility question.
+- You need help getting a your challenge resolved.
+- You want to learn more about Power Platform Developer Tools!
 
 **NOTE:**
 
--   Please feel free to forward this information along with our community
-    starter link:
-    [`HTTPS://aka.ms/ProDevOfficeHours`](https://aka.ms/ProDevOfficeHours).
--   We will limit any troubleshooting to 5-minutes max or reach us offline.
+- Please feel free to forward this information along with our community starter
+  link: [`HTTPS://aka.ms/ProDevOfficeHours`](https://aka.ms/ProDevOfficeHours).
+- We will limit any troubleshooting to 5-minutes max or reach us offline.
 
 <!-- (If you are unable to make it live, all meetings will be recorded and posted online.) -->
 
